@@ -13,6 +13,9 @@ const EventLog = require('../engines/EventLog');
  */
 class TeamfightSystem {
     constructor() {
+        // Reference to AbilitySystem (set externally)
+        this.abilitySystem = null;
+
         this.config = {
             fightTriggerChance: {
                 early: 0,      // No fights in early game (wave 1-20)
@@ -23,10 +26,19 @@ class TeamfightSystem {
             fightDuration: 5,  // Simulated seconds
             ticksPerSecond: 1,
             executeThreshold: 0.20,  // <20% HP = high priority target
-            clutchThreshold: 0.30    // <30% HP = clutch factor activates
+            clutchThreshold: 0.30,    // <30% HP = clutch factor activates
+            abilityCastChance: 0.90,  // 90% chance to cast ability in fight
+            ultCastChance: 0.70       // 70% chance to cast ultimate
         };
 
         this.activeFights = new Map();
+    }
+
+    /**
+     * Set ability system reference
+     */
+    setAbilitySystem(abilitySystem) {
+        this.abilitySystem = abilitySystem;
     }
 
     /**
@@ -71,7 +83,8 @@ class TeamfightSystem {
             team2Positioned,
             tick,
             eventLog,
-            rng
+            rng,
+            world
         );
 
         // Log fight end
@@ -107,7 +120,7 @@ class TeamfightSystem {
     /**
      * Resolve the fight simulation
      */
-    _resolveFight(team1, team2, tick, eventLog, rng) {
+    _resolveFight(team1, team2, tick, eventLog, rng, world) {
         const fightState = {
             team1: team1.map(p => ({ ...p, health: p.champion.getComponent('stats').health || 550 })),
             team2: team2.map(p => ({ ...p, health: p.champion.getComponent('stats').health || 550 })),
@@ -121,13 +134,13 @@ class TeamfightSystem {
         // Simulate fight tick by tick
         while (fightTick < maxTicks) {
             // Team 1 attacks Team 2
-            this._executeFightTick(fightState.team1, fightState.team2, 'team1', tick, eventLog, rng);
+            this._executeFightTick(fightState.team1, fightState.team2, 'team1', tick, eventLog, rng, world);
 
             // Check if team 2 wiped
             if (fightState.team2.every(p => !p.alive)) break;
 
             // Team 2 attacks Team 1
-            this._executeFightTick(fightState.team2, fightState.team1, 'team2', tick, eventLog, rng);
+            this._executeFightTick(fightState.team2, fightState.team1, 'team2', tick, eventLog, rng, world);
 
             // Check if team 1 wiped
             if (fightState.team1.every(p => !p.alive)) break;
@@ -155,7 +168,7 @@ class TeamfightSystem {
     /**
      * Execute one tick of fighting
      */
-    _executeFightTick(attackers, defenders, attackingTeam, tick, eventLog, rng) {
+    _executeFightTick(attackers, defenders, attackingTeam, tick, eventLog, rng, world) {
         const aliveAttackers = attackers.filter(p => p.alive);
         const aliveDefenders = defenders.filter(p => p.alive);
 
@@ -166,27 +179,59 @@ class TeamfightSystem {
             const target = this._selectTarget(aliveDefenders, attacker, rng);
             if (!target) continue;
 
-            // Calculate damage
-            const damage = this._calculateDamage(attacker.champion, target.champion, rng);
+            let damage = 0;
+            let abilityCast = false;
 
-            // Apply damage
-            target.health -= damage;
+            // Try to cast abilities (if AbilitySystem available)
+            if (this.abilitySystem && rng.chance(this.config.abilityCastChance)) {
+                const abilityResults = this.abilitySystem.castAbilitiesInFight(
+                    attacker.champion,
+                    target.champion,
+                    world,
+                    rng,
+                    eventLog
+                );
 
-            // Log damage
-            eventLog.log({
-                type: EventLog.EventTypes.FIGHT_DAMAGE,
-                tick: tick,
-                attacker: attacker.champion.getComponent('identity').name,
-                attackerTeam: attackingTeam,
-                defender: target.champion.getComponent('identity').name,
-                damage: damage,
-                remainingHealth: target.health
-            });
+                // Sum up all ability damage
+                if (abilityResults && abilityResults.length > 0) {
+                    for (const result of abilityResults) {
+                        if (result.damage > 0) {
+                            damage += result.damage;
+                            abilityCast = true;
 
-            // Check for kill
-            if (target.health <= 0 && target.alive) {
-                target.alive = false;
-                this._processKill(attacker, target, aliveAttackers, tick, eventLog);
+                            // Check for kill from ability
+                            target.health -= result.damage;
+                            if (target.health <= 0 && target.alive) {
+                                target.alive = false;
+                                this._processKill(attacker, target, aliveAttackers, tick, eventLog);
+                                break; // Stop attacking if target is dead
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Basic attack if still alive and no abilities cast
+            if (target.alive && !abilityCast) {
+                damage = this._calculateDamage(attacker.champion, target.champion, rng);
+                target.health -= damage;
+
+                // Log damage
+                eventLog.log({
+                    type: EventLog.EventTypes.FIGHT_DAMAGE,
+                    tick: tick,
+                    attacker: attacker.champion.getComponent('identity').name,
+                    attackerTeam: attackingTeam,
+                    defender: target.champion.getComponent('identity').name,
+                    damage: damage,
+                    remainingHealth: target.health
+                });
+
+                // Check for kill
+                if (target.health <= 0 && target.alive) {
+                    target.alive = false;
+                    this._processKill(attacker, target, aliveAttackers, tick, eventLog);
+                }
             }
         }
     }
@@ -329,12 +374,29 @@ class TeamfightSystem {
             }
         }
 
-        // Gold reward
-        const killGold = 300 + (victimStats.kda.kills * 100);  // Shutdown gold
+        // Base gold reward
+        let killGold = 300;
+
+        // Shutdown gold (killing fed enemies)
+        if (victimStats.kda.kills >= 3) {
+            const shutdownBonus = victimStats.kda.kills * 150; // 150g per kill
+            killGold += shutdownBonus;
+
+            eventLog.log({
+                type: 'shutdown',
+                tick: tick,
+                killerName: killerIdentity.name,
+                victimName: victimIdentity.name,
+                victimKillStreak: victimStats.kda.kills,
+                shutdownGold: shutdownBonus
+            });
+        }
+
         killerStats.gold += killGold;
 
-        // Increase victim tilt
-        victimHidden.tilt_level = Math.min(1.0, victimHidden.tilt_level + 0.15);
+        // Increase victim tilt (more tilt if shutdown)
+        const tiltIncrease = victimStats.kda.kills >= 3 ? 0.25 : 0.15;
+        victimHidden.tilt_level = Math.min(1.0, victimHidden.tilt_level + tiltIncrease);
 
         // Log kill
         eventLog.log({
@@ -353,6 +415,43 @@ class TeamfightSystem {
      * Apply fight results to champion stats
      */
     _applyFightResults(fightState, tick, eventLog) {
+        // Check for ACE (team wipe)
+        const team1Wiped = fightState.team1.every(p => !p.alive);
+        const team2Wiped = fightState.team2.every(p => !p.alive);
+
+        // Award ACE gold
+        if (team1Wiped && !team2Wiped) {
+            const aceGold = 500; // Bonus gold for ACE
+            for (const participant of fightState.team2) {
+                if (participant.alive) {
+                    const stats = participant.champion.getComponent('stats');
+                    stats.gold += aceGold;
+                }
+            }
+
+            eventLog.log({
+                type: 'ace',
+                tick: tick,
+                aceTeam: 'team2',
+                aceGold: aceGold
+            });
+        } else if (team2Wiped && !team1Wiped) {
+            const aceGold = 500;
+            for (const participant of fightState.team1) {
+                if (participant.alive) {
+                    const stats = participant.champion.getComponent('stats');
+                    stats.gold += aceGold;
+                }
+            }
+
+            eventLog.log({
+                type: 'ace',
+                tick: tick,
+                aceTeam: 'team1',
+                aceGold: aceGold
+            });
+        }
+
         // Reset health for survivors
         for (const participant of [...fightState.team1, ...fightState.team2]) {
             const stats = participant.champion.getComponent('stats');

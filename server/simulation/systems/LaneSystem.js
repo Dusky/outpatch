@@ -16,6 +16,9 @@ class LaneSystem {
         this.lanes = ['top', 'mid', 'bot'];
         this.laneStates = new Map();
 
+        // Reference to AbilitySystem (set externally)
+        this.abilitySystem = null;
+
         // Lane config
         this.config = {
             minionWaveInterval: 2,  // Spawn wave every 2 ticks
@@ -23,8 +26,16 @@ class LaneSystem {
             minionGoldValue: 20,
             tradeBaseDamage: 80,
             tradeCooldown: 3,  // Can trade every 3 ticks
-            csSkillThreshold: 0.6  // mechanical_skill above this gets bonus CS
+            csSkillThreshold: 0.6,  // mechanical_skill above this gets bonus CS
+            abilityCastChance: 0.25  // 25% chance to cast ability in lane
         };
+    }
+
+    /**
+     * Set ability system reference
+     */
+    setAbilitySystem(abilitySystem) {
+        this.abilitySystem = abilitySystem;
     }
 
     /**
@@ -77,7 +88,7 @@ class LaneSystem {
             this._processCS(team1Champion, team2Champion, laneState, tick, eventLog, laneRng);
 
             // 2. Trading phase
-            this._processTrades(team1Champion, team2Champion, laneState, tick, eventLog, laneRng);
+            this._processTrades(team1Champion, team2Champion, laneState, tick, eventLog, laneRng, world);
 
             // 3. Update lane pressure
             this._updateLanePressure(laneState, team1Champion, team2Champion);
@@ -121,7 +132,16 @@ class LaneSystem {
                 const actualCS = Math.min(csCount, laneState.minionWaves.team2.count);
 
                 stats1.cs += actualCS;
-                stats1.gold += actualCS * this.config.minionGoldValue;
+
+                // Apply rubber-banding (bonus gold if behind)
+                let goldGained = actualCS * this.config.minionGoldValue;
+                const goldDiff = stats2.gold - stats1.gold;
+                if (goldDiff > 1000) {
+                    // Behind by 1000+ gold, get 20% bonus
+                    goldGained = Math.floor(goldGained * 1.2);
+                }
+
+                stats1.gold += goldGained;
                 laneState.minionWaves.team2.count -= actualCS;
 
                 eventLog.log({
@@ -148,7 +168,16 @@ class LaneSystem {
                 const actualCS = Math.min(csCount, laneState.minionWaves.team1.count);
 
                 stats2.cs += actualCS;
-                stats2.gold += actualCS * this.config.minionGoldValue;
+
+                // Apply rubber-banding (bonus gold if behind)
+                let goldGained = actualCS * this.config.minionGoldValue;
+                const goldDiff = stats1.gold - stats2.gold;
+                if (goldDiff > 1000) {
+                    // Behind by 1000+ gold, get 20% bonus
+                    goldGained = Math.floor(goldGained * 1.2);
+                }
+
+                stats2.gold += goldGained;
                 laneState.minionWaves.team1.count -= actualCS;
 
                 eventLog.log({
@@ -169,7 +198,7 @@ class LaneSystem {
     /**
      * Process champion trades (poke/harass)
      */
-    _processTrades(champ1, champ2, laneState, tick, eventLog, rng) {
+    _processTrades(champ1, champ2, laneState, tick, eventLog, rng, world) {
         const stats1 = champ1.getComponent('stats');
         const stats2 = champ2.getComponent('stats');
         const hidden1 = champ1.getComponent('hiddenStats');
@@ -198,15 +227,32 @@ class LaneSystem {
 
         // Check if trade happens and cooldown is up
         if (rng.chance(tradeChance) && tick - initiatorStats.lastTradeTick >= this.config.tradeCooldown) {
-            // Calculate damage (includes item stats)
-            const initiatorAD = initiatorStats.effective_attack_damage || initiatorStats.attack_damage || 60;
-            const defenderArmor = defenderStats.effective_armor || defenderStats.armor || 30;
+            let damage = 0;
+            let abilityUsed = false;
+            let abilityName = null;
 
-            const baseDamage = this.config.tradeBaseDamage;
-            const damageMultiplier = 1 + (initiatorAD - 60) / 100;
-            const damageReduction = 100 / (100 + defenderArmor);
+            // Try to cast ability (if AbilitySystem is available)
+            if (this.abilitySystem && rng.chance(this.config.abilityCastChance)) {
+                const abilityResult = this.abilitySystem.tryCastInLane(initiator, defender, world, rng, eventLog);
 
-            const damage = Math.floor(baseDamage * damageMultiplier * damageReduction);
+                if (abilityResult && abilityResult.damage > 0) {
+                    damage = abilityResult.damage;
+                    abilityUsed = true;
+                    abilityName = abilityResult.ability.name;
+                }
+            }
+
+            // Fall back to basic attack if no ability cast
+            if (!abilityUsed) {
+                const initiatorAD = initiatorStats.effective_attack_damage || initiatorStats.attack_damage || 60;
+                const defenderArmor = defenderStats.effective_armor || defenderStats.armor || 30;
+
+                const baseDamage = this.config.tradeBaseDamage;
+                const damageMultiplier = 1 + (initiatorAD - 60) / 100;
+                const damageReduction = 100 / (100 + defenderArmor);
+
+                damage = Math.floor(baseDamage * damageMultiplier * damageReduction);
+            }
 
             // Apply damage
             defenderStats.health = Math.max(0, (defenderStats.health || 550) - damage);
@@ -224,6 +270,8 @@ class LaneSystem {
                 defender: defenderIdentity.name,
                 defenderTeam: defenderIdentity.teamId,
                 damage: damage,
+                abilityUsed: abilityUsed,
+                abilityName: abilityName,
                 defenderHealth: defenderStats.health
             });
 

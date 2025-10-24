@@ -79,6 +79,10 @@ class MatchSimulator {
         // Load abilities into AbilitySystem
         abilitySystem.loadAbilities(abilitiesData);
 
+        // Connect AbilitySystem to other systems that need it
+        laneSystem.setAbilitySystem(abilitySystem);
+        teamfightSystem.setAbilitySystem(abilitySystem);
+
         this.engine.registerSystem(structureSystem, 5);   // Structures first (win condition)
         this.engine.registerSystem(weatherSystem, 8);     // Weather (affects multipliers)
         this.engine.registerSystem(itemSystem, 10);       // Items (gold → purchases)
