@@ -1,0 +1,177 @@
+{
+  "theme": "Surreal MOBA - Abstract battles in strange spaces",
+  "description": "A MOBA with weird vibes and cosmic undertones",
+
+  "structures": {
+    "nexus": {
+      "name": "The Core",
+      "description": "The heart of your base"
+    },
+    "inhibitor": {
+      "name": "Gateway",
+      "description": "When destroyed, empowers your waves"
+    },
+    "tower": {
+      "name": "Spire",
+      "description": "Defensive structures"
+    },
+    "fountain": {
+      "name": "Sanctuary",
+      "description": "Safe spawn point"
+    }
+  },
+
+  "minions": {
+    "singular": "Minion",
+    "plural": "Minions",
+    "description": "Autonomous units that march down lanes"
+  },
+
+  "objectives": {
+    "major": {
+      "name": "The Monolith",
+      "description": "Powerful late-game objective that grants team-wide buffs",
+      "spawn": "The Monolith has manifested",
+      "secure": "claimed the Monolith",
+      "steal": "stole the Monolith!",
+      "buff": "Monolith's Blessing"
+    },
+    "minor": [
+      {
+        "name": "Prism",
+        "type": "refraction",
+        "description": "Increases ability haste",
+        "flavor": "Light bends in your favor"
+      },
+      {
+        "name": "Vortex",
+        "type": "gravity",
+        "description": "Increases damage output",
+        "flavor": "Mass and energy distort"
+      },
+      {
+        "name": "Echo",
+        "type": "resonance",
+        "description": "Increases ability power",
+        "flavor": "Your abilities reverberate"
+      },
+      {
+        "name": "Flow",
+        "type": "current",
+        "description": "Increases movement and attack speed",
+        "flavor": "Time moves differently around you"
+      },
+      {
+        "name": "Rift",
+        "type": "chaos",
+        "description": "Random shifting buff",
+        "flavor": "Reality fluctuates"
+      }
+    ],
+    "herald": {
+      "name": "The Colossus",
+      "description": "Massive construct that sieges lanes",
+      "flavor": "An ancient force awakened"
+    }
+  },
+
+  "buffs": {
+    "red": {
+      "name": "Ember",
+      "description": "Attacks burn over time",
+      "flavor": "Perpetual flame"
+    },
+    "blue": {
+      "name": "Clarity",
+      "description": "Cooldown reduction and mana regen",
+      "flavor": "Thoughts crystallize"
+    }
+  },
+
+  "jungle": {
+    "camps": {
+      "krugs": "Stones",
+      "raptors": "Wisps",
+      "wolves": "Shadows",
+      "gromp": "Toad",
+      "blue_sentinel": "Clarity Guardian",
+      "red_brambleback": "Ember Beast"
+    }
+  },
+
+  "events": {
+    "kill": [
+      "{killer} eliminated {victim}",
+      "{killer} defeated {victim}",
+      "{victim} falls to {killer}",
+      "{killer} obliterated {victim}",
+      "{victim} was erased by {killer}"
+    ],
+    "tower": [
+      "Spire down in {lane}",
+      "{lane} Spire destroyed",
+      "A Spire has fallen in {lane}"
+    ],
+    "objective_contest": [
+      "Both teams contest the {objective}!",
+      "Fight for the {objective}!",
+      "The {objective} is contested!"
+    ],
+    "ace": [
+      "TEAM WIPE",
+      "COMPLETE ELIMINATION",
+      "ACE"
+    ]
+  },
+
+  "items": {
+    "theme": "Abstract objects with strange properties",
+    "examples": [
+      "Shard of Something",
+      "The Humming Blade",
+      "Impossible Cube",
+      "Glitch Armor",
+      "Recursive Lens",
+      "Null Rod",
+      "Singing Steel",
+      "The Wrong Key"
+    ]
+  },
+
+  "roles": {
+    "top": "Top",
+    "jungle": "Jungle",
+    "mid": "Mid",
+    "bot": "Carry",
+    "support": "Support"
+  },
+
+  "champion_archetypes": {
+    "tank": "Tank",
+    "assassin": "Assassin",
+    "mage": "Mage",
+    "marksman": "Marksman",
+    "support": "Support",
+    "bruiser": "Bruiser"
+  },
+
+  "death_messages": {
+    "respawn": [
+      "has respawned",
+      "returns",
+      "is back",
+      "emerges from the Sanctuary"
+    ]
+  },
+
+  "commentary_flavor": [
+    "Things are getting weird",
+    "Reality shifts",
+    "The flow changes",
+    "Space bends",
+    "Time stutters",
+    "Something feels off",
+    "The air hums",
+    "Tension builds"
+  ]
+}

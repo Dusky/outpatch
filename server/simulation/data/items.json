@@ -1,0 +1,299 @@
+{
+  "items": [
+    {
+      "id": "long_sword",
+      "name": "Long Sword",
+      "cost": 350,
+      "stats": {
+        "attack_damage": 10
+      },
+      "buildsInto": ["serrated_dirk", "tiamat"],
+      "tier": "basic",
+      "tags": ["damage", "physical"]
+    },
+    {
+      "id": "cloth_armor",
+      "name": "Cloth Armor",
+      "cost": 300,
+      "stats": {
+        "armor": 15
+      },
+      "buildsInto": ["chain_vest", "wardens_mail"],
+      "tier": "basic",
+      "tags": ["defense", "armor"]
+    },
+    {
+      "id": "amplifying_tome",
+      "name": "Amplifying Tome",
+      "cost": 400,
+      "stats": {
+        "ability_power": 20
+      },
+      "buildsInto": ["needlessly_large_rod", "fiendish_codex"],
+      "tier": "basic",
+      "tags": ["damage", "magic"]
+    },
+    {
+      "id": "ruby_crystal",
+      "name": "Ruby Crystal",
+      "cost": 400,
+      "stats": {
+        "max_health": 150
+      },
+      "buildsInto": ["kindlegem", "giants_belt"],
+      "tier": "basic",
+      "tags": ["health", "tank"]
+    },
+    {
+      "id": "dagger",
+      "name": "Dagger",
+      "cost": 300,
+      "stats": {
+        "attack_speed": 0.12
+      },
+      "buildsInto": ["recurve_bow", "zeal"],
+      "tier": "basic",
+      "tags": ["attack_speed"]
+    },
+    {
+      "id": "boots",
+      "name": "Boots",
+      "cost": 300,
+      "stats": {
+        "movement_speed": 25
+      },
+      "buildsInto": ["berserkers_greaves", "sorcerer_shoes", "ninja_tabi"],
+      "tier": "basic",
+      "tags": ["boots", "movement"]
+    },
+    {
+      "id": "serrated_dirk",
+      "name": "Serrated Dirk",
+      "cost": 1100,
+      "stats": {
+        "attack_damage": 30,
+        "lethality": 10
+      },
+      "buildsFrom": ["long_sword"],
+      "buildsInto": ["duskblade", "youmuus"],
+      "tier": "component",
+      "tags": ["damage", "physical", "lethality"]
+    },
+    {
+      "id": "needlessly_large_rod",
+      "name": "Needlessly Large Rod",
+      "cost": 1250,
+      "stats": {
+        "ability_power": 60
+      },
+      "buildsFrom": ["amplifying_tome"],
+      "buildsInto": ["rabadons", "void_staff"],
+      "tier": "component",
+      "tags": ["damage", "magic"]
+    },
+    {
+      "id": "chain_vest",
+      "name": "Chain Vest",
+      "cost": 800,
+      "stats": {
+        "armor": 40
+      },
+      "buildsFrom": ["cloth_armor"],
+      "buildsInto": ["thornmail", "randuins"],
+      "tier": "component",
+      "tags": ["defense", "armor"]
+    },
+    {
+      "id": "recurve_bow",
+      "name": "Recurve Bow",
+      "cost": 900,
+      "stats": {
+        "attack_speed": 0.25
+      },
+      "buildsFrom": ["dagger"],
+      "buildsInto": ["blade_of_ruined_king", "runaans"],
+      "tier": "component",
+      "tags": ["attack_speed"]
+    },
+    {
+      "id": "berserkers_greaves",
+      "name": "Berserker's Greaves",
+      "cost": 1100,
+      "stats": {
+        "attack_speed": 0.35,
+        "movement_speed": 45
+      },
+      "buildsFrom": ["boots", "dagger"],
+      "tier": "legendary",
+      "tags": ["boots", "attack_speed"],
+      "roles": ["bot", "top"]
+    },
+    {
+      "id": "sorcerer_shoes",
+      "name": "Sorcerer's Shoes",
+      "cost": 1100,
+      "stats": {
+        "ability_power": 18,
+        "magic_penetration": 18,
+        "movement_speed": 45
+      },
+      "buildsFrom": ["boots"],
+      "tier": "legendary",
+      "tags": ["boots", "magic"],
+      "roles": ["mid", "support"]
+    },
+    {
+      "id": "ninja_tabi",
+      "name": "Ninja Tabi",
+      "cost": 1100,
+      "stats": {
+        "armor": 20,
+        "movement_speed": 45
+      },
+      "buildsFrom": ["boots"],
+      "tier": "legendary",
+      "tags": ["boots", "defense"],
+      "roles": ["top", "jungle", "support"]
+    },
+    {
+      "id": "infinity_edge",
+      "name": "Infinity Edge",
+      "cost": 3400,
+      "stats": {
+        "attack_damage": 70,
+        "critical_strike_chance": 0.20
+      },
+      "buildsFrom": ["bf_sword", "pickaxe"],
+      "tier": "legendary",
+      "tags": ["damage", "physical", "crit"],
+      "roles": ["bot"],
+      "passive": "Critical strikes deal 225% damage instead of 200%"
+    },
+    {
+      "id": "rabadons",
+      "name": "Rabadon's Deathcap",
+      "cost": 3600,
+      "stats": {
+        "ability_power": 120
+      },
+      "buildsFrom": ["needlessly_large_rod"],
+      "tier": "legendary",
+      "tags": ["damage", "magic"],
+      "roles": ["mid"],
+      "passive": "Increases Ability Power by 35%"
+    },
+    {
+      "id": "thornmail",
+      "name": "Thornmail",
+      "cost": 2700,
+      "stats": {
+        "armor": 80,
+        "max_health": 250
+      },
+      "buildsFrom": ["chain_vest"],
+      "tier": "legendary",
+      "tags": ["defense", "armor", "tank"],
+      "roles": ["top", "support"],
+      "passive": "Reflects 10% of damage taken back to attacker"
+    },
+    {
+      "id": "blade_of_ruined_king",
+      "name": "Blade of the Ruined King",
+      "cost": 3200,
+      "stats": {
+        "attack_damage": 40,
+        "attack_speed": 0.25,
+        "life_steal": 0.10
+      },
+      "buildsFrom": ["recurve_bow"],
+      "tier": "legendary",
+      "tags": ["damage", "attack_speed", "sustain"],
+      "roles": ["bot", "top"],
+      "passive": "Attacks deal 8% current health physical damage"
+    },
+    {
+      "id": "black_cleaver",
+      "name": "Black Cleaver",
+      "cost": 3100,
+      "stats": {
+        "attack_damage": 45,
+        "max_health": 400,
+        "ability_haste": 30
+      },
+      "buildsFrom": ["long_sword"],
+      "tier": "legendary",
+      "tags": ["damage", "health", "tank"],
+      "roles": ["top", "jungle"],
+      "passive": "Dealing physical damage reduces enemy armor by 5% (stacks 6 times)"
+    },
+    {
+      "id": "ludens",
+      "name": "Luden's Tempest",
+      "cost": 3200,
+      "stats": {
+        "ability_power": 90,
+        "mana": 600,
+        "ability_haste": 20
+      },
+      "buildsFrom": ["amplifying_tome"],
+      "tier": "legendary",
+      "tags": ["damage", "magic", "mana"],
+      "roles": ["mid"],
+      "passive": "Damaging abilities deal 100 bonus magic damage to target and nearby enemies"
+    },
+    {
+      "id": "redemption",
+      "name": "Redemption",
+      "cost": 2300,
+      "stats": {
+        "ability_power": 20,
+        "max_health": 250,
+        "mana_regen": 100,
+        "heal_shield_power": 0.16
+      },
+      "tier": "legendary",
+      "tags": ["support", "healing", "utility"],
+      "roles": ["support"],
+      "passive": "Active: Heal allies in area for 250 health"
+    },
+    {
+      "id": "spirit_visage",
+      "name": "Spirit Visage",
+      "cost": 2900,
+      "stats": {
+        "magic_resist": 55,
+        "max_health": 450,
+        "ability_haste": 20,
+        "health_regen": 100
+      },
+      "tier": "legendary",
+      "tags": ["defense", "magic_resist", "tank"],
+      "roles": ["top", "jungle", "support"],
+      "passive": "Increases all healing and shielding by 25%"
+    }
+  ],
+  "buildPaths": {
+    "top": {
+      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "spirit_visage"],
+      "bruiser": ["long_sword", "ruby_crystal", "berserkers_greaves", "black_cleaver", "blade_of_ruined_king"],
+      "splitpush": ["long_sword", "dagger", "berserkers_greaves", "blade_of_ruined_king", "black_cleaver"]
+    },
+    "jungle": {
+      "assassin": ["long_sword", "serrated_dirk", "ninja_tabi", "duskblade", "youmuus"],
+      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "spirit_visage"],
+      "bruiser": ["long_sword", "ruby_crystal", "ninja_tabi", "black_cleaver", "spirit_visage"]
+    },
+    "mid": {
+      "burst": ["amplifying_tome", "sorcerer_shoes", "needlessly_large_rod", "ludens", "rabadons"],
+      "control": ["amplifying_tome", "ruby_crystal", "sorcerer_shoes", "ludens", "spirit_visage"]
+    },
+    "bot": {
+      "crit": ["long_sword", "dagger", "berserkers_greaves", "infinity_edge", "blade_of_ruined_king"],
+      "onhit": ["dagger", "recurve_bow", "berserkers_greaves", "blade_of_ruined_king", "runaans"]
+    },
+    "support": {
+      "enchanter": ["ruby_crystal", "amplifying_tome", "sorcerer_shoes", "redemption", "spirit_visage"],
+      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "redemption"]
+    }
+  }
+}

@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN PANEL - MOBA NETWORK</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .admin-header {
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .admin-title {
+            font-size: 2.5rem;
+            color: var(--accent-warning);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .admin-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .admin-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+        }
+
+        .admin-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-button {
+            width: 100%;
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-button.success {
+            background: var(--accent-success);
+            color: white;
+            border-color: var(--accent-success);
+        }
+
+        .admin-button.success:hover {
+            background: #229954;
+        }
+
+        .admin-button.danger {
+            background: var(--accent-danger);
+            color: white;
+            border-color: var(--accent-danger);
+        }
+
+        .admin-button.danger:hover {
+            background: #c0392b;
+        }
+
+        .admin-button.warning {
+            background: var(--accent-warning);
+            color: white;
+            border-color: var(--accent-warning);
+        }
+
+        .admin-button.warning:hover {
+            background: #e67e22;
+        }
+
+        .admin-button.primary {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .admin-button.primary:hover {
+            background: #3d8ce8;
+        }
+
+        .admin-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .admin-info {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-md);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+        }
+
+        .admin-info-label {
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .admin-info-value {
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .log-output {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-sm);
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .log-entry {
+            padding: var(--spacing-xs) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: var(--text-dim);
+            margin-right: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1 class="admin-title">⚙️ ADMIN PANEL</h1>
+            <p class="admin-subtitle">System Controls & Management</p>
+            <div style="margin-top: var(--spacing-md);">
+                <a href="/" class="back-link">← Back to Main</a>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Match Controls -->
+            <div class="admin-section">
+                <h2 class="admin-section-title">Match Controls</h2>
+                <div class="admin-info">
+                    <span class="admin-info-label">Current Status:</span>
+                    <span class="admin-info-value" id="match-status">Loading...</span>
+                </div>
+                <button class="admin-button success" id="start-matches">▶ Start Matches</button>
+                <button class="admin-button danger" id="stop-matches">⏹ Stop Matches</button>
+                <button class="admin-button warning" id="force-match">⚡ Force Match Now</button>
+            </div>
+
+            <!-- Season Controls -->
+            <div class="admin-section">
+                <h2 class="admin-section-title">Season Controls</h2>
+                <div class="admin-info">
+                    <span class="admin-info-label">Current Season:</span>
+                    <span class="admin-info-value" id="current-season">Loading...</span>
+                </div>
+                <div class="admin-info">
+                    <span class="admin-info-label">Season Status:</span>
+                    <span class="admin-info-value" id="season-status">Loading...</span>
+                </div>
+                <button class="admin-button primary" id="start-season">▶ Start New Season</button>
+                <button class="admin-button danger" id="end-season">⏹ End Current Season</button>
+            </div>
+
+            <!-- NEW: Season Phase Controls -->
+            <div class="admin-section">
+                <h2 class="admin-section-title">Season Phase Controls</h2>
+                <div class="admin-info">
+                    <span class="admin-info-label">Current Phase:</span>
+                    <span class="admin-info-value" id="current-phase">PAUSED</span>
+                </div>
+                <div class="admin-info">
+                    <span class="admin-info-label">Week / Day:</span>
+                    <span class="admin-info-value" id="week-day">0 / 0</span>
+                </div>
+                <button class="admin-button primary" id="skip-to-preseason">🎭 Skip to Pre-Season</button>
+                <button class="admin-button primary" id="skip-to-regular">⚔️ Skip to Regular Season</button>
+                <button class="admin-button primary" id="skip-to-playoffs">🏆 Skip to Playoffs</button>
+                <button class="admin-button primary" id="skip-to-finals">👑 Skip to Finals</button>
+                <button class="admin-button warning" id="skip-to-offseason">🌌 Skip to Off-Season</button>
+            </div>
+
+            <!-- Data Management -->
+            <div class="admin-section">
+                <h2 class="admin-section-title">Data Management</h2>
+                <div style="background: rgba(74, 158, 255, 0.1); padding: 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.875rem; color: var(--text-secondary);">
+                    <strong>Regenerate:</strong> Creates brand new teams and champions with fresh names and stats. Requires server restart to take full effect.
+                </div>
+                <button class="admin-button primary" id="regenerate-data">🔄 Regenerate Teams/Champions</button>
+                <button class="admin-button warning" id="clear-matches">🗑️ Clear Match History</button>
+                <button class="admin-button danger" id="reset-season">⚠️ Reset Season Stats</button>
+            </div>
+
+            <!-- NEW: Simulation Demo -->
+            <div class="admin-section">
+                <h2 class="admin-section-title">🎮 New Simulation Demo</h2>
+                <div style="background: rgba(255, 107, 129, 0.1); padding: 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.875rem; color: var(--text-secondary);">
+                    <strong>Test the new deterministic MOBA engine!</strong> Watch a full 60-wave match with lane phase, jungle, teamfights, and objectives.
+                </div>
+                <div class="admin-info">
+                    <span class="admin-info-label">Simulation Status:</span>
+                    <span class="admin-info-value" id="sim-status">Ready</span>
+                </div>
+                <button class="admin-button primary" id="run-sim-demo">▶ Run Demo Match</button>
+                <button class="admin-button warning" id="clear-sim-log">🗑️ Clear Demo Log</button>
+            </div>
+        </div>
+
+        <!-- Simulation Demo Output -->
+        <div class="admin-section">
+            <h2 class="admin-section-title">📊 Simulation Demo Output</h2>
+            <div class="log-output" id="sim-log" style="max-height: 500px; font-size: 0.8rem;">
+                <div class="log-entry" style="color: var(--text-dim);">
+                    <span>Simulation output will appear here...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="admin-section">
+            <h2 class="admin-section-title">Activity Log</h2>
+            <div class="log-output" id="activity-log">
+                <div class="log-entry">
+                    <span class="log-time">[--:--:--]</span>
+                    <span>Admin panel loaded</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if user is admin
+        const voidUser = localStorage.getItem('voidUser');
+        let currentUser = null;
+
+        if (voidUser) {
+            try {
+                currentUser = JSON.parse(voidUser);
+                if (!currentUser.isAdmin) {
+                    alert('Access denied. Admin privileges required.');
+                    window.location.href = '/';
+                }
+            } catch (e) {
+                window.location.href = '/login.html';
+            }
+        } else {
+            window.location.href = '/login.html';
+        }
+
+        const API_URL = window.location.origin;
+
+        // Log helper
+        function addLog(message, type = 'info') {
+            const logOutput = document.getElementById('activity-log');
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">[${time}]</span><span>${message}</span>`;
+            logOutput.insertBefore(entry, logOutput.firstChild);
+        }
+
+        // Fetch current status
+        async function fetchStatus() {
+            try {
+                const response = await fetch(`${API_URL}/api/admin/status`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('match-status').textContent = data.matchesRunning ? 'Running' : 'Stopped';
+                    document.getElementById('current-season').textContent = data.currentSeason || 1;
+                    document.getElementById('season-status').textContent = data.seasonStatus || 'Not Started';
+
+                    // NEW: Update phase info
+                    if (data.seasonPhase) {
+                        document.getElementById('current-phase').textContent = data.seasonPhase.phase || 'PAUSED';
+                        document.getElementById('week-day').textContent = `${data.seasonPhase.week || 0} / ${data.seasonPhase.day || 0}`;
+                    }
+                }
+            } catch (error) {
+                addLog('Failed to fetch status', 'error');
+            }
+        }
+
+        // Match controls
+        document.getElementById('start-matches').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/admin/matches/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Matches started', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to start matches', 'error');
+            }
+        });
+
+        document.getElementById('stop-matches').addEventListener('click', async () => {
+            if (!confirm('Stop all running matches?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/matches/stop`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Matches stopped', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to stop matches', 'error');
+            }
+        });
+
+        document.getElementById('force-match').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_URL}/api/admin/matches/force`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Match forced', 'success');
+            } catch (error) {
+                addLog('Failed to force match', 'error');
+            }
+        });
+
+        // Season controls
+        document.getElementById('start-season').addEventListener('click', async () => {
+            if (!confirm('Start a new season? This will increment the season number.')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Season started', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to start season', 'error');
+            }
+        });
+
+        document.getElementById('end-season').addEventListener('click', async () => {
+            if (!confirm('End the current season?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/end`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Season ended', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to end season', 'error');
+            }
+        });
+
+        // Data management
+        document.getElementById('regenerate-data').addEventListener('click', async () => {
+            if (!confirm('Regenerate all teams and champions? This will reset everything!')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/data/regenerate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Data regenerated', 'success');
+            } catch (error) {
+                addLog('Failed to regenerate data', 'error');
+            }
+        });
+
+        document.getElementById('clear-matches').addEventListener('click', async () => {
+            if (!confirm('Clear all match history? This cannot be undone!')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/matches/clear`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Match history cleared', 'success');
+            } catch (error) {
+                addLog('Failed to clear matches', 'error');
+            }
+        });
+
+        document.getElementById('reset-season').addEventListener('click', async () => {
+            if (!confirm('Reset all season stats (W/L records)? This cannot be undone!')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/reset`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Season stats reset', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to reset season', 'error');
+            }
+        });
+
+        // NEW: Season Phase Controls
+        document.getElementById('skip-to-preseason').addEventListener('click', async () => {
+            if (!confirm('Skip to PRE-SEASON phase?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/phase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id, phase: 'PRE_SEASON' })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Skipped to Pre-Season', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to skip phase', 'error');
+            }
+        });
+
+        document.getElementById('skip-to-regular').addEventListener('click', async () => {
+            if (!confirm('Skip to REGULAR SEASON phase?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/phase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id, phase: 'REGULAR_SEASON' })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Skipped to Regular Season', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to skip phase', 'error');
+            }
+        });
+
+        document.getElementById('skip-to-playoffs').addEventListener('click', async () => {
+            if (!confirm('Skip to PLAYOFFS phase?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/phase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id, phase: 'PLAYOFFS' })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Skipped to Playoffs', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to skip phase', 'error');
+            }
+        });
+
+        document.getElementById('skip-to-finals').addEventListener('click', async () => {
+            if (!confirm('Skip to FINALS phase?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/phase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id, phase: 'FINALS' })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Skipped to Finals', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to skip phase', 'error');
+            }
+        });
+
+        document.getElementById('skip-to-offseason').addEventListener('click', async () => {
+            if (!confirm('Skip to OFF-SEASON phase?')) return;
+            try {
+                const response = await fetch(`${API_URL}/api/admin/season/phase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id, phase: 'OFF_SEASON' })
+                });
+                const data = await response.json();
+                addLog(data.message || 'Skipped to Off-Season', 'success');
+                fetchStatus();
+            } catch (error) {
+                addLog('Failed to skip phase', 'error');
+            }
+        });
+
+        // NEW: Simulation Demo
+        function addSimLog(message, color = 'var(--text-secondary)') {
+            const simLog = document.getElementById('sim-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.style.color = color;
+            entry.innerHTML = `<span>${message}</span>`;
+            simLog.appendChild(entry);
+            simLog.scrollTop = simLog.scrollHeight;
+        }
+
+        document.getElementById('run-sim-demo').addEventListener('click', async () => {
+            const button = document.getElementById('run-sim-demo');
+            const statusEl = document.getElementById('sim-status');
+
+            button.disabled = true;
+            statusEl.textContent = 'Running...';
+            statusEl.style.color = 'var(--accent-warning)';
+
+            addLog('Starting simulation demo...', 'info');
+            addSimLog('=== SIMULATION DEMO STARTING ===', 'var(--accent-primary)');
+            addSimLog('Running new deterministic MOBA engine...');
+
+            try {
+                const response = await fetch(`${API_URL}/api/admin/simulation/demo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: currentUser.id })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Display match summary
+                    addSimLog('');
+                    addSimLog(`Winner: ${data.result.winner || 'Draw'}`, 'var(--accent-primary)');
+                    addSimLog(`Duration: ${data.result.waves} waves (${data.result.duration})`);
+                    addSimLog(`Total Events: ${data.totalEvents || 0}`);
+                    addSimLog('');
+
+                    // Structure stats
+                    if (data.structures) {
+                        addSimLog('=== STRUCTURE STATS ===', 'var(--accent-primary)');
+                        addSimLog(`Team 1: ${data.structures.team1.destroyed}/${data.structures.team1.total} destroyed`);
+                        addSimLog(`Team 2: ${data.structures.team2.destroyed}/${data.structures.team2.total} destroyed`);
+                        addSimLog('');
+                    }
+
+                    // Event breakdown (use pre-computed summary)
+                    addSimLog('=== EVENT BREAKDOWN ===', 'var(--accent-primary)');
+                    const sortedEvents = Object.entries(data.eventSummary || {}).sort((a, b) => b[1] - a[1]);
+                    for (const [type, count] of sortedEvents.slice(0, 15)) {
+                        addSimLog(`  ${type}: ${count}`);
+                    }
+                    addSimLog('');
+
+                    // Notable events
+                    if (data.notableEvents && data.notableEvents.length > 0) {
+                        addSimLog('=== NOTABLE EVENTS ===', 'var(--accent-primary)');
+                        for (const event of data.notableEvents.slice(0, 10)) {
+                            const desc = event.championName || event.objectiveName || event.structureName || '';
+                            addSimLog(`  [Wave ${event.tick}] ${event.type}: ${desc}`);
+                        }
+                        addSimLog('');
+                    }
+
+                    // Champion stats
+                    addSimLog('=== FINAL CHAMPION STATS ===', 'var(--accent-primary)');
+                    const champArray = Array.isArray(data.champions) ? data.champions : Object.values(data.champions || {});
+                    for (const champ of champArray) {
+                        const kda = champ.kda ? `${champ.kda.kills || 0}/${champ.kda.deaths || 0}/${champ.kda.assists || 0}` : '0/0/0';
+                        const champName = champ.name || champ.championName || 'Unknown';
+                        addSimLog(`${champName} (${champ.teamId} ${champ.role})`);
+                        addSimLog(`  KDA: ${kda} | CS: ${champ.cs || 0} | Gold: ${champ.gold || 0}g`);
+                        const itemCount = champ.items ? champ.items.length : (champ.itemCount || 0);
+                        addSimLog(`  Items: ${itemCount} | Tilt: ${((champ.tilt || 0) * 100).toFixed(1)}%`);
+                    }
+
+                    addSimLog('');
+                    addSimLog('=== DEMO COMPLETE ===', 'var(--accent-success)');
+
+                    addLog(data.message || 'Simulation demo completed', 'success');
+                    statusEl.textContent = 'Complete';
+                    statusEl.style.color = 'var(--accent-success)';
+                } else {
+                    addSimLog(`ERROR: ${data.message}`, 'var(--accent-danger)');
+                    addLog('Simulation demo failed', 'error');
+                    statusEl.textContent = 'Failed';
+                    statusEl.style.color = 'var(--accent-danger)';
+                }
+            } catch (error) {
+                addSimLog(`ERROR: ${error.message}`, 'var(--accent-danger)');
+                addLog('Failed to run simulation demo', 'error');
+                statusEl.textContent = 'Error';
+                statusEl.style.color = 'var(--accent-danger)';
+            } finally {
+                button.disabled = false;
+                setTimeout(() => {
+                    statusEl.textContent = 'Ready';
+                    statusEl.style.color = 'var(--accent-primary)';
+                }, 3000);
+            }
+        });
+
+        document.getElementById('clear-sim-log').addEventListener('click', () => {
+            const simLog = document.getElementById('sim-log');
+            simLog.innerHTML = '<div class="log-entry" style="color: var(--text-dim);"><span>Simulation output cleared</span></div>';
+            addLog('Simulation log cleared', 'info');
+        });
+
+        // Initial status fetch
+        fetchStatus();
+        setInterval(fetchStatus, 5000); // Refresh every 5 seconds
+    </script>
+</body>
+</html>

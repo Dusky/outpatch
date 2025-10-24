@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V̴̢̛̙͂O̴̰̓Ì̴̳D̵̰̿ MOBA NETWORK</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="header-bar">
+        <div class="logo-section">
+            <div class="logo-text">MOBA NETWORK</div>
+            <div class="logo-subtitle">LIVE MATCH CENTER</div>
+        </div>
+        <div class="season-info">
+            <span class="season-label">SEASON</span>
+            <span class="season-number" id="season-number">1</span>
+            <span class="divider">|</span>
+            <span id="weather-display" class="weather-display">☀️ CLEAR</span>
+            <span class="divider">|</span>
+            <span id="status-text" class="game-status-header">◈ NETWORK SYNC IN PROGRESS ◈</span>
+        </div>
+        <div class="countdown-section">
+            <div class="user-info">
+                <span class="user-label">USER</span>
+                <span id="user-display-name" class="user-name">Loading...</span>
+                <a href="/admin.html" id="admin-link" style="display: none; margin-left: 8px; color: var(--accent-warning); text-decoration: none; font-size: 0.75rem;">[ADMIN PANEL]</a>
+            </div>
+            <div class="countdown-label">NEXT GAME</div>
+            <div id="countdown-timer" class="countdown-display">--:--</div>
+            <button id="logout-btn" class="logout-btn">LOGOUT</button>
+        </div>
+    </header>
+
+    <!-- Main Grid Container -->
+    <div class="grid-container">
+        <!-- Left Sidebar: Standings + Betting -->
+        <aside class="left-sidebar">
+            <div class="panel standings-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">STANDINGS</h2>
+                    <button class="collapse-btn" id="standings-collapse">▼</button>
+                </div>
+                <div class="panel-content" id="standings-content">
+                    <table class="standings-table" id="standings-table">
+                        <thead>
+                            <tr>
+                                <th>TEAM</th>
+                                <th>W</th>
+                                <th>L</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel betting-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">BETTING SLIP</h2>
+                </div>
+                <div class="panel-content">
+                    <div class="balance-display">
+                        <span class="balance-label">BALANCE</span>
+                        <span class="balance-amount" id="balance">1000</span>
+                        <span class="currency-symbol">⌬</span>
+                    </div>
+
+                    <div id="odds-display" class="odds-display" style="display:none;">
+                        <h4 class="odds-title">LIVE ODDS</h4>
+                        <div class="odds-teams">
+                            <div class="odds-team">
+                                <span class="odds-team-name" id="odds-team1">Team 1</span>
+                                <span class="odds-value" id="odds-team1-value">2.00x</span>
+                            </div>
+                            <div class="odds-team">
+                                <span class="odds-team-name" id="odds-team2">Team 2</span>
+                                <span class="odds-value" id="odds-team2-value">2.00x</span>
+                            </div>
+                        </div>
+                        <div class="odds-pools">
+                            <small>Pool: <span id="total-pool">0⌬</span></small>
+                        </div>
+                    </div>
+
+                    <form id="bet-form" class="bet-form">
+                        <div class="form-group">
+                            <label for="team-select">SELECT TEAM</label>
+                            <select id="team-select" class="team-select"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="bet-amount">WAGER AMOUNT</label>
+                            <input type="number" id="bet-amount" class="bet-input" placeholder="0" min="1">
+                        </div>
+                        <div id="potential-win" class="potential-win" style="display:none;">
+                            Potential Win: <span id="potential-win-amount">0⌬</span>
+                        </div>
+                        <button type="submit" class="bet-button">PLACE BET</button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: Main Viewing Area with Tabs -->
+        <main class="center-content">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="match">🎮 LIVE MATCH</button>
+                <button class="tab-btn" data-tab="news">📰 NEWS</button>
+            </div>
+
+            <!-- Match Tab -->
+            <div id="match-tab" class="tab-content active">
+                <div class="broadcast-header">
+                    <h2 class="broadcast-title" id="match-title">No match scheduled</h2>
+                </div>
+
+                <!-- Match Status Bar -->
+                <div id="match-status-bar" class="match-status-bar" style="display:none;">
+                    <div class="match-status-info">
+                        <div class="status-item">
+                            <span class="status-label">WAVE</span>
+                            <span class="status-value" id="current-wave">0</span>
+                            <span class="status-separator">/</span>
+                            <span class="status-max" id="max-waves">150</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">TIME</span>
+                            <span class="status-value" id="match-timer">0:00</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">KILLS</span>
+                            <span class="status-value kill-counts">
+                                <span id="team1-kills">0</span>
+                                <span class="status-separator">-</span>
+                                <span id="team2-kills">0</span>
+                            </span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">GOLD</span>
+                            <span class="status-value gold-amounts">
+                                <span id="team1-gold">0</span>
+                                <span class="gold-diff" id="gold-diff">+0</span>
+                                <span id="team2-gold">0</span>
+                            </span>
+                        </div>
+                        <div class="status-item structures-item">
+                            <span class="status-label">STRUCTURES</span>
+                            <span class="status-value structures-breakdown">
+                                <span class="team-structures">
+                                    <span class="structure-group">
+                                        <span class="structure-icon">🗼</span>
+                                        <span id="team1-spires">9</span>
+                                    </span>
+                                    <span class="structure-group">
+                                        <span class="structure-icon">🚪</span>
+                                        <span id="team1-gateways">3</span>
+                                    </span>
+                                    <span class="structure-group">
+                                        <span class="structure-icon">💎</span>
+                                        <span id="team1-core">1</span>
+                                    </span>
+                                </span>
+                                <span class="structures-vs">vs</span>
+                                <span class="team-structures">
+                                    <span class="structure-group">
+                                        <span class="structure-icon">🗼</span>
+                                        <span id="team2-spires">9</span>
+                                    </span>
+                                    <span class="structure-group">
+                                        <span class="structure-icon">🚪</span>
+                                        <span id="team2-gateways">3</span>
+                                    </span>
+                                    <span class="structure-group">
+                                        <span class="structure-icon">💎</span>
+                                        <span id="team2-core">1</span>
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="wave-progress-container">
+                        <div class="wave-progress-bar">
+                            <div class="wave-progress-fill" id="wave-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="match-feed" class="match-feed"></div>
+            </div>
+
+            <!-- News Tab -->
+            <div id="news-tab" class="tab-content">
+                <div class="broadcast-header">
+                    <h2 class="broadcast-title">BREAKING NEWS</h2>
+                </div>
+                <div id="news-feed" class="news-feed"></div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar: Tabbed Interface -->
+        <aside class="right-sidebar">
+            <div class="panel">
+                <!-- Tab Navigation -->
+                <div class="tab-navigation-vertical">
+                    <button class="tab-btn-vertical active" data-tab="stats">📊 STATS</button>
+                    <button class="tab-btn-vertical" data-tab="rosters">👥 ROSTERS</button>
+                </div>
+
+                <!-- Stats Tab -->
+                <div id="stats-tab" class="tab-content-vertical active">
+                    <div id="stats-container" class="stats-container">
+                        <div class="stat-category">
+                            <h4>🏆 Highest KDA</h4>
+                            <div id="leaderboard-kda" class="leaderboard-list"></div>
+                        </div>
+                        <div class="stat-category">
+                            <h4>💰 Most Gold</h4>
+                            <div id="leaderboard-gold" class="leaderboard-list"></div>
+                        </div>
+                        <div class="stat-category">
+                            <h4>🌀 Most Chaotic</h4>
+                            <div id="leaderboard-chaos" class="leaderboard-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rosters Tab -->
+                <div id="rosters-tab" class="tab-content-vertical">
+                    <div id="roster-list" class="roster-list"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer Ticker -->
+    <footer class="ticker-bar">
+        <div class="ticker-content" id="ticker-content">
+            <span class="ticker-item">WELCOME TO THE VOID MOBA NETWORK</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">WHERE CHAMPIONS BECOME L̴̰͌E̷̳̿G̷̰̈Ė̶̮N̷̳͝D̵̰̓S̷̳̈</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">REALITY IS OPTIONAL</span>
+            <span class="ticker-separator">⬥</span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
