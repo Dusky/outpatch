@@ -194,6 +194,13 @@ class LaneSystem {
                 stats2.gold += goldGained;
                 laneState.minionWaves.team1.count -= actualCS;
 
+                // Award XP for CS
+                if (this.levelingSystem) {
+                    for (let i = 0; i < actualCS; i++) {
+                        this.levelingSystem.awardCSXP(champ2);
+                    }
+                }
+
                 eventLog.log({
                     type: EventLog.EventTypes.LANE_CS,
                     tick: tick,
@@ -313,6 +320,11 @@ class LaneSystem {
         // Award gold (300 base + 100 per kill streak)
         const killGold = 300 + (killerStats.kda.kills * 100);
         killerStats.gold += killGold;
+
+        // Award kill XP
+        if (this.levelingSystem) {
+            this.levelingSystem.awardKillXP(killer);
+        }
 
         // Increase victim tilt
         victimHidden.tilt_level = Math.min(1.0, victimHidden.tilt_level + 0.15);

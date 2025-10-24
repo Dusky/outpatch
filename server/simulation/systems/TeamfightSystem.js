@@ -42,6 +42,13 @@ class TeamfightSystem {
     }
 
     /**
+     * Set leveling system reference
+     */
+    setLevelingSystem(levelingSystem) {
+        this.levelingSystem = levelingSystem;
+    }
+
+    /**
      * Update system - detect and resolve team fights
      */
     update(world, rng, eventLog, phase) {
@@ -393,6 +400,18 @@ class TeamfightSystem {
         }
 
         killerStats.gold += killGold;
+
+        // Award kill XP
+        if (this.levelingSystem) {
+            this.levelingSystem.awardKillXP(killer.champion);
+
+            // Award assist XP to all alive allies
+            for (const ally of aliveAllies) {
+                if (ally.champion.id !== killer.champion.id && ally.alive) {
+                    this.levelingSystem.awardAssistXP(ally.champion);
+                }
+            }
+        }
 
         // Increase victim tilt (more tilt if shutdown)
         const tiltIncrease = victimStats.kda.kills >= 3 ? 0.25 : 0.15;

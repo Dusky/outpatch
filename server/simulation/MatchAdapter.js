@@ -284,6 +284,31 @@ class MatchAdapter {
                 this.logEvent(`💥 ${event.championName} has mentally boomed!`);
                 break;
 
+            // === LEVELING EVENTS ===
+            case 'leveling.level_up':
+                this.logEvent(`⬆️ ${event.championName} reached level ${event.newLevel}!`);
+
+                // Announce power spikes
+                if (event.powerSpike) {
+                    if (event.powerSpike.type === 'ultimate_unlock') {
+                        this.logEvent(`   🌟 ULTIMATE UNLOCKED! ${event.championName} now has their R ability!`);
+                    } else if (event.powerSpike.type === 'early_spike') {
+                        this.logEvent(`   💪 ${event.championName} hits an early game power spike!`);
+                    } else if (event.powerSpike.type === 'late_spike') {
+                        this.logEvent(`   💥 ${event.championName} reaches late game scaling!`);
+                    } else if (event.powerSpike.type === 'max_rank_ult') {
+                        this.logEvent(`   🌟 ${event.championName}'s ultimate is now max rank!`);
+                    }
+                }
+
+                // Announce ability unlocks
+                if (event.unlockedAbilities && event.unlockedAbilities.length > 0) {
+                    for (const ability of event.unlockedAbilities) {
+                        this.logEvent(`   ✨ ${event.championName} unlocked ability ${ability}!`);
+                    }
+                }
+                break;
+
             // === CHAOS EVENTS ===
             case 'chaos.event':
                 this.logEvent(`🌀 CHAOS EVENT: ${event.eventName.toUpperCase()}`);

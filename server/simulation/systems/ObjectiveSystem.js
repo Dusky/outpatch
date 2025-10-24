@@ -74,6 +74,13 @@ class ObjectiveSystem {
     }
 
     /**
+     * Set leveling system reference
+     */
+    setLevelingSystem(levelingSystem) {
+        this.levelingSystem = levelingSystem;
+    }
+
+    /**
      * Update system - spawn and contest objectives
      */
     update(world, rng, eventLog, phase) {
@@ -420,6 +427,11 @@ class ObjectiveSystem {
                     });
                     break;
             }
+
+            // Award objective XP
+            if (this.levelingSystem) {
+                this.levelingSystem.awardObjectiveXP(champion);
+            }
         }
     }
 
@@ -485,6 +497,12 @@ class ObjectiveSystem {
                 buffType: 'VOID EMPOWERED',
                 message: `🌑 ${identity.name} is VOID EMPOWERED! (+20% all stats, +1500 gold)`
             });
+
+            // Award objective XP (bonus for major objective)
+            if (this.levelingSystem) {
+                this.levelingSystem.awardObjectiveXP(champion);
+                this.levelingSystem.awardObjectiveXP(champion); // Double XP for major objective
+            }
         }
     }
 
