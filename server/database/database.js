@@ -342,6 +342,44 @@ class Database {
                 )
             `);
 
+            // Add career progression columns to champion_careers (if they don't exist)
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN career_xp INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN career_level INTEGER DEFAULT 1`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN form REAL DEFAULT 1.0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN win_streak INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN loss_streak INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN void_touched INTEGER DEFAULT 0`, () => {});
+
+            // Champion grudges table - tracks rivalries
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS champion_grudges (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    champion_name TEXT NOT NULL,
+                    grudge_target_name TEXT NOT NULL,
+                    intensity REAL DEFAULT 0.0,
+                    times_killed_by INTEGER DEFAULT 0,
+                    times_killed INTEGER DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(champion_name, grudge_target_name)
+                )
+            `);
+
+            // Champion synergies table - tracks positive relationships
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS champion_synergies (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    champion_name TEXT NOT NULL,
+                    synergy_target_name TEXT NOT NULL,
+                    strength REAL DEFAULT 0.0,
+                    games_together INTEGER DEFAULT 0,
+                    wins_together INTEGER DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(champion_name, synergy_target_name)
+                )
+            `);
+
                 console.log('Database tables initialized');
                 this.ready = true;
                 resolve();
@@ -1131,6 +1169,160 @@ class Database {
                 (err, replays) => {
                     if (err) reject(err);
                     else resolve(replays);
+                }
+            );
+        });
+    }
+
+    // ==================== CAREER PROGRESSION ====================
+
+    /**
+     * Update champion career XP and level
+     */
+    async updateChampionCareerXP(championName, xpGained, won) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                'SELECT career_xp, career_level, form, win_streak, loss_streak FROM champion_careers WHERE champion_name = ?',
+                [championName],
+                (err, row) => {
+                    if (err) return reject(err);
+                    if (!row) return resolve(null);
+
+                    const newXP = (row.career_xp || 0) + xpGained;
+                    let newLevel = row.career_level || 1;
+
+                    // Simple level formula: 1000 XP per level
+                    while (newXP >= newLevel * 1000 && newLevel < 50) {
+                        newLevel++;
+                    }
+
+                    // Update form based on win/loss
+                    let newForm = row.form || 1.0;
+                    let newWinStreak = row.win_streak || 0;
+                    let newLossStreak = row.loss_streak || 0;
+
+                    if (won) {
+                        newWinStreak++;
+                        newLossStreak = 0;
+                        newForm = Math.min(1.5, newForm + 0.05); // +0.05 per win, cap at 1.5
+                    } else {
+                        newLossStreak++;
+                        newWinStreak = 0;
+                        newForm = Math.max(0.5, newForm - 0.05); // -0.05 per loss, floor at 0.5
+                    }
+
+                    this.db.run(
+                        `UPDATE champion_careers
+                         SET career_xp = ?, career_level = ?, form = ?, win_streak = ?, loss_streak = ?
+                         WHERE champion_name = ?`,
+                        [newXP, newLevel, newForm, newWinStreak, newLossStreak, championName],
+                        (err) => {
+                            if (err) reject(err);
+                            else resolve({ newLevel, newForm, levelUp: newLevel > row.career_level });
+                        }
+                    );
+                }
+            );
+        });
+    }
+
+    /**
+     * Add or update a grudge
+     */
+    async addOrUpdateGrudge(championName, targetName, killedByTarget) {
+        return new Promise((resolve, reject) => {
+            const intensityIncrease = killedByTarget ? 0.1 : -0.02; // +0.1 if killed by them, -0.02 if killed them
+
+            this.db.run(
+                `INSERT INTO champion_grudges (champion_name, grudge_target_name, intensity, times_killed_by, times_killed)
+                 VALUES (?, ?, ?, ?, ?)
+                 ON CONFLICT(champion_name, grudge_target_name) DO UPDATE SET
+                    intensity = MIN(1.0, MAX(0.0, intensity + ?)),
+                    times_killed_by = times_killed_by + ?,
+                    times_killed = times_killed + ?,
+                    updated_at = CURRENT_TIMESTAMP`,
+                [
+                    championName, targetName,
+                    Math.max(0, intensityIncrease),
+                    killedByTarget ? 1 : 0,
+                    killedByTarget ? 0 : 1,
+                    intensityIncrease,
+                    killedByTarget ? 1 : 0,
+                    killedByTarget ? 0 : 1
+                ],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    /**
+     * Add or update a synergy
+     */
+    async addOrUpdateSynergy(championName, targetName, won) {
+        return new Promise((resolve, reject) => {
+            const strengthIncrease = won ? 0.05 : 0.01; // +0.05 if won together, +0.01 just for playing
+
+            this.db.run(
+                `INSERT INTO champion_synergies (champion_name, synergy_target_name, strength, games_together, wins_together)
+                 VALUES (?, ?, ?, 1, ?)
+                 ON CONFLICT(champion_name, synergy_target_name) DO UPDATE SET
+                    strength = MIN(1.0, strength + ?),
+                    games_together = games_together + 1,
+                    wins_together = wins_together + ?,
+                    updated_at = CURRENT_TIMESTAMP`,
+                [
+                    championName, targetName,
+                    strengthIncrease,
+                    won ? 1 : 0,
+                    strengthIncrease,
+                    won ? 1 : 0
+                ],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's grudges
+     */
+    async getChampionGrudges(championName, minIntensity = 0.3) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT grudge_target_name, intensity, times_killed_by, times_killed
+                 FROM champion_grudges
+                 WHERE champion_name = ? AND intensity >= ?
+                 ORDER BY intensity DESC
+                 LIMIT 5`,
+                [championName, minIntensity],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows || []);
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's synergies
+     */
+    async getChampionSynergies(championName, minStrength = 0.2) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT synergy_target_name, strength, games_together, wins_together
+                 FROM champion_synergies
+                 WHERE champion_name = ? AND strength >= ?
+                 ORDER BY strength DESC
+                 LIMIT 3`,
+                [championName, minStrength],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows || []);
                 }
             );
         });

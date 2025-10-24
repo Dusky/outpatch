@@ -115,6 +115,17 @@ function selectAbilities(role) {
 function generateChampion(role) {
     const abilities = selectAbilities(role);
 
+    // Determine power curve
+    const curveRoll = Math.random();
+    let powerCurve;
+    if (curveRoll < 0.25) {
+        powerCurve = 'early'; // 25% early game champions
+    } else if (curveRoll < 0.6) {
+        powerCurve = 'mid';   // 35% mid game champions
+    } else {
+        powerCurve = 'late';  // 40% late game champions
+    }
+
     return {
         name: generateChampionName(),
         role: role,
@@ -131,6 +142,7 @@ function generateChampion(role) {
         mechanical_skill: Math.random(),
         game_sense: Math.random(),
         tilt_resistance: Math.random(),
+        power_curve: powerCurve,
         synergy_map: {},
         clutch_factor: Math.random(),
         tilt_level: 0,
