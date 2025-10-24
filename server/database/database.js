@@ -298,6 +298,22 @@ class Database {
                 )
             `);
 
+            // Match replays table - stores deterministic replay data
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS match_replays (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    match_id TEXT UNIQUE,
+                    seed TEXT NOT NULL,
+                    team1_name TEXT,
+                    team2_name TEXT,
+                    events_json TEXT,
+                    snapshots_json TEXT,
+                    final_state_json TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (match_id) REFERENCES match_results(match_id)
+                )
+            `);
+
             // Team standings table - stores current season team records
             this.db.run(`
                 CREATE TABLE IF NOT EXISTS team_standings (
@@ -996,6 +1012,125 @@ class Database {
                         });
                         resolve(achievements);
                     }
+                }
+            );
+        });
+    }
+
+    // ==================== MATCH REPLAY METHODS ====================
+
+    /**
+     * Save match replay data for deterministic replay
+     */
+    async saveMatchReplay(replayData) {
+        return new Promise((resolve, reject) => {
+            const {
+                matchId,
+                seed,
+                team1,
+                team2,
+                events,
+                snapshots,
+                finalState
+            } = replayData;
+
+            this.db.run(
+                `INSERT OR REPLACE INTO match_replays
+                (match_id, seed, team1_name, team2_name, events_json, snapshots_json, final_state_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    matchId,
+                    seed,
+                    team1,
+                    team2,
+                    JSON.stringify(events),
+                    JSON.stringify(snapshots || []),
+                    JSON.stringify(finalState || {})
+                ],
+                function(err) {
+                    if (err) {
+                        console.error('Error saving match replay:', err);
+                        reject(err);
+                    } else {
+                        resolve({ id: this.lastID, matchId });
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get match replay by match ID
+     */
+    async getMatchReplay(matchId) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                'SELECT * FROM match_replays WHERE match_id = ?',
+                [matchId],
+                (err, replay) => {
+                    if (err) {
+                        console.error('Error fetching match replay:', err);
+                        reject(err);
+                    } else if (!replay) {
+                        resolve(null);
+                    } else {
+                        // Parse JSON fields
+                        try {
+                            replay.events = JSON.parse(replay.events_json);
+                            replay.snapshots = JSON.parse(replay.snapshots_json || '[]');
+                            replay.finalState = JSON.parse(replay.final_state_json || '{}');
+                            delete replay.events_json;
+                            delete replay.snapshots_json;
+                            delete replay.final_state_json;
+                            resolve(replay);
+                        } catch (parseErr) {
+                            console.error('Error parsing replay JSON:', parseErr);
+                            reject(parseErr);
+                        }
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get all match replays (paginated)
+     */
+    async getAllMatchReplays(limit = 20, offset = 0) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT id, match_id, seed, team1_name, team2_name, created_at
+                 FROM match_replays
+                 ORDER BY created_at DESC
+                 LIMIT ? OFFSET ?`,
+                [limit, offset],
+                (err, replays) => {
+                    if (err) {
+                        console.error('Error fetching match replays:', err);
+                        reject(err);
+                    } else {
+                        resolve(replays);
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get replays by team name
+     */
+    async getReplaysByTeam(teamName, limit = 10) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT id, match_id, seed, team1_name, team2_name, created_at
+                 FROM match_replays
+                 WHERE team1_name = ? OR team2_name = ?
+                 ORDER BY created_at DESC
+                 LIMIT ?`,
+                [teamName, teamName, limit],
+                (err, replays) => {
+                    if (err) reject(err);
+                    else resolve(replays);
                 }
             );
         });

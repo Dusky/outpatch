@@ -148,6 +148,80 @@ async function requireAdmin(req, res, next) {
     }
 }
 
+// ==================== REPLAY API ENDPOINTS ====================
+
+// Get replay by match ID
+app.get('/api/replays/:matchId', async (req, res) => {
+    try {
+        const replay = await db.getMatchReplay(req.params.matchId);
+
+        if (!replay) {
+            return res.status(404).json({
+                success: false,
+                error: 'Replay not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            replay: replay
+        });
+    } catch (error) {
+        console.error('Error fetching replay:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch replay'
+        });
+    }
+});
+
+// Get all replays (paginated)
+app.get('/api/replays', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const replays = await db.getAllMatchReplays(limit, offset);
+
+        res.json({
+            success: true,
+            replays: replays,
+            limit: limit,
+            offset: offset
+        });
+    } catch (error) {
+        console.error('Error fetching replays:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch replays'
+        });
+    }
+});
+
+// Get replays by team
+app.get('/api/replays/team/:teamName', async (req, res) => {
+    try {
+        const teamName = decodeURIComponent(req.params.teamName);
+        const limit = parseInt(req.query.limit) || 10;
+
+        const replays = await db.getReplaysByTeam(teamName, limit);
+
+        res.json({
+            success: true,
+            team: teamName,
+            replays: replays
+        });
+    } catch (error) {
+        console.error('Error fetching team replays:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch team replays'
+        });
+    }
+});
+
+// ==================== ADMIN API ENDPOINTS ====================
+
 // Get admin status
 app.get('/api/admin/status', async (req, res) => {
     try {

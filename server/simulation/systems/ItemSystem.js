@@ -138,10 +138,112 @@ class ItemSystem {
         stats.effective_magic_resist = (stats.magic_resist || 30) + (itemStats.magic_resist || 0);
         stats.effective_max_health = (stats.max_health || 550) + (itemStats.max_health || 0);
 
+        // Apply passive multipliers
+        this._applyPassiveEffects(champion, stats);
+
         // Heal up if max health increased
         if (stats.health < stats.effective_max_health) {
             stats.health = Math.min(stats.health + 50, stats.effective_max_health);
         }
+    }
+
+    /**
+     * Apply passive item effects that modify stats
+     */
+    _applyPassiveEffects(champion, stats) {
+        const items = champion.getComponent('items');
+
+        for (const item of items.inventory) {
+            // Rabadon's Deathcap - Increases AP by 35%
+            if (item.id === 'rabadons') {
+                stats.effective_ability_power *= 1.35;
+            }
+
+            // Spirit Visage - Increases healing by 25% (tracked for later use)
+            if (item.id === 'spirit_visage') {
+                stats.healing_power = (stats.healing_power || 1.0) * 1.25;
+            }
+
+            // Infinity Edge - Increases crit damage
+            if (item.id === 'infinity_edge') {
+                stats.crit_damage_multiplier = 2.25; // 225% instead of 200%
+            }
+        }
+    }
+
+    /**
+     * Calculate on-hit damage from item passives
+     * Called by combat systems when a champion attacks
+     */
+    calculateOnHitDamage(attacker, target) {
+        const attackerItems = attacker.getComponent('items');
+        const targetStats = target.getComponent('stats');
+        let bonusDamage = 0;
+
+        for (const item of attackerItems.inventory) {
+            // Blade of the Ruined King - 8% current HP physical damage
+            if (item.id === 'blade_of_ruined_king') {
+                bonusDamage += targetStats.health * 0.08;
+            }
+
+            // Black Cleaver - Apply armor reduction (handled separately in combat)
+            // Luden's Tempest - Bonus magic damage (handled in ability system)
+        }
+
+        return bonusDamage;
+    }
+
+    /**
+     * Calculate damage reflection from defensive items
+     * Called by combat systems when a champion takes damage
+     */
+    calculateReflectDamage(defender, incomingDamage) {
+        const defenderItems = defender.getComponent('items');
+        let reflectedDamage = 0;
+
+        for (const item of defenderItems.inventory) {
+            // Thornmail - Reflects 10% of damage taken
+            if (item.id === 'thornmail') {
+                reflectedDamage += incomingDamage * 0.10;
+            }
+        }
+
+        return reflectedDamage;
+    }
+
+    /**
+     * Check if champion has a specific item passive
+     */
+    hasItemPassive(champion, passiveName) {
+        const items = champion.getComponent('items');
+
+        for (const item of items.inventory) {
+            if (item.id === passiveName || (item.passive && item.passive.includes(passiveName))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get all active item passives for a champion
+     */
+    getActivePassives(champion) {
+        const items = champion.getComponent('items');
+        const passives = [];
+
+        for (const item of items.inventory) {
+            if (item.passive) {
+                passives.push({
+                    itemId: item.id,
+                    itemName: item.name,
+                    passive: item.passive
+                });
+            }
+        }
+
+        return passives;
     }
 
     /**

@@ -406,7 +406,44 @@ class MatchAdapter {
         }
 
         this.logEvent(`\n🏆 ${winner.name} WINS! 🏆\n`);
+
+        // Export replay data for storage
+        this.replayData = this._exportReplayData(winner, loser);
+
         this.emit('end', winner, loser);
+    }
+
+    /**
+     * Export replay data for deterministic replay
+     */
+    _exportReplayData(winner, loser) {
+        try {
+            const eventLog = this.simulator.getEventLog();
+
+            return {
+                matchId: this.simulator.matchId,
+                seed: this.simulator.seed,
+                team1: this.team1.name,
+                team2: this.team2.name,
+                winner: winner.name,
+                loser: loser.name,
+                events: eventLog.getAllEvents(),
+                snapshots: eventLog.getSnapshots(),
+                finalState: this.simulator.getState(),
+                duration: this.wave,
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            console.error('Error exporting replay data:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Get replay data (public API)
+     */
+    getReplayData() {
+        return this.replayData;
     }
 
     /**

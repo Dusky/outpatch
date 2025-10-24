@@ -1,3 +1,4 @@
+const abilitiesData = require('../simulation/data/abilities.json');
 
 const championNames = [
     "Jessica Telephone",
@@ -60,11 +61,66 @@ function generateTeamName() {
     return getRandomElement(teamNames);
 }
 
+/**
+ * Get abilities suitable for a role
+ * Returns {basic: [...], ultimates: [...]}
+ */
+function getAbilitiesForRole(role) {
+    // Map ADC to bot for ability lookup
+    let roleNormalized = role.toLowerCase();
+    if (roleNormalized === 'adc') {
+        roleNormalized = 'bot';
+    }
+
+    const basic = abilitiesData.filter(ability =>
+        ability.type !== 'ultimate' &&
+        ability.roles &&
+        ability.roles.includes(roleNormalized)
+    );
+
+    const ultimates = abilitiesData.filter(ability =>
+        ability.type === 'ultimate' &&
+        ability.roles &&
+        ability.roles.includes(roleNormalized)
+    );
+
+    return { basic, ultimates };
+}
+
+/**
+ * Select 4 abilities for a champion (Q/W/E/R)
+ */
+function selectAbilities(role) {
+    const { basic, ultimates } = getAbilitiesForRole(role);
+
+    if (basic.length === 0 || ultimates.length === 0) {
+        console.warn(`Warning: Not enough abilities for role ${role}`);
+        return ['void_bolt', 'reality_slash', 'shadow_step', 'black_hole'];
+    }
+
+    // Shuffle basic abilities
+    const shuffledBasic = [...basic].sort(() => Math.random() - 0.5);
+
+    // Take first 3 for Q/W/E
+    const q = shuffledBasic[0]?.id || 'void_bolt';
+    const w = shuffledBasic[1]?.id || 'reality_slash';
+    const e = shuffledBasic[2]?.id || 'shadow_step';
+
+    // Pick random ultimate for R
+    const r = getRandomElement(ultimates)?.id || 'black_hole';
+
+    return [q, w, e, r];
+}
+
 function generateChampion(role) {
+    const abilities = selectAbilities(role);
+
     return {
         name: generateChampionName(),
         role: role,
         lore: getRandomElement(loreSnippets),
+        // Abilities (Q/W/E/R)
+        abilities: abilities,
         // Visible Stats
         kda: { k: 0, d: 0, a: 0 },
         cs: 0,

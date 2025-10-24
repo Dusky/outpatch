@@ -359,8 +359,21 @@ class Game {
 
             match.start();
 
-            match.on('end', (winner, loser) => {
+            match.on('end', async (winner, loser) => {
                 this.match_history.push(match.log);
+
+                // Save replay data if using new simulator
+                if (this.useNewSimulation && match.getReplayData) {
+                    try {
+                        const replayData = match.getReplayData();
+                        if (replayData && this.db) {
+                            await this.db.saveMatchReplay(replayData);
+                            console.log(`Replay saved for match ${matchId}`);
+                        }
+                    } catch (error) {
+                        console.error('Error saving replay:', error);
+                    }
+                }
 
                 resolve({
                     winner,
