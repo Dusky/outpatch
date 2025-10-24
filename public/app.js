@@ -24,6 +24,7 @@ const teamSelect = document.getElementById('team-select');
 const betForm = document.getElementById('bet-form');
 const statusText = document.getElementById('status-text');
 const countdownTimer = document.getElementById('countdown-timer');
+const countdownLabel = document.querySelector('.countdown-label');
 const newsFeedDiv = document.getElementById('news-feed');
 const tickerContent = document.getElementById('ticker-content');
 const matchTitle = document.getElementById('match-title');
@@ -265,8 +266,9 @@ function updateStandings(standings) {
     standingsList.innerHTML = '';
     standings.forEach(team => {
         const tr = document.createElement('tr');
+        const teamColor = generateChampionColor(team.name); // Use bright color for team names
         tr.innerHTML = `
-            <td>${team.name}</td>
+            <td><span style="color: ${teamColor}; font-weight: 600;">${team.name}</span></td>
             <td>${team.wins}</td>
             <td>${team.losses}</td>
         `;
@@ -280,6 +282,10 @@ function populateTeamSelect(teams) {
         const option = document.createElement('option');
         option.value = teamName;
         option.textContent = teamName;
+        // Apply team color to option
+        const teamColor = generateChampionColor(teamName);
+        option.style.color = teamColor;
+        option.style.fontWeight = '600';
         teamSelect.appendChild(option);
     });
 }
@@ -303,6 +309,8 @@ function hashString(str) {
  * Generate a semi-transparent team background color
  */
 function generateTeamColor(teamName) {
+    if (!teamName) return 'hsla(0, 0%, 20%, 0.15)'; // Default gray
+
     const hash = hashString(teamName);
     const hue = hash % 360;
     const saturation = 40 + (hash % 30); // 40-70%
@@ -316,6 +324,8 @@ function generateTeamColor(teamName) {
  * Generate a bright, readable champion text color
  */
 function generateChampionColor(championName) {
+    if (!championName) return 'hsl(0, 0%, 60%)'; // Default gray
+
     const hash = hashString(championName);
     const hue = hash % 360;
     const saturation = 70 + (hash % 30); // 70-100%
@@ -416,14 +426,18 @@ function displayRosters(teams) {
 
         const teamNameDiv = document.createElement('div');
         teamNameDiv.className = 'roster-team-name';
-        teamNameDiv.textContent = team.name;
+        // Apply team color to header
+        const teamColor = generateChampionColor(team.name);
+        teamNameDiv.innerHTML = `<span style="color: ${teamColor}; font-weight: 700;">${team.name}</span>`;
         teamDiv.appendChild(teamNameDiv);
 
         team.champions.forEach(champ => {
             const champDiv = document.createElement('div');
             champDiv.className = 'roster-champion';
+            // Apply champion color to champion name
+            const champColor = championColorMap[champ.name] || generateChampionColor(champ.name);
             champDiv.innerHTML = `
-                <span class="champion-name">${champ.name}</span>
+                <span class="champion-name" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
                 <span class="champion-role"> (${champ.role})</span><br>
                 <small>KDA: ${champ.kda.k}/${champ.kda.d}/${champ.kda.a} | CS: ${champ.cs}</small>
             `;
@@ -617,9 +631,22 @@ function updateOddsDisplay(oddsData) {
     if (oddsDisplay) {
         oddsDisplay.style.display = 'block';
 
-        document.getElementById('odds-team1').textContent = oddsData.team1;
+        const team1Color = generateChampionColor(oddsData.team1);
+        const team2Color = generateChampionColor(oddsData.team2);
+
+        const oddsTeam1El = document.getElementById('odds-team1');
+        const oddsTeam2El = document.getElementById('odds-team2');
+
+        oddsTeam1El.textContent = oddsData.team1;
+        oddsTeam1El.style.color = team1Color;
+        oddsTeam1El.style.fontWeight = '600';
+
         document.getElementById('odds-team1-value').textContent = `${oddsData.team1Odds}x`;
-        document.getElementById('odds-team2').textContent = oddsData.team2;
+
+        oddsTeam2El.textContent = oddsData.team2;
+        oddsTeam2El.style.color = team2Color;
+        oddsTeam2El.style.fontWeight = '600';
+
         document.getElementById('odds-team2-value').textContent = `${oddsData.team2Odds}x`;
 
         const totalPool = oddsData.team1Pool + oddsData.team2Pool;
@@ -673,7 +700,9 @@ function updateMatchStatus(statusData) {
 
     // Update match title with team names
     if (matchTitle && statusData.team1Name && statusData.team2Name) {
-        matchTitle.textContent = `${statusData.team1Name} vs ${statusData.team2Name}`;
+        const team1Color = generateChampionColor(statusData.team1Name);
+        const team2Color = generateChampionColor(statusData.team2Name);
+        matchTitle.innerHTML = `<span style="color: ${team1Color}; font-weight: 600;">${statusData.team1Name}</span> vs <span style="color: ${team2Color}; font-weight: 600;">${statusData.team2Name}</span>`;
     }
 
     // Update wave info
@@ -730,6 +759,11 @@ function updateMatchStatus(statusData) {
     if (statusData.champions) {
         updateLiveChampionStats(statusData.champions);
         updateRosterWithLiveStats(statusData.champions);
+    }
+
+    // Update header countdown timer with match elapsed time
+    if (countdownTimer && statusData.elapsedTime) {
+        countdownTimer.textContent = statusData.elapsedTime;
     }
 }
 
@@ -924,11 +958,20 @@ function updateSeasonStatus(statusData) {
         statusText.textContent = statusMessage;
     }
 
-    // Show/hide countdown timer based on match state
+    // Update countdown timer based on match state
     if (countdownTimer) {
         if (statusData.isMatchInProgress) {
-            countdownTimer.style.display = 'none';
+            // During match - show as match timer counting up
+            if (countdownLabel) {
+                countdownLabel.textContent = 'MATCH TIME';
+            }
+            countdownTimer.style.display = 'block';
+            // Match timer will be updated by match_status messages
         } else {
+            // Between matches - show countdown to next game
+            if (countdownLabel) {
+                countdownLabel.textContent = 'NEXT GAME';
+            }
             countdownTimer.style.display = 'block';
             // The countdown timer will be updated separately by countdown messages
         }
@@ -967,11 +1010,12 @@ function updateStatsDisplay(leaderboards, globalStats) {
     const kdaBoard = document.getElementById('leaderboard-kda');
     kdaBoard.innerHTML = '';
     leaderboards.kda.forEach((champ, idx) => {
+        const champColor = generateChampionColor(champ.name);
         const item = document.createElement('div');
         item.className = 'leaderboard-item';
         item.innerHTML = `
             <span class="leaderboard-rank">#${idx + 1}</span>
-            <span class="leaderboard-name" title="${champ.name}">${champ.name}</span>
+            <span class="leaderboard-name" title="${champ.name}" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
             <span class="leaderboard-value">${champ.kda}</span>
         `;
         kdaBoard.appendChild(item);
@@ -981,11 +1025,12 @@ function updateStatsDisplay(leaderboards, globalStats) {
     const goldBoard = document.getElementById('leaderboard-gold');
     goldBoard.innerHTML = '';
     leaderboards.gold.forEach((champ, idx) => {
+        const champColor = generateChampionColor(champ.name);
         const item = document.createElement('div');
         item.className = 'leaderboard-item';
         item.innerHTML = `
             <span class="leaderboard-rank">#${idx + 1}</span>
-            <span class="leaderboard-name" title="${champ.name}">${champ.name}</span>
+            <span class="leaderboard-name" title="${champ.name}" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
             <span class="leaderboard-value">${champ.avgGold}⌬</span>
         `;
         goldBoard.appendChild(item);
@@ -996,11 +1041,12 @@ function updateStatsDisplay(leaderboards, globalStats) {
     chaosBoard.innerHTML = '';
     leaderboards.chaos.forEach((champ, idx) => {
         const chaosScore = champ.timesConsumedByVoid + champ.rolesSwitched + champ.enlightenments;
+        const champColor = generateChampionColor(champ.name);
         const item = document.createElement('div');
         item.className = 'leaderboard-item';
         item.innerHTML = `
             <span class="leaderboard-rank">#${idx + 1}</span>
-            <span class="leaderboard-name" title="${champ.name}">${champ.name}</span>
+            <span class="leaderboard-name" title="${champ.name}" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
             <span class="leaderboard-value">${chaosScore}</span>
         `;
         chaosBoard.appendChild(item);

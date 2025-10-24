@@ -401,8 +401,20 @@ class Game {
      * Update and broadcast standings
      */
     updateStandings() {
-        const standings = this.teams
-            .map(t => ({ name: t.name, wins: t.wins || 0, losses: t.losses || 0 }))
+        // Deduplicate teams by name, merging wins/losses for duplicates
+        const teamMap = new Map();
+        this.teams.forEach(t => {
+            const existing = teamMap.get(t.name);
+            if (existing) {
+                // Merge stats for duplicate team
+                existing.wins = (existing.wins || 0) + (t.wins || 0);
+                existing.losses = (existing.losses || 0) + (t.losses || 0);
+            } else {
+                teamMap.set(t.name, { name: t.name, wins: t.wins || 0, losses: t.losses || 0 });
+            }
+        });
+
+        const standings = Array.from(teamMap.values())
             .sort((a, b) => {
                 if (b.wins !== a.wins) return b.wins - a.wins;
                 return a.losses - b.losses;
