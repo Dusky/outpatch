@@ -127,6 +127,52 @@ app.get('/api/champions', async (req, res) => {
     }
 });
 
+// Get champion detail (full profile for detail page)
+app.get('/api/champions/:name', async (req, res) => {
+    try {
+        const championName = decodeURIComponent(req.params.name);
+
+        // Get champion data from current teams
+        const teams = game ? game.teams : [];
+        let champion = null;
+        for (const team of teams) {
+            const found = team.champions.find(c => c.name === championName);
+            if (found) {
+                champion = found;
+                break;
+            }
+        }
+
+        if (!champion) {
+            return res.status(404).json({ success: false, error: 'Champion not found' });
+        }
+
+        // Get career stats from database
+        const careerStats = await db.getChampionCareerStats(championName);
+
+        // Get grudges
+        const grudges = await db.getChampionGrudges(championName);
+
+        // Get synergies
+        const synergies = await db.getChampionSynergies(championName);
+
+        // Get match history (last 20 matches)
+        const matchHistory = await db.getChampionMatchHistory(championName, 20);
+
+        res.json({
+            success: true,
+            champion,
+            careerStats: careerStats || {},
+            grudges: grudges || [],
+            synergies: synergies || [],
+            matchHistory: matchHistory || []
+        });
+    } catch (error) {
+        console.error('Error fetching champion detail:', error);
+        res.status(500).json({ success: false, error: 'Failed to fetch champion data' });
+    }
+});
+
 // ==================== ADMIN API ====================
 
 // Middleware to check admin status

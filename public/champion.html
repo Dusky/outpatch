@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion Profile - MOBA Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="champion-style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="header-bar">
+        <div class="logo-section">
+            <a href="/" class="logo-link">
+                <div class="logo-text">MOBA NETWORK</div>
+                <div class="logo-subtitle">CHAMPION PROFILE</div>
+            </a>
+        </div>
+        <div class="season-info">
+            <span class="season-label">SEASON</span>
+            <span class="season-number" id="season-number">1</span>
+        </div>
+        <div class="countdown-section">
+            <div class="user-info">
+                <span class="user-label">USER</span>
+                <span id="user-display-name" class="user-name">Loading...</span>
+            </div>
+            <button id="logout-btn" class="logout-btn">LOGOUT</button>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading-container" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading champion data...</p>
+    </div>
+
+    <!-- Champion Container -->
+    <div id="champion-container" class="champion-container" style="display:none;">
+        <!-- Champion Header -->
+        <section class="champion-header">
+            <div class="champion-header-content">
+                <div class="champion-portrait">
+                    <div class="champion-icon" id="champion-icon">?</div>
+                </div>
+                <div class="champion-info">
+                    <h1 class="champion-name" id="champion-name">Champion Name</h1>
+                    <div class="champion-meta">
+                        <span class="champion-role" id="champion-role">Role</span>
+                        <span class="champion-power-curve" id="champion-power-curve"></span>
+                    </div>
+                    <p class="champion-lore" id="champion-lore">Champion lore text...</p>
+                </div>
+                <div class="champion-quick-stats">
+                    <div class="quick-stat">
+                        <div class="quick-stat-label">Career Level</div>
+                        <div class="quick-stat-value" id="career-level">1</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-label">Win Rate</div>
+                        <div class="quick-stat-value" id="win-rate">0%</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-label">KDA Ratio</div>
+                        <div class="quick-stat-value" id="kda-ratio">0.0</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-label">Form</div>
+                        <div class="quick-stat-value" id="form-value">1.0x</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="champion-content-grid">
+            <!-- Left Column -->
+            <div class="champion-left-column">
+                <!-- Career Stats -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">CAREER STATISTICS</h2>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-label">Games Played</div>
+                            <div class="stat-value" id="games-played">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Wins / Losses</div>
+                            <div class="stat-value" id="win-loss">0 / 0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Total Kills</div>
+                            <div class="stat-value" id="total-kills">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Total Deaths</div>
+                            <div class="stat-value" id="total-deaths">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Total Assists</div>
+                            <div class="stat-value" id="total-assists">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Avg Gold/Game</div>
+                            <div class="stat-value" id="avg-gold">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Avg CS/Game</div>
+                            <div class="stat-value" id="avg-cs">0</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Career XP</div>
+                            <div class="stat-value" id="career-xp">0</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Abilities -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">ABILITIES</h2>
+                    <div id="abilities-container" class="abilities-container"></div>
+                </section>
+
+                <!-- Relationships -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">RELATIONSHIPS</h2>
+                    <div class="relationships-container">
+                        <div class="relationship-section">
+                            <h3 class="relationship-title">⚔️ Grudges</h3>
+                            <div id="grudges-list" class="relationship-list"></div>
+                        </div>
+                        <div class="relationship-section">
+                            <h3 class="relationship-title">🤝 Synergies</h3>
+                            <div id="synergies-list" class="relationship-list"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column -->
+            <div class="champion-right-column">
+                <!-- Match History -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">MATCH HISTORY</h2>
+                    <div id="match-history" class="match-history"></div>
+                </section>
+
+                <!-- Preferred Items -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">PREFERRED BUILD</h2>
+                    <div id="preferred-build" class="preferred-build"></div>
+                </section>
+
+                <!-- Achievements -->
+                <section class="detail-panel">
+                    <h2 class="panel-title">ACHIEVEMENTS</h2>
+                    <div id="achievements" class="achievements-grid"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-item">CHAMPION PROFILE SYSTEM</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">TRACK YOUR FAVORITE CHAMPIONS</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">THE VOID REMEMBERS ALL</span>
+        </div>
+    </footer>
+
+    <script src="champion.js"></script>
+</body>
+</html>

@@ -440,8 +440,10 @@ function displayRosters(teams) {
             // Apply champion color to champion name
             const champColor = championColorMap[champ.name] || generateChampionColor(champ.name);
             champDiv.innerHTML = `
-                <span class="champion-name" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
-                <span class="champion-role"> (${champ.role})</span><br>
+                <a href="/champion.html?name=${encodeURIComponent(champ.name)}" class="champion-link">
+                    <span class="champion-name" style="color: ${champColor}; font-weight: 600;">${champ.name}</span>
+                    <span class="champion-role"> (${champ.role})</span>
+                </a><br>
                 <small>KDA: ${champ.kda.k}/${champ.kda.d}/${champ.kda.a} | CS: ${champ.cs}</small>
             `;
             champDiv.title = champ.lore; // Show lore on hover

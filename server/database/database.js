@@ -1328,6 +1328,108 @@ class Database {
         });
     }
 
+    /**
+     * Get champion's career statistics
+     */
+    async getChampionCareerStats(championName) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                `SELECT * FROM champion_careers WHERE champion_name = ?`,
+                [championName],
+                (err, row) => {
+                    if (err) reject(err);
+                    else resolve(row || {
+                        champion_name: championName,
+                        games_played: 0,
+                        wins: 0,
+                        losses: 0,
+                        total_kills: 0,
+                        total_deaths: 0,
+                        total_assists: 0,
+                        avg_gold: 0,
+                        avg_cs: 0,
+                        career_xp: 0,
+                        career_level: 1,
+                        form: 1.0,
+                        win_streak: 0,
+                        loss_streak: 0,
+                        void_touched: 0
+                    });
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's match history
+     */
+    async getChampionMatchHistory(championName, limit = 20) {
+        return new Promise((resolve, reject) => {
+            // This is a simplified version - we're querying the replays table
+            // and extracting champion performance from the replay data
+            this.db.all(
+                `SELECT id, team1_name, team2_name, winner, replay_data, created_at
+                 FROM match_replays
+                 ORDER BY created_at DESC
+                 LIMIT ?`,
+                [limit * 2], // Get more matches since we'll filter for this champion
+                (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    const matches = [];
+                    for (const row of rows) {
+                        if (matches.length >= limit) break;
+
+                        try {
+                            const replayData = JSON.parse(row.replay_data);
+                            const events = replayData.events || [];
+
+                            // Find champion in the match
+                            let championData = null;
+                            let teamName = null;
+
+                            // Look through events for champion data
+                            for (const event of events) {
+                                if (event.type === 'match.end' && event.data && event.data.champions) {
+                                    const found = event.data.champions.find(c => c.name === championName);
+                                    if (found) {
+                                        championData = found;
+                                        // Determine team
+                                        teamName = event.data.team1.champions.some(c => c.name === championName)
+                                            ? row.team1_name
+                                            : row.team2_name;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (championData) {
+                                const won = row.winner === teamName;
+                                matches.push({
+                                    matchId: row.id,
+                                    won,
+                                    kda: championData.kda || { kills: 0, deaths: 0, assists: 0 },
+                                    gold: championData.gold || 0,
+                                    cs: championData.cs || 0,
+                                    level: championData.level || 1,
+                                    date: row.created_at
+                                });
+                            }
+                        } catch (parseError) {
+                            // Skip matches with invalid replay data
+                            console.error('Error parsing replay data:', parseError);
+                        }
+                    }
+
+                    resolve(matches);
+                }
+            );
+        });
+    }
+
     // ==================== UTILITY METHODS ====================
 
     close() {

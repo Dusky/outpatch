@@ -1084,6 +1084,20 @@ body {
   font-size: 0.9rem;
 }
 
+.champion-link {
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.champion-link:hover {
+  transform: translateX(2px);
+}
+
+.champion-link:hover .champion-name {
+  text-shadow: 0 0 12px currentColor;
+}
+
 .champion-name {
   font-weight: 700;
   color: var(--text-primary);
