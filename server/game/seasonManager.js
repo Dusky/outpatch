@@ -232,9 +232,23 @@ class SeasonManager extends EventEmitter {
 
     async runPreSeason() {
         // Sub-phases of pre-season:
-        // 1. Draft Event
-        // 2. Power Rankings & Predictions
-        // 3. Practice Matches (2-3 exhibition games)
+        // 1. Reset champion stats for new season
+        // 2. Draft Event
+        // 3. Power Rankings & Predictions
+        // 4. Practice Matches (2-3 exhibition games)
+
+        // Reset all champion stats for the new season
+        this.broadcast({
+            type: 'system_message',
+            message: '🔄 Resetting champion stats for new season...'
+        });
+
+        try {
+            await this.db.resetChampionStats(this.teams);
+            console.log(`Season ${this.currentSeason} stats reset successfully`);
+        } catch (error) {
+            console.error('Error resetting champion stats:', error);
+        }
 
         this.broadcast({
             type: 'pre_season_start',
@@ -596,6 +610,19 @@ class SeasonManager extends EventEmitter {
                 ...event
             });
             await this.sleep(TIMINGS.OFF_SEASON.LORE_EVENTS);
+        }
+
+        // 5. Archive season stats before ending
+        this.broadcast({
+            type: 'system_message',
+            message: '📊 Archiving season statistics...'
+        });
+
+        try {
+            await this.db.archiveSeasonStats(this.currentSeason, this.teams);
+            console.log(`Season ${this.currentSeason} stats archived successfully`);
+        } catch (error) {
+            console.error('Error archiving season stats:', error);
         }
 
         // End season in database

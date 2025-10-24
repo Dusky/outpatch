@@ -94,6 +94,27 @@ class Database {
                 )
             `);
 
+            // Champion season stats table - per-season statistics archive
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS champion_season_stats (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    season_number INTEGER,
+                    champion_name TEXT NOT NULL,
+                    team_name TEXT,
+                    matches_played INTEGER DEFAULT 0,
+                    wins INTEGER DEFAULT 0,
+                    losses INTEGER DEFAULT 0,
+                    kills INTEGER DEFAULT 0,
+                    deaths INTEGER DEFAULT 0,
+                    assists INTEGER DEFAULT 0,
+                    cs INTEGER DEFAULT 0,
+                    gold_earned INTEGER DEFAULT 0,
+                    archived_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(season_number, champion_name),
+                    FOREIGN KEY (season_number) REFERENCES seasons(season_number)
+                )
+            `);
+
             // Betting history table
             this.db.run(`
                 CREATE TABLE IF NOT EXISTS betting_history (
@@ -468,6 +489,122 @@ class Database {
                 (err) => {
                     if (err) reject(err);
                     else resolve({ success: true });
+                }
+            );
+        });
+    }
+
+    /**
+     * Archive current season stats for all champions
+     * Called at the end of each season to preserve historical data
+     */
+    async archiveSeasonStats(seasonNumber, teams) {
+        return new Promise((resolve, reject) => {
+            const stmt = this.db.prepare(`
+                INSERT OR REPLACE INTO champion_season_stats
+                (season_number, champion_name, team_name, matches_played, wins, losses, kills, deaths, assists, cs, gold_earned)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+
+            const promises = [];
+
+            teams.forEach(team => {
+                team.champions.forEach(champ => {
+                    const promise = new Promise((res, rej) => {
+                        stmt.run([
+                            seasonNumber,
+                            champ.name,
+                            team.name,
+                            champ.matches_played || 0,
+                            champ.wins || 0,
+                            champ.losses || 0,
+                            champ.kda?.k || 0,
+                            champ.kda?.d || 0,
+                            champ.kda?.a || 0,
+                            champ.cs || 0,
+                            champ.gold || 0
+                        ], (err) => {
+                            if (err) rej(err);
+                            else res();
+                        });
+                    });
+                    promises.push(promise);
+                });
+            });
+
+            Promise.all(promises)
+                .then(() => {
+                    stmt.finalize();
+                    console.log(`Archived stats for season ${seasonNumber}: ${promises.length} champions`);
+                    resolve({ success: true, championsArchived: promises.length });
+                })
+                .catch((err) => {
+                    stmt.finalize();
+                    reject(err);
+                });
+        });
+    }
+
+    /**
+     * Reset champion stats for new season
+     * Clears KDA, CS, gold, matches played, wins, losses
+     * Preserves career totals in champion_careers table
+     */
+    async resetChampionStats(teams) {
+        return new Promise((resolve, reject) => {
+            let championsReset = 0;
+
+            teams.forEach(team => {
+                team.champions.forEach(champ => {
+                    // Reset per-season stats
+                    champ.kda = { k: 0, d: 0, a: 0 };
+                    champ.cs = 0;
+                    champ.gold = 500; // Starting gold
+                    champ.matches_played = 0;
+                    champ.wins = 0;
+                    champ.losses = 0;
+                    champ.items = [];
+                    champ.level = 1;
+                    championsReset++;
+                });
+            });
+
+            console.log(`Reset stats for ${championsReset} champions`);
+            resolve({ success: true, championsReset });
+        });
+    }
+
+    /**
+     * Get season stats for a specific champion
+     */
+    async getChampionSeasonHistory(championName) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT * FROM champion_season_stats
+                WHERE champion_name = ?
+                ORDER BY season_number DESC`,
+                [championName],
+                (err, stats) => {
+                    if (err) reject(err);
+                    else resolve(stats);
+                }
+            );
+        });
+    }
+
+    /**
+     * Get all archived stats for a specific season
+     */
+    async getSeasonStats(seasonNumber) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT * FROM champion_season_stats
+                WHERE season_number = ?
+                ORDER BY (kills + assists) DESC`,
+                [seasonNumber],
+                (err, stats) => {
+                    if (err) reject(err);
+                    else resolve(stats);
                 }
             );
         });
