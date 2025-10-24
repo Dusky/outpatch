@@ -139,6 +139,13 @@ class AbilitySystem {
     }
 
     /**
+     * Set ObjectiveSystem reference for buff integration
+     */
+    setObjectiveSystem(objectiveSystem) {
+        this.objectiveSystem = objectiveSystem;
+    }
+
+    /**
      * Cast a specific ability
      */
     castAbility(caster, target, slot, tick, eventLog, rng) {
@@ -158,7 +165,13 @@ class AbilitySystem {
         if (!cooldowns) return null;
 
         const wavesSinceLastCast = tick - cooldowns.lastCastWave[slot];
-        const cooldownWaves = Math.ceil(ability.cooldown / 10); // Convert seconds to waves (10s/wave)
+        let cooldownWaves = Math.ceil(ability.cooldown / 10); // Convert seconds to waves (10s/wave)
+
+        // Apply cooldown reduction from Time Rift
+        if (this.objectiveSystem) {
+            const cdr = this.objectiveSystem.getCooldownReduction(caster);
+            cooldownWaves = Math.ceil(cooldownWaves * (1 - cdr));
+        }
 
         if (wavesSinceLastCast < cooldownWaves) {
             return null; // Still on cooldown
@@ -268,6 +281,12 @@ class AbilitySystem {
         // Critical hit chance for certain abilities
         if (ability.effects?.includes('can_crit') && rng.chance(0.20)) {
             damage *= casterStats.crit_damage_multiplier || 2.0;
+        }
+
+        // Apply Reality Rift buff (+10% ability damage)
+        if (this.objectiveSystem) {
+            const abilityDamageMult = this.objectiveSystem.getAbilityDamageMultiplier(caster);
+            damage *= abilityDamageMult;
         }
 
         return Math.max(0, damage);

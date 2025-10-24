@@ -348,6 +348,550 @@ class ChaosSystem {
                         }
                     };
                 }
+            },
+
+            // COOLDOWN RESET - All abilities off cooldown
+            {
+                id: 'cooldown_reset',
+                name: 'Temporal Acceleration',
+                description: 'All ability cooldowns instantly reset',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    // This would need AbilitySystem access to reset cooldowns
+                    // For now, narrative event
+                    return null;
+                }
+            },
+
+            // SIZE SWAP - Giants vs Tiny champions
+            {
+                id: 'size_swap',
+                name: 'Dimensional Instability',
+                description: 'Half the champions become giants, half become tiny',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    const shuffled = [...champions].sort(() => rng.next() - 0.5);
+
+                    const giants = shuffled.slice(0, champions.length / 2);
+                    const tiny = shuffled.slice(champions.length / 2);
+
+                    const originalSizes = new Map();
+
+                    for (const champion of giants) {
+                        const stats = champion.getComponent('stats');
+                        originalSizes.set(champion.id, {
+                            ad: stats.attack_damage,
+                            health: stats.max_health
+                        });
+                        stats.attack_damage = (stats.attack_damage || 60) * 1.5;
+                        stats.max_health = (stats.max_health || 550) * 1.3;
+                    }
+
+                    for (const champion of tiny) {
+                        const stats = champion.getComponent('stats');
+                        originalSizes.set(champion.id, {
+                            ad: stats.attack_damage,
+                            health: stats.max_health
+                        });
+                        stats.attack_damage = (stats.attack_damage || 60) * 0.7;
+                        stats.max_health = (stats.max_health || 550) * 0.8;
+                    }
+
+                    return {
+                        duration: 3,
+                        onExpire: (world) => {
+                            for (const champion of champions) {
+                                const stats = champion.getComponent('stats');
+                                const original = originalSizes.get(champion.id);
+                                if (original) {
+                                    stats.attack_damage = original.ad;
+                                    stats.max_health = original.health;
+                                }
+                            }
+                        }
+                    };
+                }
+            },
+
+            // REVERSE GRAVITY - Damage and healing swapped
+            {
+                id: 'reverse_gravity',
+                name: 'Reality Inversion',
+                description: 'Damage heals, healing damages for 2 waves',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    world.metadata.reverseGravity = true;
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            world.metadata.reverseGravity = false;
+                        }
+                    };
+                }
+            },
+
+            // MANA VOID - Everyone loses all mana
+            {
+                id: 'mana_void',
+                name: 'Mana Void',
+                description: 'All mana instantly drained',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        if (stats.mana) {
+                            stats.mana = 0;
+                        }
+                    }
+                    return null;
+                }
+            },
+
+            // MANA OVERFLOW - Everyone gains max mana
+            {
+                id: 'mana_overflow',
+                name: 'Mana Overflow',
+                description: 'All champions gain infinite mana for 1 wave',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        if (stats.max_mana) {
+                            stats.mana = stats.max_mana * 10;
+                        }
+                    }
+                    return null;
+                }
+            },
+
+            // SPEED DEMON - Everyone moves super fast
+            {
+                id: 'speed_demon',
+                name: 'Hyperspeed',
+                description: 'All champions gain 200% movement speed',
+                rarity: 'common',
+                execute: (world, rng) => {
+                    world.metadata.hyperSpeed = true;
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            world.metadata.hyperSpeed = false;
+                        }
+                    };
+                }
+            },
+
+            // SLOW MOTION - Everything slowed
+            {
+                id: 'slow_motion',
+                name: 'Temporal Stasis',
+                description: 'All actions happen in slow motion',
+                rarity: 'common',
+                execute: (world, rng) => {
+                    world.metadata.slowMotion = true;
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            world.metadata.slowMotion = false;
+                        }
+                    };
+                }
+            },
+
+            // CRITICAL EXISTENCE - Everything crits
+            {
+                id: 'critical_existence',
+                name: 'Critical Existence',
+                description: 'All attacks are critical hits for 2 waves',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    world.metadata.allCrits = true;
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            world.metadata.allCrits = false;
+                        }
+                    };
+                }
+            },
+
+            // PACIFISM - No damage dealt
+            {
+                id: 'pacifism',
+                name: 'Universal Pacifism',
+                description: 'No champion can deal damage for 1 wave',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    world.metadata.pacifism = true;
+                    return {
+                        duration: 1,
+                        onExpire: (world) => {
+                            world.metadata.pacifism = false;
+                        }
+                    };
+                }
+            },
+
+            // ITEM SHUFFLE - Everyone's items randomized
+            {
+                id: 'item_shuffle',
+                name: 'The Great Redistribution',
+                description: 'All items are randomly redistributed',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    const allItems = [];
+
+                    // Collect all items
+                    for (const champion of champions) {
+                        const items = champion.getComponent('items');
+                        allItems.push(...items.inventory);
+                        items.inventory = [];
+                    }
+
+                    // Shuffle items
+                    const shuffled = [...allItems].sort(() => rng.next() - 0.5);
+
+                    // Redistribute
+                    let itemIndex = 0;
+                    for (const champion of champions) {
+                        const items = champion.getComponent('items');
+                        const itemCount = Math.min(6, Math.floor(allItems.length / champions.length));
+                        for (let i = 0; i < itemCount && itemIndex < shuffled.length; i++) {
+                            items.inventory.push(shuffled[itemIndex++]);
+                        }
+                    }
+
+                    return null;
+                }
+            },
+
+            // DEBT COLLECTOR - Everyone loses 50% gold
+            {
+                id: 'debt_collector',
+                name: 'The Debt Collector Arrives',
+                description: 'All champions lose 50% of their gold',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        stats.gold = Math.floor(stats.gold * 0.5);
+                    }
+                    return null;
+                }
+            },
+
+            // GOLD MULTIPLICATION - Gold doubles
+            {
+                id: 'gold_multiplication',
+                name: 'Infinite Money Glitch',
+                description: 'All gold gains doubled for 3 waves',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    world.metadata.doubleGold = true;
+                    return {
+                        duration: 3,
+                        onExpire: (world) => {
+                            world.metadata.doubleGold = false;
+                        }
+                    };
+                }
+            },
+
+            // INVINCIBILITY - One random champion becomes invincible
+            {
+                id: 'chosen_one',
+                name: 'The Chosen One',
+                description: 'One random champion becomes invincible',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    const chosen = rng.choice(champions);
+                    const stats = chosen.getComponent('stats');
+                    const originalHealth = stats.health;
+
+                    stats.invincible = true;
+
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            stats.invincible = false;
+                        }
+                    };
+                }
+            },
+
+            // ABILITY SWAP - Champions swap abilities with random enemy
+            {
+                id: 'ability_swap',
+                name: 'Cognitive Scramble',
+                description: 'Champions swap abilities with random enemies',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    const team1 = world.queryByTags('champion', 'team1');
+                    const team2 = world.queryByTags('champion', 'team2');
+
+                    const swaps = new Map();
+
+                    for (let i = 0; i < Math.min(team1.length, team2.length); i++) {
+                        const champ1 = team1[i];
+                        const champ2 = team2[i];
+
+                        const identity1 = champ1.getComponent('identity');
+                        const identity2 = champ2.getComponent('identity');
+
+                        swaps.set(champ1.id, { ...identity1.abilities });
+                        swaps.set(champ2.id, { ...identity2.abilities });
+
+                        const temp = { ...identity1.abilities };
+                        identity1.abilities = { ...identity2.abilities };
+                        identity2.abilities = temp;
+                    }
+
+                    return {
+                        duration: 3,
+                        onExpire: (world) => {
+                            for (let i = 0; i < Math.min(team1.length, team2.length); i++) {
+                                const champ1 = team1[i];
+                                const champ2 = team2[i];
+
+                                const identity1 = champ1.getComponent('identity');
+                                const identity2 = champ2.getComponent('identity');
+
+                                const original1 = swaps.get(champ1.id);
+                                const original2 = swaps.get(champ2.id);
+
+                                if (original1) identity1.abilities = original1;
+                                if (original2) identity2.abilities = original2;
+                            }
+                        }
+                    };
+                }
+            },
+
+            // GLASS CANNON - Max damage, min defense
+            {
+                id: 'glass_cannon',
+                name: 'Glass Cannon Mode',
+                description: 'All champions gain 200% damage but lose 50% health',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    const originalStats = new Map();
+
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        originalStats.set(champion.id, {
+                            ad: stats.attack_damage,
+                            ap: stats.ability_power,
+                            health: stats.max_health
+                        });
+
+                        stats.attack_damage = (stats.attack_damage || 60) * 2;
+                        stats.ability_power = (stats.ability_power || 0) * 2;
+                        stats.max_health = (stats.max_health || 550) * 0.5;
+                        stats.health = Math.min(stats.health, stats.max_health);
+                    }
+
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            for (const champion of champions) {
+                                const stats = champion.getComponent('stats');
+                                const original = originalStats.get(champion.id);
+                                if (original) {
+                                    stats.attack_damage = original.ad;
+                                    stats.ability_power = original.ap;
+                                    stats.max_health = original.health;
+                                }
+                            }
+                        }
+                    };
+                }
+            },
+
+            // TANK MODE - Max defense, min damage
+            {
+                id: 'tank_mode',
+                name: 'Fortification Protocol',
+                description: 'All champions gain 300% health but deal 50% damage',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    const originalStats = new Map();
+
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        originalStats.set(champion.id, {
+                            ad: stats.attack_damage,
+                            ap: stats.ability_power,
+                            health: stats.max_health
+                        });
+
+                        stats.attack_damage = (stats.attack_damage || 60) * 0.5;
+                        stats.ability_power = (stats.ability_power || 0) * 0.5;
+                        stats.max_health = (stats.max_health || 550) * 3;
+                        stats.health = stats.max_health;
+                    }
+
+                    return {
+                        duration: 2,
+                        onExpire: (world) => {
+                            for (const champion of champions) {
+                                const stats = champion.getComponent('stats');
+                                const original = originalStats.get(champion.id);
+                                if (original) {
+                                    stats.attack_damage = original.ad;
+                                    stats.ability_power = original.ap;
+                                    stats.max_health = original.health;
+                                }
+                            }
+                        }
+                    };
+                }
+            },
+
+            // UNTILT - Everyone loses all tilt
+            {
+                id: 'mass_untilt',
+                name: 'Collective Therapy Session',
+                description: 'All champions lose all tilt and gain peace',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const hiddenStats = champion.getComponent('hiddenStats');
+                        hiddenStats.tilt_level = 0;
+                    }
+                    return null;
+                }
+            },
+
+            // VISION LOSS - Everyone blind
+            {
+                id: 'vision_loss',
+                name: 'Total Blackout',
+                description: 'All champions lose vision for 1 wave',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    world.metadata.blind = true;
+                    return {
+                        duration: 1,
+                        onExpire: (world) => {
+                            world.metadata.blind = false;
+                        }
+                    };
+                }
+            },
+
+            // RUBBER BAND SNAP - Gold equalized
+            {
+                id: 'wealth_redistribution',
+                name: 'Communist Revolution',
+                description: 'All gold is redistributed equally',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    let totalGold = 0;
+
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        totalGold += stats.gold;
+                    }
+
+                    const avgGold = Math.floor(totalGold / champions.length);
+
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        stats.gold = avgGold;
+                    }
+
+                    return null;
+                }
+            },
+
+            // PENTAKILL POTENTIAL - Next kill is a pentakill
+            {
+                id: 'pentakill_mode',
+                name: 'Pentakill Energy',
+                description: 'Next kill by any champion counts as a pentakill',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    world.metadata.pentakillMode = true;
+                    return {
+                        duration: 1,
+                        onExpire: (world) => {
+                            world.metadata.pentakillMode = false;
+                        }
+                    };
+                }
+            },
+
+            // FOURTH WALL BREAK - Meta commentary
+            {
+                id: 'fourth_wall',
+                name: 'Existential Awareness',
+                description: 'Champions become aware they are in a simulation',
+                rarity: 'legendary',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const hiddenStats = champion.getComponent('hiddenStats');
+                        // Existential crisis causes tilt
+                        hiddenStats.tilt_level = Math.min(1.0, hiddenStats.tilt_level + 0.3);
+                    }
+                    return null;
+                }
+            },
+
+            // ROLE REVERSAL - Teams swap sides
+            {
+                id: 'team_swap',
+                name: 'Reality Swap',
+                description: 'Teams swap sides for 2 waves',
+                rarity: 'epic',
+                execute: (world, rng) => {
+                    // This would require complex team swap logic
+                    // For now, narrative event
+                    return null;
+                }
+            },
+
+            // LEVEL UP - Everyone gains 3 levels
+            {
+                id: 'mass_level_up',
+                name: 'Experience Surge',
+                description: 'All champions gain 3 levels instantly',
+                rarity: 'uncommon',
+                execute: (world, rng) => {
+                    const champions = world.queryByTag('champion');
+                    for (const champion of champions) {
+                        const stats = champion.getComponent('stats');
+                        stats.level = Math.min(18, (stats.level || 1) + 3);
+                    }
+                    return null;
+                }
+            },
+
+            // ITEM UPGRADE - All items become legendary
+            {
+                id: 'item_ascension',
+                name: 'Item Ascension',
+                description: 'All items gain 50% more stats for 3 waves',
+                rarity: 'rare',
+                execute: (world, rng) => {
+                    world.metadata.itemAscension = true;
+                    return {
+                        duration: 3,
+                        onExpire: (world) => {
+                            world.metadata.itemAscension = false;
+                        }
+                    };
+                }
             }
         ];
     }

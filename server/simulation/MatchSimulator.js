@@ -79,9 +79,10 @@ class MatchSimulator {
         // Load abilities into AbilitySystem
         abilitySystem.loadAbilities(abilitiesData);
 
-        // Connect AbilitySystem to other systems that need it
+        // Connect systems that need to communicate
         laneSystem.setAbilitySystem(abilitySystem);
         teamfightSystem.setAbilitySystem(abilitySystem);
+        abilitySystem.setObjectiveSystem(objectiveSystem);  // For rift buffs (CDR, damage)
 
         this.engine.registerSystem(structureSystem, 5);   // Structures first (win condition)
         this.engine.registerSystem(weatherSystem, 8);     // Weather (affects multipliers)
