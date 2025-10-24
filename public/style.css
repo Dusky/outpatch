@@ -1126,6 +1126,11 @@ body {
   50% { opacity: 0.7; transform: scale(1.1); }
 }
 
+@keyframes stat-update-pulse {
+  0%, 100% { background: var(--bg-card); }
+  50% { background: rgba(0, 255, 163, 0.1); }
+}
+
 .champion-stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

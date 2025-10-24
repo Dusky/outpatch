@@ -592,6 +592,7 @@ function updateMatchStatus(statusData) {
     // Update live champion stats if available
     if (statusData.champions) {
         updateLiveChampionStats(statusData.champions);
+        updateRosterWithLiveStats(statusData.champions);
     }
 }
 
@@ -692,6 +693,41 @@ function buildChampionCard(champ, roleIcons) {
             </div>
         </div>
     `;
+}
+
+function updateRosterWithLiveStats(champions) {
+    if (!rosterList || !champions || champions.length === 0) return;
+
+    // Find all roster champion elements and update their stats
+    const rosterChampions = rosterList.querySelectorAll('.roster-champion');
+
+    rosterChampions.forEach(champElement => {
+        const nameElement = champElement.querySelector('.champion-name');
+        if (!nameElement) return;
+
+        const championName = nameElement.textContent.trim();
+
+        // Find matching champion in live stats
+        const liveChamp = champions.find(c => c.name === championName);
+        if (!liveChamp) return;
+
+        // Update the stats display
+        const statsElement = champElement.querySelector('small');
+        if (statsElement && liveChamp.kda) {
+            const kda = liveChamp.kda;
+            const cs = liveChamp.cs || 0;
+            const gold = liveChamp.gold || 0;
+
+            // Highlight updated stats with a subtle color
+            statsElement.innerHTML = `<span style="color: var(--accent-primary);">KDA: ${kda.kills}/${kda.deaths}/${kda.assists} | CS: ${cs} | Gold: ${gold.toLocaleString()}g</span>`;
+
+            // Add a subtle pulse animation
+            champElement.style.animation = 'stat-update-pulse 0.5s ease';
+            setTimeout(() => {
+                champElement.style.animation = '';
+            }, 500);
+        }
+    });
 }
 
 function updateSeasonStatus(statusData) {
