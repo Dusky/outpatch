@@ -1,299 +1,728 @@
 {
   "items": [
     {
-      "id": "long_sword",
-      "name": "Long Sword",
+      "id": "void_shard",
+      "name": "Void Shard",
       "cost": 350,
-      "stats": {
-        "attack_damage": 10
-      },
-      "buildsInto": ["serrated_dirk", "tiamat"],
+      "stats": { "attack_damage": 10 },
+      "buildsInto": ["entropy_blade", "reality_tear"],
       "tier": "basic",
-      "tags": ["damage", "physical"]
+      "tags": ["damage", "physical"],
+      "flavor": "A fragment of crystallized nothingness"
     },
     {
-      "id": "cloth_armor",
-      "name": "Cloth Armor",
+      "id": "corrupted_plate",
+      "name": "Corrupted Plate",
       "cost": 300,
-      "stats": {
-        "armor": 15
-      },
-      "buildsInto": ["chain_vest", "wardens_mail"],
+      "stats": { "armor": 15 },
+      "buildsInto": ["void_carapace", "temporal_armor"],
       "tier": "basic",
-      "tags": ["defense", "armor"]
+      "tags": ["defense", "armor"],
+      "flavor": "Armor warped by void exposure"
     },
     {
-      "id": "amplifying_tome",
-      "name": "Amplifying Tome",
+      "id": "chaos_ember",
+      "name": "Chaos Ember",
       "cost": 400,
-      "stats": {
-        "ability_power": 20
-      },
-      "buildsInto": ["needlessly_large_rod", "fiendish_codex"],
+      "stats": { "ability_power": 20 },
+      "buildsInto": ["reality_core", "madness_codex"],
       "tier": "basic",
-      "tags": ["damage", "magic"]
+      "tags": ["damage", "magic"],
+      "flavor": "Burning essence of pure chaos"
     },
     {
-      "id": "ruby_crystal",
-      "name": "Ruby Crystal",
+      "id": "essence_crystal",
+      "name": "Essence Crystal",
       "cost": 400,
-      "stats": {
-        "max_health": 150
-      },
-      "buildsInto": ["kindlegem", "giants_belt"],
+      "stats": { "max_health": 150 },
+      "buildsInto": ["void_heart", "massive_form"],
       "tier": "basic",
-      "tags": ["health", "tank"]
+      "tags": ["health", "tank"],
+      "flavor": "Solidified life energy"
     },
     {
-      "id": "dagger",
-      "name": "Dagger",
+      "id": "temporal_blade",
+      "name": "Temporal Blade",
       "cost": 300,
-      "stats": {
-        "attack_speed": 0.12
-      },
-      "buildsInto": ["recurve_bow", "zeal"],
+      "stats": { "attack_speed": 0.12 },
+      "buildsInto": ["time_ripper", "phase_cutter"],
       "tier": "basic",
-      "tags": ["attack_speed"]
+      "tags": ["attack_speed"],
+      "flavor": "Cuts through time itself"
     },
     {
-      "id": "boots",
-      "name": "Boots",
+      "id": "phase_step",
+      "name": "Phase Step",
       "cost": 300,
-      "stats": {
-        "movement_speed": 25
-      },
-      "buildsInto": ["berserkers_greaves", "sorcerer_shoes", "ninja_tabi"],
+      "stats": { "movement_speed": 25 },
+      "buildsInto": ["void_walkers", "chaos_treads", "reality_boots"],
       "tier": "basic",
-      "tags": ["boots", "movement"]
+      "tags": ["boots", "movement"],
+      "flavor": "Allows slight reality displacement"
     },
     {
-      "id": "serrated_dirk",
-      "name": "Serrated Dirk",
+      "id": "null_orb",
+      "name": "Null Orb",
+      "cost": 250,
+      "stats": { "magic_resist": 20 },
+      "buildsInto": ["void_mantle", "corruption_shield"],
+      "tier": "basic",
+      "tags": ["defense", "magic_resist"],
+      "flavor": "Absorbs magical energy into the void"
+    },
+    {
+      "id": "entropy_blade",
+      "name": "Entropy Blade",
       "cost": 1100,
-      "stats": {
-        "attack_damage": 30,
-        "lethality": 10
-      },
-      "buildsFrom": ["long_sword"],
-      "buildsInto": ["duskblade", "youmuus"],
+      "stats": { "attack_damage": 30, "lethality": 10 },
+      "buildsFrom": ["void_shard"],
+      "buildsInto": ["oblivion_edge", "reality_splitter"],
       "tier": "component",
-      "tags": ["damage", "physical", "lethality"]
+      "tags": ["damage", "physical", "lethality"],
+      "flavor": "Increases the chaos of every strike"
     },
     {
-      "id": "needlessly_large_rod",
-      "name": "Needlessly Large Rod",
+      "id": "reality_core",
+      "name": "Reality Core",
       "cost": 1250,
-      "stats": {
-        "ability_power": 60
-      },
-      "buildsFrom": ["amplifying_tome"],
-      "buildsInto": ["rabadons", "void_staff"],
+      "stats": { "ability_power": 60 },
+      "buildsFrom": ["chaos_ember"],
+      "buildsInto": ["apocalypse_crown", "void_conduit"],
       "tier": "component",
-      "tags": ["damage", "magic"]
+      "tags": ["damage", "magic"],
+      "flavor": "The heart of a collapsed reality"
     },
     {
-      "id": "chain_vest",
-      "name": "Chain Vest",
+      "id": "void_carapace",
+      "name": "Void Carapace",
       "cost": 800,
-      "stats": {
-        "armor": 40
-      },
-      "buildsFrom": ["cloth_armor"],
-      "buildsInto": ["thornmail", "randuins"],
+      "stats": { "armor": 40 },
+      "buildsFrom": ["corrupted_plate"],
+      "buildsInto": ["reflection_mail", "unstoppable_shell"],
       "tier": "component",
-      "tags": ["defense", "armor"]
+      "tags": ["defense", "armor"],
+      "flavor": "Chitinous armor from void creatures"
     },
     {
-      "id": "recurve_bow",
-      "name": "Recurve Bow",
+      "id": "time_ripper",
+      "name": "Time Ripper",
       "cost": 900,
-      "stats": {
-        "attack_speed": 0.25
-      },
-      "buildsFrom": ["dagger"],
-      "buildsInto": ["blade_of_ruined_king", "runaans"],
+      "stats": { "attack_speed": 0.25 },
+      "buildsFrom": ["temporal_blade"],
+      "buildsInto": ["kings_fall", "hurricane_spiral"],
       "tier": "component",
-      "tags": ["attack_speed"]
+      "tags": ["attack_speed"],
+      "flavor": "Strikes multiple moments at once"
     },
     {
-      "id": "berserkers_greaves",
-      "name": "Berserker's Greaves",
+      "id": "void_heart",
+      "name": "Void Heart",
+      "cost": 800,
+      "stats": { "max_health": 200, "ability_haste": 10 },
+      "buildsFrom": ["essence_crystal"],
+      "buildsInto": ["corrupted_titan", "dimensional_anchor"],
+      "tier": "component",
+      "tags": ["health", "tank"],
+      "flavor": "Pulses with stolen vitality"
+    },
+    {
+      "id": "void_walkers",
+      "name": "Void Walkers",
       "cost": 1100,
-      "stats": {
-        "attack_speed": 0.35,
-        "movement_speed": 45
-      },
-      "buildsFrom": ["boots", "dagger"],
+      "stats": { "attack_speed": 0.35, "movement_speed": 45 },
+      "buildsFrom": ["phase_step", "temporal_blade"],
       "tier": "legendary",
       "tags": ["boots", "attack_speed"],
-      "roles": ["bot", "top"]
+      "roles": ["bot", "top"],
+      "flavor": "Footsteps leave rifts in reality"
     },
     {
-      "id": "sorcerer_shoes",
-      "name": "Sorcerer's Shoes",
+      "id": "chaos_treads",
+      "name": "Chaos Treads",
       "cost": 1100,
-      "stats": {
-        "ability_power": 18,
-        "magic_penetration": 18,
-        "movement_speed": 45
-      },
-      "buildsFrom": ["boots"],
+      "stats": { "ability_power": 18, "magic_penetration": 18, "movement_speed": 45 },
+      "buildsFrom": ["phase_step"],
       "tier": "legendary",
       "tags": ["boots", "magic"],
-      "roles": ["mid", "support"]
+      "roles": ["mid", "support"],
+      "flavor": "Each step spreads chaos"
     },
     {
-      "id": "ninja_tabi",
-      "name": "Ninja Tabi",
+      "id": "reality_boots",
+      "name": "Reality Boots",
       "cost": 1100,
-      "stats": {
-        "armor": 20,
-        "movement_speed": 45
-      },
-      "buildsFrom": ["boots"],
+      "stats": { "armor": 20, "movement_speed": 45 },
+      "buildsFrom": ["phase_step"],
       "tier": "legendary",
       "tags": ["boots", "defense"],
-      "roles": ["top", "jungle", "support"]
+      "roles": ["top", "jungle", "support"],
+      "flavor": "Solidifies your position in this reality"
     },
     {
-      "id": "infinity_edge",
-      "name": "Infinity Edge",
+      "id": "perfect_edge",
+      "name": "Perfect Edge",
       "cost": 3400,
-      "stats": {
-        "attack_damage": 70,
-        "critical_strike_chance": 0.20
-      },
-      "buildsFrom": ["bf_sword", "pickaxe"],
+      "stats": { "attack_damage": 70, "critical_strike_chance": 0.20 },
       "tier": "legendary",
       "tags": ["damage", "physical", "crit"],
       "roles": ["bot"],
-      "passive": "Critical strikes deal 225% damage instead of 200%"
+      "passive": "Critical strikes tear through reality, dealing 225% damage",
+      "flavor": "Every swing achieves perfection"
     },
     {
-      "id": "rabadons",
-      "name": "Rabadon's Deathcap",
+      "id": "apocalypse_crown",
+      "name": "Apocalypse Crown",
       "cost": 3600,
-      "stats": {
-        "ability_power": 120
-      },
-      "buildsFrom": ["needlessly_large_rod"],
+      "stats": { "ability_power": 120 },
+      "buildsFrom": ["reality_core"],
       "tier": "legendary",
       "tags": ["damage", "magic"],
       "roles": ["mid"],
-      "passive": "Increases Ability Power by 35%"
+      "passive": "Increases Ability Power by 35%",
+      "flavor": "Worn by those who ended their reality"
     },
     {
-      "id": "thornmail",
-      "name": "Thornmail",
+      "id": "reflection_mail",
+      "name": "Reflection Mail",
       "cost": 2700,
-      "stats": {
-        "armor": 80,
-        "max_health": 250
-      },
-      "buildsFrom": ["chain_vest"],
+      "stats": { "armor": 80, "max_health": 250 },
+      "buildsFrom": ["void_carapace"],
       "tier": "legendary",
       "tags": ["defense", "armor", "tank"],
       "roles": ["top", "support"],
-      "passive": "Reflects 10% of damage taken back to attacker"
+      "passive": "Reflects 10% of damage taken back through the void to attackers",
+      "flavor": "Mirrors harm back to its source"
     },
     {
-      "id": "blade_of_ruined_king",
-      "name": "Blade of the Ruined King",
+      "id": "kings_fall",
+      "name": "King's Fall",
       "cost": 3200,
-      "stats": {
-        "attack_damage": 40,
-        "attack_speed": 0.25,
-        "life_steal": 0.10
-      },
-      "buildsFrom": ["recurve_bow"],
+      "stats": { "attack_damage": 40, "attack_speed": 0.25, "life_steal": 0.10 },
+      "buildsFrom": ["time_ripper"],
       "tier": "legendary",
       "tags": ["damage", "attack_speed", "sustain"],
       "roles": ["bot", "top"],
-      "passive": "Attacks deal 8% current health physical damage"
+      "passive": "Attacks steal 8% current health from the target",
+      "flavor": "The blade that toppled a thousand kings"
     },
     {
-      "id": "black_cleaver",
-      "name": "Black Cleaver",
+      "id": "entropy_cleaver",
+      "name": "Entropy Cleaver",
       "cost": 3100,
-      "stats": {
-        "attack_damage": 45,
-        "max_health": 400,
-        "ability_haste": 30
-      },
-      "buildsFrom": ["long_sword"],
+      "stats": { "attack_damage": 45, "max_health": 400, "ability_haste": 30 },
+      "buildsFrom": ["void_shard"],
       "tier": "legendary",
       "tags": ["damage", "health", "tank"],
       "roles": ["top", "jungle"],
-      "passive": "Dealing physical damage reduces enemy armor by 5% (stacks 6 times)"
+      "passive": "Physical damage increases chaos in target, reducing armor by 5% (stacks 6 times)",
+      "flavor": "Splits reality with each blow"
     },
     {
-      "id": "ludens",
-      "name": "Luden's Tempest",
+      "id": "chaos_tempest",
+      "name": "Chaos Tempest",
       "cost": 3200,
-      "stats": {
-        "ability_power": 90,
-        "mana": 600,
-        "ability_haste": 20
-      },
-      "buildsFrom": ["amplifying_tome"],
+      "stats": { "ability_power": 90, "mana": 600, "ability_haste": 20 },
+      "buildsFrom": ["chaos_ember"],
       "tier": "legendary",
       "tags": ["damage", "magic", "mana"],
       "roles": ["mid"],
-      "passive": "Damaging abilities deal 100 bonus magic damage to target and nearby enemies"
+      "passive": "Abilities echo through reality, dealing 100 bonus magic damage to nearby enemies",
+      "flavor": "Summons storms from the void"
     },
     {
-      "id": "redemption",
-      "name": "Redemption",
+      "id": "salvation_anchor",
+      "name": "Salvation Anchor",
       "cost": 2300,
-      "stats": {
-        "ability_power": 20,
-        "max_health": 250,
-        "mana_regen": 100,
-        "heal_shield_power": 0.16
-      },
+      "stats": { "ability_power": 20, "max_health": 250, "mana_regen": 100, "heal_shield_power": 0.16 },
       "tier": "legendary",
       "tags": ["support", "healing", "utility"],
       "roles": ["support"],
-      "passive": "Active: Heal allies in area for 250 health"
+      "passive": "Tether reality to heal allies in area for 250 health",
+      "flavor": "Prevents allies from fading"
     },
     {
-      "id": "spirit_visage",
-      "name": "Spirit Visage",
+      "id": "corruption_mantle",
+      "name": "Corruption Mantle",
       "cost": 2900,
-      "stats": {
-        "magic_resist": 55,
-        "max_health": 450,
-        "ability_haste": 20,
-        "health_regen": 100
-      },
+      "stats": { "magic_resist": 55, "max_health": 450, "ability_haste": 20, "health_regen": 100 },
       "tier": "legendary",
       "tags": ["defense", "magic_resist", "tank"],
       "roles": ["top", "jungle", "support"],
-      "passive": "Increases all healing and shielding by 25%"
+      "passive": "Void corruption increases all healing and shielding by 25%",
+      "flavor": "Embraces the void to strengthen life"
+    },
+
+    {
+      "id": "eclipse_fang",
+      "name": "Eclipse Fang",
+      "cost": 3200,
+      "stats": { "attack_damage": 60, "lethality": 18, "ability_haste": 15 },
+      "tier": "mythic",
+      "tags": ["mythic", "damage", "physical", "assassin"],
+      "roles": ["jungle", "mid"],
+      "passive": "Ever-Rising Void: Gain 5% armor penetration and 50 health per legendary item. Attacks against isolated targets deal 8% max health bonus damage",
+      "flavor": "Consumed by the void at the moment of totality"
+    },
+    {
+      "id": "reality_anchor",
+      "name": "Reality Anchor",
+      "cost": 3400,
+      "stats": { "attack_damage": 55, "max_health": 350, "ability_haste": 20 },
+      "tier": "mythic",
+      "tags": ["mythic", "damage", "bruiser"],
+      "roles": ["top", "jungle"],
+      "passive": "Unyielding: Gain 5% ability haste and 5 attack damage per legendary item. Taking damage below 60% health grants a shield for 300 + 8% max health",
+      "flavor": "Binds the wielder firmly to this reality"
+    },
+    {
+      "id": "galeforce_relic",
+      "name": "Galeforce Relic",
+      "cost": 3400,
+      "stats": { "attack_damage": 60, "attack_speed": 0.20, "critical_strike_chance": 0.20 },
+      "tier": "mythic",
+      "tags": ["mythic", "damage", "physical", "crit"],
+      "roles": ["bot"],
+      "passive": "Phase Dash: Gain 3% movement speed per legendary item. Active: Dash through the void, dealing 200 magic damage to nearest enemy (90s cooldown)",
+      "flavor": "Harnesses void winds for impossible mobility"
+    },
+    {
+      "id": "riftmaker_crown",
+      "name": "Riftmaker Crown",
+      "cost": 3200,
+      "stats": { "ability_power": 90, "max_health": 300, "omnivamp": 0.10 },
+      "tier": "mythic",
+      "tags": ["mythic", "damage", "magic", "sustain"],
+      "roles": ["mid", "top"],
+      "passive": "Void Tear: Gain 5% magic penetration per legendary item. Deal 3% increased damage for each second in combat (max 15%)",
+      "flavor": "Opens rifts that feed on enemy essence"
+    },
+    {
+      "id": "everfrost_shard",
+      "name": "Everfrost Shard",
+      "cost": 2800,
+      "stats": { "ability_power": 80, "max_health": 250, "mana": 600, "ability_haste": 20 },
+      "tier": "mythic",
+      "tags": ["mythic", "damage", "magic", "utility"],
+      "roles": ["mid", "support"],
+      "passive": "Temporal Freeze: Gain 15 ability power per legendary item. Active: Root enemies in a cone for 1.5s (40s cooldown)",
+      "flavor": "Freezes time itself in the void"
+    },
+    {
+      "id": "immortal_bulwark",
+      "name": "Immortal Bulwark",
+      "cost": 2900,
+      "stats": { "armor": 45, "magic_resist": 45, "max_health": 400, "ability_haste": 20 },
+      "tier": "mythic",
+      "tags": ["mythic", "defense", "tank"],
+      "roles": ["top", "support", "jungle"],
+      "passive": "Eternal: Gain 5 armor and magic resist per legendary item. Regenerate 5% max health every 5 seconds when below 40% health",
+      "flavor": "Cannot be destroyed, even by the void"
+    },
+
+    {
+      "id": "voidwalker_shroud",
+      "name": "Voidwalker's Shroud",
+      "cost": 3100,
+      "stats": { "ability_power": 70, "max_health": 300 },
+      "tier": "legendary",
+      "tags": ["void_unique", "magic"],
+      "roles": ["mid", "top"],
+      "passive": "On ability cast, teleport 200 units toward cursor (8s cooldown)",
+      "flavor": "Walk between realities"
+    },
+    {
+      "id": "corruption_engine",
+      "name": "Corruption Engine",
+      "cost": 3300,
+      "stats": { "ability_power": 85, "max_health": 250 },
+      "tier": "legendary",
+      "tags": ["void_unique", "magic", "debuff"],
+      "roles": ["mid"],
+      "passive": "Abilities apply void corruption for 3s. Corrupted enemies take 2% increased damage from all sources (stacks 3 times)",
+      "flavor": "Spreads the void through magic"
+    },
+    {
+      "id": "timeless_hourglass",
+      "name": "Timeless Hourglass",
+      "cost": 2600,
+      "stats": { "armor": 45, "ability_power": 65 },
+      "tier": "legendary",
+      "tags": ["void_unique", "magic", "defense"],
+      "roles": ["mid", "top"],
+      "passive": "On death, immediately revive at 50% health and 30% mana (300s cooldown)",
+      "flavor": "Traps your essence in frozen time"
+    },
+    {
+      "id": "chaos_amplifier",
+      "name": "Chaos Amplifier",
+      "cost": 2900,
+      "stats": { "ability_power": 75, "ability_haste": 25 },
+      "tier": "legendary",
+      "tags": ["void_unique", "magic"],
+      "roles": ["mid", "support"],
+      "passive": "All cooldowns have a 15% chance to reset immediately on cast",
+      "flavor": "Randomness incarnate"
+    },
+    {
+      "id": "null_zone_barrier",
+      "name": "Null Zone Barrier",
+      "cost": 2700,
+      "stats": { "magic_resist": 60, "max_health": 300 },
+      "tier": "legendary",
+      "tags": ["void_unique", "defense"],
+      "roles": ["top", "jungle", "support"],
+      "passive": "When hit by magic damage exceeding 20% max health, create a null zone that blocks all magic damage for 2s (45s cooldown)",
+      "flavor": "Erases magic from existence"
+    },
+    {
+      "id": "void_conduit",
+      "name": "Void Conduit",
+      "cost": 3100,
+      "stats": { "ability_power": 100, "magic_penetration": 40 },
+      "buildsFrom": ["reality_core"],
+      "tier": "legendary",
+      "tags": ["damage", "magic", "penetration"],
+      "roles": ["mid"],
+      "passive": "Magic penetration increases by 2% per 100 AP (max 20%)",
+      "flavor": "Channels pure void energy"
+    },
+    {
+      "id": "oblivion_edge",
+      "name": "Oblivion Edge",
+      "cost": 3000,
+      "stats": { "attack_damage": 60, "lethality": 21 },
+      "buildsFrom": ["entropy_blade"],
+      "tier": "legendary",
+      "tags": ["damage", "physical", "lethality"],
+      "roles": ["jungle", "mid"],
+      "passive": "Damaging an enemy champion grants invisibility for 1.5s (30s cooldown)",
+      "flavor": "Cuts through sight itself"
+    },
+    {
+      "id": "reality_splitter",
+      "name": "Reality Splitter",
+      "cost": 3200,
+      "stats": { "attack_damage": 65, "lethality": 18, "movement_speed": 40 },
+      "buildsFrom": ["entropy_blade"],
+      "tier": "legendary",
+      "tags": ["damage", "physical", "lethality", "movement"],
+      "roles": ["jungle"],
+      "passive": "Gain 20% movement speed when out of combat",
+      "flavor": "Moves between worlds at will"
+    },
+    {
+      "id": "hurricane_spiral",
+      "name": "Hurricane Spiral",
+      "cost": 2600,
+      "stats": { "attack_damage": 40, "attack_speed": 0.40, "critical_strike_chance": 0.25 },
+      "buildsFrom": ["time_ripper"],
+      "tier": "legendary",
+      "tags": ["damage", "attack_speed", "crit"],
+      "roles": ["bot"],
+      "passive": "Attacks fire additional bolts at two nearby enemies for 40% damage",
+      "flavor": "Strikes all possible targets simultaneously"
+    },
+    {
+      "id": "essence_reaver",
+      "name": "Essence Reaver",
+      "cost": 2900,
+      "stats": { "attack_damage": 55, "critical_strike_chance": 0.20, "ability_haste": 20 },
+      "tier": "legendary",
+      "tags": ["damage", "physical", "crit", "utility"],
+      "roles": ["bot", "top"],
+      "passive": "Basic attacks restore 1% missing mana",
+      "flavor": "Steals essence with every strike"
+    },
+    {
+      "id": "phantom_dancer",
+      "name": "Phantom Dancer",
+      "cost": 2600,
+      "stats": { "attack_speed": 0.45, "critical_strike_chance": 0.20, "movement_speed": 7 },
+      "tier": "legendary",
+      "tags": ["attack_speed", "crit", "movement"],
+      "roles": ["bot"],
+      "passive": "When dealing damage, gain 7% movement speed for 2s (stacks up to 4 times)",
+      "flavor": "Dance through the battlefield like a ghost"
+    },
+    {
+      "id": "guardian_angel",
+      "name": "Guardian Angel",
+      "cost": 2800,
+      "stats": { "attack_damage": 45, "armor": 40 },
+      "tier": "legendary",
+      "tags": ["damage", "defense", "utility"],
+      "roles": ["bot", "top", "mid"],
+      "passive": "On death, revive after 4s with 50% base health and 30% mana (300s cooldown)",
+      "flavor": "A second chance borrowed from the void"
+    },
+    {
+      "id": "void_greaves",
+      "name": "Void Greaves",
+      "cost": 1100,
+      "stats": { "ability_power": 15, "movement_speed": 45, "tenacity": 0.30 },
+      "buildsFrom": ["phase_step"],
+      "tier": "legendary",
+      "tags": ["boots", "magic", "utility"],
+      "roles": ["mid", "jungle"],
+      "passive": "Reduces duration of crowd control effects by 30%",
+      "flavor": "Cannot be held in place by this reality"
+    },
+    {
+      "id": "dimensional_anchor",
+      "name": "Dimensional Anchor",
+      "cost": 2800,
+      "stats": { "max_health": 800, "health_regen": 200 },
+      "buildsFrom": ["void_heart"],
+      "tier": "legendary",
+      "tags": ["health", "tank", "sustain"],
+      "roles": ["top", "support"],
+      "passive": "Regenerate 100% base health regen when not damaged for 5s",
+      "flavor": "Too massive to be displaced"
+    },
+    {
+      "id": "unstoppable_shell",
+      "name": "Unstoppable Shell",
+      "cost": 2700,
+      "stats": { "armor": 85, "max_health": 400 },
+      "buildsFrom": ["void_carapace"],
+      "tier": "legendary",
+      "tags": ["defense", "armor", "tank"],
+      "roles": ["top", "jungle", "support"],
+      "passive": "Reduces damage from critical strikes by 20%. When struck by 3 critical strikes, slow attacker by 40% for 2s",
+      "flavor": "Impervious to perfection"
+    },
+    {
+      "id": "abyss_mask",
+      "name": "Abyss Mask",
+      "cost": 2650,
+      "stats": { "magic_resist": 60, "max_health": 400, "ability_haste": 10 },
+      "tier": "legendary",
+      "tags": ["defense", "magic_resist", "tank"],
+      "roles": ["top", "jungle", "support"],
+      "passive": "Damaging enemy champions reduces their magic resist by 15 for 4s",
+      "flavor": "Stares into the abyss, makes it weaker"
+    },
+    {
+      "id": "death_dance",
+      "name": "Death Dance",
+      "cost": 3200,
+      "stats": { "attack_damage": 55, "armor": 45, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["damage", "defense", "utility"],
+      "roles": ["top", "jungle", "bot"],
+      "passive": "Stores 30% of damage taken and deals it over 3s instead. Takedowns cleanse remaining damage",
+      "flavor": "Delays death through the void"
+    },
+    {
+      "id": "mortal_reminder",
+      "name": "Mortal Reminder",
+      "cost": 2600,
+      "stats": { "attack_damage": 25, "critical_strike_chance": 0.20, "attack_speed": 0.25 },
+      "tier": "legendary",
+      "tags": ["damage", "crit", "utility"],
+      "roles": ["bot"],
+      "passive": "Physical damage inflicts 40% Grievous Wounds for 3s",
+      "flavor": "Reminds enemies of their mortality"
+    },
+    {
+      "id": "void_mantle",
+      "name": "Void Mantle",
+      "cost": 1300,
+      "stats": { "magic_resist": 50, "health_regen": 100 },
+      "buildsFrom": ["null_orb"],
+      "buildsInto": ["corruption_mantle", "abyss_mask"],
+      "tier": "component",
+      "tags": ["defense", "magic_resist"],
+      "flavor": "Wraps the wearer in protective nothingness"
+    },
+    {
+      "id": "maw_of_malmortius",
+      "name": "Maw of Malmortius",
+      "cost": 2900,
+      "stats": { "attack_damage": 55, "magic_resist": 50, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["damage", "defense", "utility"],
+      "roles": ["top", "jungle", "bot"],
+      "passive": "When taking magic damage that would reduce you below 30% health, gain a shield for 200 + 20% max health for 5s (90s cooldown)",
+      "flavor": "Devours hostile magic"
+    },
+    {
+      "id": "banshees_veil",
+      "name": "Banshee's Veil",
+      "cost": 2600,
+      "stats": { "ability_power": 80, "magic_resist": 45, "ability_haste": 10 },
+      "tier": "legendary",
+      "tags": ["magic", "defense", "utility"],
+      "roles": ["mid"],
+      "passive": "Grants spell shield that blocks next incoming ability (45s cooldown)",
+      "flavor": "Phases between realities to avoid harm"
+    },
+    {
+      "id": "mejais_soulstealer",
+      "name": "Mejai's Soulstealer",
+      "cost": 1600,
+      "stats": { "ability_power": 20 },
+      "tier": "legendary",
+      "tags": ["magic", "stacking"],
+      "roles": ["mid", "support"],
+      "passive": "Gain 4 stacks per kill and 2 per assist (max 25 stacks). Lose 10 stacks on death. Gain +5 AP per stack. At 25 stacks, gain 10% movement speed",
+      "flavor": "Collects the essence of the fallen"
+    },
+    {
+      "id": "zhonyas_hourglass",
+      "name": "Zhonya's Hourglass",
+      "cost": 2600,
+      "stats": { "ability_power": 80, "armor": 45 },
+      "tier": "legendary",
+      "tags": ["magic", "defense", "utility"],
+      "roles": ["mid"],
+      "passive": "Active: Become invulnerable and untargetable for 2.5s, but unable to move or act (120s cooldown)",
+      "flavor": "Stops time, preserving the moment"
+    },
+    {
+      "id": "cosmic_drive",
+      "name": "Cosmic Drive",
+      "cost": 3000,
+      "stats": { "ability_power": 75, "max_health": 200, "ability_haste": 30 },
+      "tier": "legendary",
+      "tags": ["magic", "utility"],
+      "roles": ["mid", "top"],
+      "passive": "Damaging champions grants 20 movement speed for 2s",
+      "flavor": "Propelled by cosmic forces"
+    },
+    {
+      "id": "frozen_heart",
+      "name": "Frozen Heart",
+      "cost": 2700,
+      "stats": { "armor": 90, "mana": 400, "ability_haste": 20 },
+      "tier": "legendary",
+      "tags": ["defense", "tank", "utility"],
+      "roles": ["top", "support"],
+      "passive": "Reduces attack speed of nearby enemies by 20%",
+      "flavor": "Chills the void itself"
+    },
+    {
+      "id": "knights_vow",
+      "name": "Knight's Vow",
+      "cost": 2300,
+      "stats": { "armor": 40, "max_health": 400, "ability_haste": 10 },
+      "tier": "legendary",
+      "tags": ["defense", "tank", "support"],
+      "roles": ["support"],
+      "passive": "Link to an ally. They heal for 12% of damage you take. You heal for 10% of damage they deal to champions",
+      "flavor": "Binds two souls across realities"
+    },
+    {
+      "id": "locket_of_iron_solari",
+      "name": "Locket of the Iron Solari",
+      "cost": 2500,
+      "stats": { "armor": 30, "magic_resist": 30, "max_health": 200, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["defense", "support", "utility"],
+      "roles": ["support"],
+      "passive": "Active: Grant all nearby allies a shield for 250 + 15% max health for 2.5s (90s cooldown)",
+      "flavor": "Projects protective light through the void"
+    },
+    {
+      "id": "zekes_convergence",
+      "name": "Zeke's Convergence",
+      "cost": 2400,
+      "stats": { "armor": 35, "magic_resist": 35, "max_health": 250, "ability_haste": 10, "mana": 250 },
+      "tier": "legendary",
+      "tags": ["defense", "support", "utility"],
+      "roles": ["support"],
+      "passive": "Bind to an ally. After they cast their ultimate, you and they gain bonus damage on next 4 attacks",
+      "flavor": "Synchronizes power across the void"
+    },
+    {
+      "id": "mikael_blessing",
+      "name": "Mikael's Blessing",
+      "cost": 2300,
+      "stats": { "ability_power": 35, "heal_shield_power": 0.20, "mana_regen": 100, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["support", "utility", "healing"],
+      "roles": ["support"],
+      "passive": "Active: Remove all crowd control from an ally and heal them for 100 + 15% max health (120s cooldown)",
+      "flavor": "Cleanses void corruption"
+    },
+    {
+      "id": "chemtech_putrifier",
+      "name": "Chemtech Putrifier",
+      "cost": 2300,
+      "stats": { "ability_power": 55, "heal_shield_power": 0.10, "mana_regen": 100, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["support", "magic", "utility"],
+      "roles": ["support"],
+      "passive": "Healing or shielding allies causes their next damage to inflict 40% Grievous Wounds for 3s",
+      "flavor": "Corrupts enemies through your allies"
+    },
+    {
+      "id": "staff_of_flowing_water",
+      "name": "Staff of Flowing Water",
+      "cost": 2300,
+      "stats": { "ability_power": 60, "mana_regen": 100, "heal_shield_power": 0.10, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["support", "magic"],
+      "roles": ["support"],
+      "passive": "Healing or shielding an ally grants you and them 25 AP and 3% movement speed for 4s",
+      "flavor": "Channels the void's flowing energy"
+    },
+    {
+      "id": "shurelya_battlesong",
+      "name": "Shurelya's Battlesong",
+      "cost": 2500,
+      "stats": { "ability_power": 40, "max_health": 200, "mana_regen": 100, "ability_haste": 25 },
+      "tier": "legendary",
+      "tags": ["support", "utility"],
+      "roles": ["support"],
+      "passive": "Active: Grant all nearby allies 30% movement speed for 4s (90s cooldown)",
+      "flavor": "A song that echoes through dimensions"
+    },
+    {
+      "id": "moonstone_renewer",
+      "name": "Moonstone Renewer",
+      "cost": 2500,
+      "stats": { "ability_power": 40, "max_health": 200, "heal_shield_power": 0.20, "mana_regen": 100, "ability_haste": 15 },
+      "tier": "legendary",
+      "tags": ["support", "healing", "utility"],
+      "roles": ["support"],
+      "passive": "Healing or shielding allies fires a heal at the lowest health ally for 70 (2s cooldown). Empowers after 5s in combat to double healing",
+      "flavor": "Renews life through lunar void magic"
     }
   ],
   "buildPaths": {
     "top": {
-      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "spirit_visage"],
-      "bruiser": ["long_sword", "ruby_crystal", "berserkers_greaves", "black_cleaver", "blade_of_ruined_king"],
-      "splitpush": ["long_sword", "dagger", "berserkers_greaves", "blade_of_ruined_king", "black_cleaver"]
+      "tank": ["corrupted_plate", "essence_crystal", "reality_boots", "reflection_mail", "corruption_mantle", "dimensional_anchor"],
+      "bruiser": ["void_shard", "essence_crystal", "void_walkers", "entropy_cleaver", "kings_fall", "death_dance"],
+      "splitpush": ["void_shard", "temporal_blade", "void_walkers", "kings_fall", "entropy_cleaver"],
+      "mythic_tank": ["corrupted_plate", "immortal_bulwark", "reflection_mail", "unstoppable_shell", "corruption_mantle"],
+      "mythic_bruiser": ["void_shard", "reality_anchor", "entropy_cleaver", "kings_fall", "death_dance"]
     },
     "jungle": {
-      "assassin": ["long_sword", "serrated_dirk", "ninja_tabi", "duskblade", "youmuus"],
-      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "spirit_visage"],
-      "bruiser": ["long_sword", "ruby_crystal", "ninja_tabi", "black_cleaver", "spirit_visage"]
+      "assassin": ["void_shard", "entropy_blade", "reality_boots", "oblivion_edge", "reality_splitter"],
+      "tank": ["corrupted_plate", "essence_crystal", "reality_boots", "reflection_mail", "corruption_mantle"],
+      "bruiser": ["void_shard", "essence_crystal", "reality_boots", "entropy_cleaver", "corruption_mantle"],
+      "mythic_assassin": ["void_shard", "eclipse_fang", "oblivion_edge", "reality_splitter"],
+      "mythic_bruiser": ["void_shard", "reality_anchor", "entropy_cleaver", "death_dance"]
     },
     "mid": {
-      "burst": ["amplifying_tome", "sorcerer_shoes", "needlessly_large_rod", "ludens", "rabadons"],
-      "control": ["amplifying_tome", "ruby_crystal", "sorcerer_shoes", "ludens", "spirit_visage"]
+      "burst": ["chaos_ember", "chaos_treads", "reality_core", "chaos_tempest", "apocalypse_crown"],
+      "control": ["chaos_ember", "essence_crystal", "chaos_treads", "chaos_tempest", "corruption_mantle"],
+      "assassin": ["void_shard", "entropy_blade", "chaos_treads", "oblivion_edge"],
+      "mythic_burst": ["chaos_ember", "riftmaker_crown", "apocalypse_crown", "void_conduit"],
+      "mythic_control": ["chaos_ember", "everfrost_shard", "chaos_tempest", "cosmic_drive"]
     },
     "bot": {
-      "crit": ["long_sword", "dagger", "berserkers_greaves", "infinity_edge", "blade_of_ruined_king"],
-      "onhit": ["dagger", "recurve_bow", "berserkers_greaves", "blade_of_ruined_king", "runaans"]
+      "crit": ["void_shard", "temporal_blade", "void_walkers", "perfect_edge", "kings_fall", "phantom_dancer"],
+      "onhit": ["temporal_blade", "time_ripper", "void_walkers", "kings_fall", "hurricane_spiral"],
+      "mythic_crit": ["void_shard", "galeforce_relic", "perfect_edge", "phantom_dancer"],
+      "mythic_onhit": ["temporal_blade", "galeforce_relic", "kings_fall", "hurricane_spiral"]
     },
     "support": {
-      "enchanter": ["ruby_crystal", "amplifying_tome", "sorcerer_shoes", "redemption", "spirit_visage"],
-      "tank": ["cloth_armor", "ruby_crystal", "ninja_tabi", "thornmail", "redemption"]
+      "enchanter": ["essence_crystal", "chaos_ember", "chaos_treads", "salvation_anchor", "moonstone_renewer", "staff_of_flowing_water"],
+      "tank": ["corrupted_plate", "essence_crystal", "reality_boots", "reflection_mail", "salvation_anchor", "locket_of_iron_solari"],
+      "mythic_enchanter": ["chaos_ember", "moonstone_renewer", "salvation_anchor", "staff_of_flowing_water"],
+      "mythic_tank": ["corrupted_plate", "immortal_bulwark", "reflection_mail", "locket_of_iron_solari"]
     }
   }
 }
