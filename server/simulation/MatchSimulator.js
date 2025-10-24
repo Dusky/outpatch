@@ -218,7 +218,8 @@ class MatchSimulator {
             game_sense: championData.game_sense || 0.5,
             tilt_resistance: championData.tilt_resistance || 0.5,
             clutch_factor: championData.clutch_factor || 0.5,
-            tilt_level: 0
+            tilt_level: 0,
+            power_curve: championData.power_curve || 'mid'  // 'early', 'mid', 'late'
         }));
 
         // Items
@@ -226,6 +227,9 @@ class MatchSimulator {
 
         // Abilities component (CAbilities is used for ability-specific data)
         entity.addComponent('abilities', new CAbilities());
+
+        // Leveling component (for XP and level progression)
+        entity.addComponent('leveling', new CLeveling());
 
         // Position
         entity.addComponent('position', new CPosition(role, 'lane'));

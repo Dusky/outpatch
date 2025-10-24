@@ -39,6 +39,13 @@ class LaneSystem {
     }
 
     /**
+     * Set leveling system reference
+     */
+    setLevelingSystem(levelingSystem) {
+        this.levelingSystem = levelingSystem;
+    }
+
+    /**
      * Initialize lane states
      */
     initialize(world, eventLog) {
@@ -143,6 +150,13 @@ class LaneSystem {
 
                 stats1.gold += goldGained;
                 laneState.minionWaves.team2.count -= actualCS;
+
+                // Award XP for CS
+                if (this.levelingSystem) {
+                    for (let i = 0; i < actualCS; i++) {
+                        this.levelingSystem.awardCSXP(champ1);
+                    }
+                }
 
                 eventLog.log({
                     type: EventLog.EventTypes.LANE_CS,
