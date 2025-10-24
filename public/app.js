@@ -48,6 +48,9 @@ const newsTab = document.getElementById('news-tab');
 let currentMatchId = null;
 let currentOdds = { team1: 2.0, team2: 2.0 };
 
+// Visualization instance
+let matchVisualization = null;
+
 // Color mapping for teams and champions
 let teamColorMap = {}; // { "Team Name": "rgba(...)" }
 let championColorMap = {}; // { "Champion Name": "#hexcolor" }
@@ -530,6 +533,19 @@ function addToMatchFeed(message, type = null) {
     while (matchFeed.children.length > 100) {
         matchFeed.removeChild(matchFeed.firstChild);
     }
+
+    // Add to visualization event timeline for key events
+    if (matchVisualization && type && ['combat', 'objective', 'victory', 'announcement'].includes(type)) {
+        // Extract wave number from message if present (format: "Wave X")
+        const waveMatch = message.match(/Wave (\d+)/);
+        const wave = waveMatch ? parseInt(waveMatch[1]) : 0;
+
+        // Create short description for timeline
+        let shortDesc = message.substring(0, 40);
+        if (message.length > 40) shortDesc += '...';
+
+        matchVisualization.addEvent(wave, type, shortDesc, teamAffiliation);
+    }
 }
 
 function detectEventType(message) {
@@ -698,6 +714,12 @@ function updateMatchStatus(statusData) {
     // Show the status bar when match starts
     matchStatusBar.style.display = 'block';
 
+    // Show visualization section
+    const matchVisualizationEl = document.getElementById('match-visualization');
+    if (matchVisualizationEl) {
+        matchVisualizationEl.style.display = 'block';
+    }
+
     // Update match title with team names
     if (matchTitle && statusData.team1Name && statusData.team2Name) {
         const team1Color = generateChampionColor(statusData.team1Name);
@@ -764,6 +786,11 @@ function updateMatchStatus(statusData) {
     // Update header countdown timer with match elapsed time
     if (countdownTimer && statusData.elapsedTime) {
         countdownTimer.textContent = statusData.elapsedTime;
+    }
+
+    // Update visualization
+    if (matchVisualization) {
+        matchVisualization.updateMatchData(statusData);
     }
 }
 
@@ -1067,6 +1094,16 @@ statusText.textContent = '◈ NETWORK SYNC IN PROGRESS ◈';
 // Update ticker every 10 seconds
 setInterval(updateTicker, 10000);
 updateTicker(); // Initial call
+
+// Initialize visualization when page loads
+window.addEventListener('load', () => {
+    if (window.MatchVisualization) {
+        matchVisualization = new window.MatchVisualization();
+        setTimeout(() => {
+            matchVisualization.initialize();
+        }, 500); // Delay to ensure DOM is fully ready
+    }
+});
 
 // ========================================
 // TAB SWITCHING FUNCTIONALITY

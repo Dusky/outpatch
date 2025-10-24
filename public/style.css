@@ -777,6 +777,162 @@ body {
 }
 
 /* ========================================
+   MATCH VISUALIZATION
+   ======================================== */
+.match-visualization {
+  margin: var(--spacing-md) 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.visualization-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+.visualization-panel {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+}
+
+.visualization-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Mini-map */
+.minimap-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#minimap {
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: #1a1d29;
+}
+
+/* Graphs */
+.graphs-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.graph-item {
+  display: flex;
+  justify-content: center;
+}
+
+.graph-item canvas {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: #1a1d29;
+}
+
+/* Event Timeline */
+.timeline-panel {
+  margin: 0 var(--spacing-md) var(--spacing-md);
+}
+
+.event-timeline {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  padding: var(--spacing-sm);
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  scroll-behavior: smooth;
+}
+
+.event-timeline::-webkit-scrollbar {
+  height: 6px;
+}
+
+.event-timeline::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 3px;
+}
+
+.event-timeline::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.event-timeline::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+.timeline-event {
+  min-width: 120px;
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.timeline-event:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-event-wave {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.timeline-event-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* Timeline event type colors */
+.timeline-event-combat {
+  border-left: 3px solid #ff4444;
+}
+
+.timeline-event-objective {
+  border-left: 3px solid #ff9500;
+}
+
+.timeline-event-victory {
+  border-left: 3px solid #ffd700;
+}
+
+.timeline-event-announcement {
+  border-left: 3px solid var(--accent-primary);
+}
+
+/* Responsive visualization */
+@media (max-width: 1200px) {
+  .visualization-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
    TAB NAVIGATION
    ======================================== */
 /* Horizontal tabs for center content */

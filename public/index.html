@@ -191,6 +191,36 @@
                     </div>
                 </div>
 
+                <!-- Match Visualization Section -->
+                <div id="match-visualization" class="match-visualization" style="display:none;">
+                    <div class="visualization-grid">
+                        <!-- Mini-map -->
+                        <div class="visualization-panel minimap-panel">
+                            <h3 class="visualization-title">TACTICAL MAP</h3>
+                            <canvas id="minimap" width="300" height="300"></canvas>
+                        </div>
+
+                        <!-- Graphs -->
+                        <div class="visualization-panel graphs-panel">
+                            <h3 class="visualization-title">MATCH ANALYTICS</h3>
+                            <div class="graphs-container">
+                                <div class="graph-item">
+                                    <canvas id="gold-graph" width="400" height="200"></canvas>
+                                </div>
+                                <div class="graph-item">
+                                    <canvas id="kill-graph" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Timeline -->
+                    <div class="visualization-panel timeline-panel">
+                        <h3 class="visualization-title">EVENT TIMELINE</h3>
+                        <div id="event-timeline" class="event-timeline"></div>
+                    </div>
+                </div>
+
                 <div id="match-feed" class="match-feed"></div>
             </div>
 
@@ -250,6 +280,7 @@
         </div>
     </footer>
 
+    <script src="visualization.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
