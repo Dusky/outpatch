@@ -9,7 +9,8 @@ const {
     CPosition,
     CController,
     CStatus,
-    CQuirks
+    CQuirks,
+    CLeveling
 } = require('./core/Component');
 const LaneSystem = require('./systems/LaneSystem');
 const ItemSystem = require('./systems/ItemSystem');
@@ -21,6 +22,7 @@ const StructureSystem = require('./systems/StructureSystem');
 const AbilitySystem = require('./systems/AbilitySystem');
 const ChaosSystem = require('./systems/ChaosSystem');
 const { WeatherSystem } = require('./systems/WeatherSystem');
+const LevelingSystem = require('./systems/LevelingSystem');
 const abilitiesData = require('./data/abilities.json');
 
 /**
@@ -68,6 +70,7 @@ class MatchSimulator {
         const structureSystem = new StructureSystem();
         const itemSystem = new ItemSystem();
         const abilitySystem = new AbilitySystem();
+        const levelingSystem = new LevelingSystem();
         const tiltSystem = new TiltSystem();
         const laneSystem = new LaneSystem();
         const jungleSystem = new JungleSystem();
@@ -81,13 +84,17 @@ class MatchSimulator {
 
         // Connect systems that need to communicate
         laneSystem.setAbilitySystem(abilitySystem);
+        laneSystem.setLevelingSystem(levelingSystem);  // For CS XP rewards
         teamfightSystem.setAbilitySystem(abilitySystem);
+        teamfightSystem.setLevelingSystem(levelingSystem);  // For kill/assist XP
         abilitySystem.setObjectiveSystem(objectiveSystem);  // For rift buffs (CDR, damage)
+        objectiveSystem.setLevelingSystem(levelingSystem);  // For objective XP
 
         this.engine.registerSystem(structureSystem, 5);   // Structures first (win condition)
         this.engine.registerSystem(weatherSystem, 8);     // Weather (affects multipliers)
         this.engine.registerSystem(itemSystem, 10);       // Items (gold → purchases)
         this.engine.registerSystem(abilitySystem, 12);    // Abilities (mana regen, cooldowns)
+        this.engine.registerSystem(levelingSystem, 13);   // Leveling (XP → level ups) - after abilities
         this.engine.registerSystem(tiltSystem, 15);       // Tilt (affects all performance)
         this.engine.registerSystem(laneSystem, 20);       // Lane phase
         this.engine.registerSystem(jungleSystem, 25);     // Jungle actions
@@ -99,6 +106,7 @@ class MatchSimulator {
         this.abilitySystem = abilitySystem;
         this.weatherSystem = weatherSystem;
         this.chaosSystem = chaosSystem;
+        this.levelingSystem = levelingSystem;
 
         // Initialize weather
         const rng = this.engine.getRNG();

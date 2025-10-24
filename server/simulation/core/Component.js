@@ -287,6 +287,17 @@ class CQuirks {
     }
 }
 
+/**
+ * Leveling component - tracks XP and level progression
+ */
+class CLeveling {
+    constructor() {
+        this.level = 1;
+        this.xp = 0;
+        this.pendingXP = 0;  // XP to be awarded next update
+    }
+}
+
 module.exports = {
     CPosition,
     CStats,
@@ -297,5 +308,6 @@ module.exports = {
     CIdentity,
     CStatus,
     CController,
-    CQuirks
+    CQuirks,
+    CLeveling
 };
