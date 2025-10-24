@@ -47,6 +47,12 @@ const newsTab = document.getElementById('news-tab');
 let currentMatchId = null;
 let currentOdds = { team1: 2.0, team2: 2.0 };
 
+// Color mapping for teams and champions
+let teamColorMap = {}; // { "Team Name": "rgba(...)" }
+let championColorMap = {}; // { "Champion Name": "#hexcolor" }
+let championTeamMap = {}; // { "Champion Name": "Team Name" }
+let currentMatchTeams = { team1: null, team2: null }; // Track current match teams
+
 // Display current user
 if (currentUser && userDisplayName) {
     const displayText = currentUser.displayName || currentUser.username;
@@ -278,7 +284,131 @@ function populateTeamSelect(teams) {
     });
 }
 
+// ==================== COLOR GENERATION ====================
+
+/**
+ * Generate a consistent hash from a string
+ */
+function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+}
+
+/**
+ * Generate a semi-transparent team background color
+ */
+function generateTeamColor(teamName) {
+    const hash = hashString(teamName);
+    const hue = hash % 360;
+    const saturation = 40 + (hash % 30); // 40-70%
+    const lightness = 25 + (hash % 15); // 25-40%
+    const alpha = 0.15; // Subtle background
+
+    return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+}
+
+/**
+ * Generate a bright, readable champion text color
+ */
+function generateChampionColor(championName) {
+    const hash = hashString(championName);
+    const hue = hash % 360;
+    const saturation = 70 + (hash % 30); // 70-100%
+    const lightness = 60 + (hash % 20); // 60-80%
+
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+/**
+ * Build color maps from team data
+ */
+function buildColorMaps(teams) {
+    teamColorMap = {};
+    championColorMap = {};
+    championTeamMap = {};
+
+    teams.forEach(team => {
+        // Generate team color
+        teamColorMap[team.name] = generateTeamColor(team.name);
+
+        // Generate colors for each champion
+        team.champions.forEach(champ => {
+            championColorMap[champ.name] = generateChampionColor(champ.name);
+            championTeamMap[champ.name] = team.name;
+        });
+    });
+
+    console.log('Color maps built:', Object.keys(championColorMap).length, 'champions');
+}
+
+/**
+ * Colorize a message by wrapping champion and team names in colored spans
+ */
+function colorizeMessage(message) {
+    if (Object.keys(championColorMap).length === 0) {
+        return message; // No colors loaded yet
+    }
+
+    let colorizedMessage = message;
+
+    // Sort champion names by length (longest first) to avoid partial matches
+    const championNames = Object.keys(championColorMap).sort((a, b) => b.length - a.length);
+
+    // Replace each champion name with colored span
+    championNames.forEach(champName => {
+        const color = championColorMap[champName];
+        const regex = new RegExp(`\\b(${champName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\b`, 'g');
+        colorizedMessage = colorizedMessage.replace(
+            regex,
+            `<span style="color: ${color}; font-weight: 600; text-shadow: 0 0 8px ${color}40;">$1</span>`
+        );
+    });
+
+    // Also colorize team names in objectives/structure events
+    Object.keys(teamColorMap).forEach(teamName => {
+        const color = teamColorMap[teamName];
+        const regex = new RegExp(`\\b(${teamName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})\\b`, 'g');
+        colorizedMessage = colorizedMessage.replace(
+            regex,
+            `<span style="color: ${generateChampionColor(teamName)}; font-weight: 700;">$1</span>`
+        );
+    });
+
+    return colorizedMessage;
+}
+
+/**
+ * Determine which team a message is about (for background coloring)
+ */
+function getMessageTeamAffiliation(message) {
+    // Check if any champion from a team is mentioned
+    for (const [champName, teamName] of Object.entries(championTeamMap)) {
+        if (message.includes(champName)) {
+            return teamName;
+        }
+    }
+
+    // Check if team name is directly mentioned
+    for (const teamName of Object.keys(teamColorMap)) {
+        if (message.includes(teamName)) {
+            return teamName;
+        }
+    }
+
+    return null; // Neutral message
+}
+
+// ==================== DISPLAY FUNCTIONS ====================
+
 function displayRosters(teams) {
+    // Build color maps when teams are loaded
+    buildColorMaps(teams);
+
     rosterList.innerHTML = '';
     teams.forEach(team => {
         const teamDiv = document.createElement('div');
@@ -349,6 +479,13 @@ function addToMatchFeed(message, type = null) {
         messageElement.classList.add(`match-event-${type}`);
     }
 
+    // Determine team affiliation and add background color
+    const teamAffiliation = getMessageTeamAffiliation(message);
+    if (teamAffiliation && teamColorMap[teamAffiliation]) {
+        messageElement.style.background = teamColorMap[teamAffiliation];
+        messageElement.setAttribute('data-team', teamAffiliation);
+    }
+
     // Add timestamp
     const timestamp = document.createElement('span');
     timestamp.classList.add('match-event-timestamp');
@@ -356,10 +493,10 @@ function addToMatchFeed(message, type = null) {
     timestamp.textContent = `[${now.toLocaleTimeString('en-US', { hour12: false })}]`;
     messageElement.appendChild(timestamp);
 
-    // Add message content
+    // Add message content with colorized champion/team names
     const content = document.createElement('span');
     content.classList.add('match-event-content');
-    content.textContent = message;
+    content.innerHTML = colorizeMessage(message); // Use innerHTML for colored spans
     messageElement.appendChild(content);
 
     // Add with fade-in animation

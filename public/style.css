@@ -727,6 +727,23 @@ body {
   color: var(--text-secondary);
 }
 
+/* Champion and Team Name Coloring */
+.match-event-content span {
+  /* Champion/team names get their colors applied inline */
+  /* The text-shadow is already applied in JS for readability */
+  transition: all 0.2s ease;
+}
+
+.match-event[data-team] {
+  /* Team background colors are applied inline via JS */
+  border-left-width: 3px;
+}
+
+.match-event:hover[data-team] {
+  /* Slightly intensify team background on hover */
+  filter: brightness(1.1);
+}
+
 .news-item {
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
