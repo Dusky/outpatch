@@ -197,36 +197,33 @@ class ChaosSystem {
                 }
             },
 
-            // STAT CORRUPTION - Invert mechanical_skill
+            // STAT CORRUPTION - Invert mechanical_skill PERMANENTLY
             {
                 id: 'stat_corruption',
                 name: 'Statistical Anomaly',
-                description: 'All champion stats are inverted for 2 waves',
+                description: 'All champion stats are permanently inverted',
                 rarity: 'uncommon',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     const champions = world.queryByTag('champion');
-                    const originalStats = new Map();
 
-                    // Invert mechanical_skill
+                    // Permanently invert mechanical_skill
                     for (const champion of champions) {
                         const hiddenStats = champion.getComponent('hiddenStats');
-                        originalStats.set(champion.id, hiddenStats.mechanical_skill);
+                        const identity = champion.getComponent('identity');
+                        const oldSkill = hiddenStats.mechanical_skill;
                         hiddenStats.mechanical_skill = 1 - hiddenStats.mechanical_skill;
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            championName: identity.name,
+                            effect: 'stat_inversion',
+                            oldValue: oldSkill,
+                            newValue: hiddenStats.mechanical_skill
+                        });
                     }
 
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            // Restore original stats
-                            for (const champion of champions) {
-                                const hiddenStats = champion.getComponent('hiddenStats');
-                                const original = originalStats.get(champion.id);
-                                if (original !== undefined) {
-                                    hiddenStats.mechanical_skill = original;
-                                }
-                            }
-                        }
-                    };
+                    return null; // Permanent effect
                 }
             },
 
@@ -331,22 +328,24 @@ class ChaosSystem {
                 }
             },
 
-            // SHOP CLOSED - No gold gain for 3 waves
+            // SHOP CLOSED - No gold gain PERMANENTLY
             {
                 id: 'shop_closed',
                 name: 'Shop Malfunction',
-                description: 'No gold gain for 3 waves',
+                description: 'The shop permanently closes - no more gold gains!',
                 rarity: 'common',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     // Track in world metadata
                     world.metadata.shopClosed = true;
 
-                    return {
-                        duration: 3,
-                        onExpire: (world) => {
-                            world.metadata.shopClosed = false;
-                        }
-                    };
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'shop_closed',
+                        message: 'The shop has permanently shut down! No more gold gains!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
@@ -363,71 +362,72 @@ class ChaosSystem {
                 }
             },
 
-            // SIZE SWAP - Giants vs Tiny champions
+            // SIZE SWAP - Giants vs Tiny champions PERMANENTLY
             {
                 id: 'size_swap',
                 name: 'Dimensional Instability',
-                description: 'Half the champions become giants, half become tiny',
+                description: 'Half the champions permanently become giants, half become tiny',
                 rarity: 'uncommon',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     const champions = world.queryByTag('champion');
                     const shuffled = [...champions].sort(() => rng.next() - 0.5);
 
-                    const giants = shuffled.slice(0, champions.length / 2);
-                    const tiny = shuffled.slice(champions.length / 2);
-
-                    const originalSizes = new Map();
+                    const giants = shuffled.slice(0, Math.floor(champions.length / 2));
+                    const tiny = shuffled.slice(Math.floor(champions.length / 2));
 
                     for (const champion of giants) {
                         const stats = champion.getComponent('stats');
-                        originalSizes.set(champion.id, {
-                            ad: stats.attack_damage,
-                            health: stats.max_health
-                        });
+                        const identity = champion.getComponent('identity');
                         stats.attack_damage = (stats.attack_damage || 60) * 1.5;
                         stats.max_health = (stats.max_health || 550) * 1.3;
+                        stats.health = Math.min(stats.health * 1.3, stats.max_health);
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            championName: identity.name,
+                            effect: 'became_giant',
+                            message: `${identity.name} grew to enormous size! (+50% AD, +30% HP)`
+                        });
                     }
 
                     for (const champion of tiny) {
                         const stats = champion.getComponent('stats');
-                        originalSizes.set(champion.id, {
-                            ad: stats.attack_damage,
-                            health: stats.max_health
-                        });
+                        const identity = champion.getComponent('identity');
                         stats.attack_damage = (stats.attack_damage || 60) * 0.7;
                         stats.max_health = (stats.max_health || 550) * 0.8;
+                        stats.health = Math.min(stats.health, stats.max_health);
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            championName: identity.name,
+                            effect: 'became_tiny',
+                            message: `${identity.name} shrank to tiny size! (-30% AD, -20% HP)`
+                        });
                     }
 
-                    return {
-                        duration: 3,
-                        onExpire: (world) => {
-                            for (const champion of champions) {
-                                const stats = champion.getComponent('stats');
-                                const original = originalSizes.get(champion.id);
-                                if (original) {
-                                    stats.attack_damage = original.ad;
-                                    stats.max_health = original.health;
-                                }
-                            }
-                        }
-                    };
+                    return null; // Permanent effect
                 }
             },
 
-            // REVERSE GRAVITY - Damage and healing swapped
+            // REVERSE GRAVITY - Damage and healing swapped PERMANENTLY
             {
                 id: 'reverse_gravity',
                 name: 'Reality Inversion',
-                description: 'Damage heals, healing damages for 2 waves',
+                description: 'Damage permanently heals, healing permanently damages',
                 rarity: 'epic',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.reverseGravity = true;
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            world.metadata.reverseGravity = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'reverse_gravity',
+                        message: 'Reality has inverted! Damage now heals, healing now damages!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
@@ -467,54 +467,63 @@ class ChaosSystem {
                 }
             },
 
-            // SPEED DEMON - Everyone moves super fast
+            // SPEED DEMON - Everyone moves super fast PERMANENTLY
             {
                 id: 'speed_demon',
                 name: 'Hyperspeed',
-                description: 'All champions gain 200% movement speed',
+                description: 'All champions permanently gain 200% movement speed',
                 rarity: 'common',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.hyperSpeed = true;
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            world.metadata.hyperSpeed = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'hyperspeed',
+                        message: 'Time accelerates! Everyone moves at 200% speed!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
-            // SLOW MOTION - Everything slowed
+            // SLOW MOTION - Everything slowed PERMANENTLY
             {
                 id: 'slow_motion',
                 name: 'Temporal Stasis',
-                description: 'All actions happen in slow motion',
+                description: 'All actions permanently happen in slow motion',
                 rarity: 'common',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.slowMotion = true;
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            world.metadata.slowMotion = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'slow_motion',
+                        message: 'Time slows to a crawl! Everything moves in slow motion!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
-            // CRITICAL EXISTENCE - Everything crits
+            // CRITICAL EXISTENCE - Everything crits PERMANENTLY
             {
                 id: 'critical_existence',
                 name: 'Critical Existence',
-                description: 'All attacks are critical hits for 2 waves',
+                description: 'All attacks are permanently critical hits',
                 rarity: 'rare',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.allCrits = true;
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            world.metadata.allCrits = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'all_crits',
+                        message: 'Every strike now finds its mark perfectly! All attacks are CRITS!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
@@ -585,20 +594,23 @@ class ChaosSystem {
                 }
             },
 
-            // GOLD MULTIPLICATION - Gold doubles
+            // GOLD MULTIPLICATION - Gold doubles PERMANENTLY
             {
                 id: 'gold_multiplication',
                 name: 'Infinite Money Glitch',
-                description: 'All gold gains doubled for 3 waves',
+                description: 'All gold gains permanently doubled',
                 rarity: 'uncommon',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.doubleGold = true;
-                    return {
-                        duration: 3,
-                        onExpire: (world) => {
-                            world.metadata.doubleGold = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'double_gold',
+                        message: 'Economy broken! All gold gains are now DOUBLED!'
+                    });
+
+                    return null; // Permanent effect
                 }
             },
 
@@ -625,17 +637,15 @@ class ChaosSystem {
                 }
             },
 
-            // ABILITY SWAP - Champions swap abilities with random enemy
+            // ABILITY SWAP - Champions permanently swap abilities with random enemy
             {
                 id: 'ability_swap',
                 name: 'Cognitive Scramble',
-                description: 'Champions swap abilities with random enemies',
+                description: 'Champions permanently swap abilities with random enemies',
                 rarity: 'rare',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     const team1 = world.queryByTags('champion', 'team1');
                     const team2 = world.queryByTags('champion', 'team2');
-
-                    const swaps = new Map();
 
                     for (let i = 0; i < Math.min(team1.length, team2.length); i++) {
                         const champ1 = team1[i];
@@ -644,114 +654,83 @@ class ChaosSystem {
                         const identity1 = champ1.getComponent('identity');
                         const identity2 = champ2.getComponent('identity');
 
-                        swaps.set(champ1.id, { ...identity1.abilities });
-                        swaps.set(champ2.id, { ...identity2.abilities });
-
                         const temp = { ...identity1.abilities };
                         identity1.abilities = { ...identity2.abilities };
                         identity2.abilities = temp;
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            effect: 'ability_swap',
+                            champ1: identity1.name,
+                            champ2: identity2.name,
+                            message: `${identity1.name} and ${identity2.name} swapped abilities!`
+                        });
                     }
 
-                    return {
-                        duration: 3,
-                        onExpire: (world) => {
-                            for (let i = 0; i < Math.min(team1.length, team2.length); i++) {
-                                const champ1 = team1[i];
-                                const champ2 = team2[i];
-
-                                const identity1 = champ1.getComponent('identity');
-                                const identity2 = champ2.getComponent('identity');
-
-                                const original1 = swaps.get(champ1.id);
-                                const original2 = swaps.get(champ2.id);
-
-                                if (original1) identity1.abilities = original1;
-                                if (original2) identity2.abilities = original2;
-                            }
-                        }
-                    };
+                    return null; // Permanent effect
                 }
             },
 
-            // GLASS CANNON - Max damage, min defense
+            // GLASS CANNON - Max damage, min defense PERMANENTLY
             {
                 id: 'glass_cannon',
                 name: 'Glass Cannon Mode',
-                description: 'All champions gain 200% damage but lose 50% health',
+                description: 'All champions permanently gain 200% damage but lose 50% health',
                 rarity: 'uncommon',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     const champions = world.queryByTag('champion');
-                    const originalStats = new Map();
 
                     for (const champion of champions) {
                         const stats = champion.getComponent('stats');
-                        originalStats.set(champion.id, {
-                            ad: stats.attack_damage,
-                            ap: stats.ability_power,
-                            health: stats.max_health
-                        });
+                        const identity = champion.getComponent('identity');
 
                         stats.attack_damage = (stats.attack_damage || 60) * 2;
                         stats.ability_power = (stats.ability_power || 0) * 2;
                         stats.max_health = (stats.max_health || 550) * 0.5;
                         stats.health = Math.min(stats.health, stats.max_health);
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            championName: identity.name,
+                            effect: 'glass_cannon',
+                            message: `${identity.name} became a glass cannon! (+100% damage, -50% HP)`
+                        });
                     }
 
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            for (const champion of champions) {
-                                const stats = champion.getComponent('stats');
-                                const original = originalStats.get(champion.id);
-                                if (original) {
-                                    stats.attack_damage = original.ad;
-                                    stats.ability_power = original.ap;
-                                    stats.max_health = original.health;
-                                }
-                            }
-                        }
-                    };
+                    return null; // Permanent effect
                 }
             },
 
-            // TANK MODE - Max defense, min damage
+            // TANK MODE - Max defense, min damage PERMANENTLY
             {
                 id: 'tank_mode',
                 name: 'Fortification Protocol',
-                description: 'All champions gain 300% health but deal 50% damage',
+                description: 'All champions permanently gain 300% health but deal 50% damage',
                 rarity: 'uncommon',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     const champions = world.queryByTag('champion');
-                    const originalStats = new Map();
 
                     for (const champion of champions) {
                         const stats = champion.getComponent('stats');
-                        originalStats.set(champion.id, {
-                            ad: stats.attack_damage,
-                            ap: stats.ability_power,
-                            health: stats.max_health
-                        });
+                        const identity = champion.getComponent('identity');
 
                         stats.attack_damage = (stats.attack_damage || 60) * 0.5;
                         stats.ability_power = (stats.ability_power || 0) * 0.5;
                         stats.max_health = (stats.max_health || 550) * 3;
                         stats.health = stats.max_health;
+
+                        eventLog.log({
+                            type: 'chaos.effect',
+                            tick: tick,
+                            championName: identity.name,
+                            effect: 'tank_mode',
+                            message: `${identity.name} became an unstoppable tank! (+200% HP, -50% damage)`
+                        });
                     }
 
-                    return {
-                        duration: 2,
-                        onExpire: (world) => {
-                            for (const champion of champions) {
-                                const stats = champion.getComponent('stats');
-                                const original = originalStats.get(champion.id);
-                                if (original) {
-                                    stats.attack_damage = original.ad;
-                                    stats.ability_power = original.ap;
-                                    stats.max_health = original.health;
-                                }
-                            }
-                        }
-                    };
+                    return null; // Permanent effect
                 }
             },
 
@@ -877,20 +856,23 @@ class ChaosSystem {
                 }
             },
 
-            // ITEM UPGRADE - All items become legendary
+            // ITEM UPGRADE - All items become legendary PERMANENTLY
             {
                 id: 'item_ascension',
                 name: 'Item Ascension',
-                description: 'All items gain 50% more stats for 3 waves',
+                description: 'All items permanently gain 50% more stats',
                 rarity: 'rare',
-                execute: (world, rng) => {
+                execute: (world, rng, eventLog, tick) => {
                     world.metadata.itemAscension = true;
-                    return {
-                        duration: 3,
-                        onExpire: (world) => {
-                            world.metadata.itemAscension = false;
-                        }
-                    };
+
+                    eventLog.log({
+                        type: 'chaos.effect',
+                        tick: tick,
+                        effect: 'item_ascension',
+                        message: 'Items have ascended to a higher plane! All items gain +50% stats!'
+                    });
+
+                    return null; // Permanent effect
                 }
             }
         ];

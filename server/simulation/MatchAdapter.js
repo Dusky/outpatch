@@ -293,6 +293,15 @@ class MatchAdapter {
                 }
                 break;
 
+            case 'chaos.effect':
+                // Individual champion/team effects from chaos events
+                if (event.championName && event.message) {
+                    this.logEvent(`   ${event.message}`);
+                } else if (event.message) {
+                    this.logEvent(`   ${event.message}`);
+                }
+                break;
+
             case 'chaos.expire':
                 this.logEvent(`   Chaos subsides: ${event.eventName} has ended`);
                 break;
