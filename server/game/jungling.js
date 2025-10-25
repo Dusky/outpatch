@@ -1,11 +1,16 @@
 
-function simulateJungling(jungler, logEvent, commentary) {
+function simulateJungling(jungler, logEvent, commentary, match) {
     const decision = Math.random();
 
     if (decision < 0.4) { // 40% chance to farm
         const csGained = Math.floor(Math.random() * 3) + 1;
         jungler.cs += csGained;
-        jungler.gold += csGained * 20; // Jungle farm gold
+
+        // Apply weather modifier and check shop status
+        if (!match.chaosState?.shopClosed) {
+            const jungleGold = match.weatherSystem ? match.weatherSystem.modifyGold(csGained * 20) : csGained * 20;
+            jungler.gold += jungleGold;
+        }
 
         // Use commentary engine for farming (only sometimes)
         if (commentary) {

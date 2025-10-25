@@ -1,5 +1,7 @@
 
-function simulateTeamfight(team1Champions, team2Champions, logEvent, commentary) {
+function simulateTeamfight(team1, team2, logEvent, commentary, match) {
+    const team1Champions = team1.champions;
+    const team2Champions = team2.champions;
     const lane = ['Top', 'Mid', 'Bot'][Math.floor(Math.random() * 3)];
 
     const team1Power = team1Champions.reduce((sum, champ) => sum + champ.mechanical_skill + champ.game_sense, 0);
@@ -8,16 +10,18 @@ function simulateTeamfight(team1Champions, team2Champions, logEvent, commentary)
     const totalPower = team1Power + team2Power;
     const team1WinChance = team1Power / totalPower;
 
-    let winningTeam, winningChampions, losingChampions;
+    let winningTeam, winningChampions, losingChampions, losingTeam;
     let kills = 0;
 
     if (Math.random() < team1WinChance) {
-        winningTeam = { name: team1Champions[0].name.replace(/\s.*/, '') + "'s Team" }; // Simplified team name
+        winningTeam = team1;
         winningChampions = team1Champions;
+        losingTeam = team2;
         losingChampions = team2Champions;
     } else {
-        winningTeam = { name: team2Champions[0].name.replace(/\s.*/, '') + "'s Team" };
+        winningTeam = team2;
         winningChampions = team2Champions;
+        losingTeam = team1;
         losingChampions = team1Champions;
     }
 
@@ -31,7 +35,12 @@ function simulateTeamfight(team1Champions, team2Champions, logEvent, commentary)
 
         killer.kda.k++;
         victim.kda.d++;
-        killer.gold += 300;
+
+        // Apply weather modifier and check shop status
+        if (!match.chaosState?.shopClosed) {
+            const killGold = match.weatherSystem ? match.weatherSystem.modifyGold(300) : 300;
+            killer.gold += killGold;
+        }
 
         // Add assists to other team members
         winningChampions.forEach(c => {
@@ -50,20 +59,13 @@ function simulateTeamfight(team1Champions, team2Champions, logEvent, commentary)
 
     // Use commentary engine for teamfight outcome
     if (commentary) {
-        const team1Team = { name: team1Champions[0].name.split(' ')[0] + "'s Team" };
-        const team2Team = { name: team2Champions[0].name.split(' ')[0] + "'s Team" };
-        const winTeam = winningChampions === team1Champions ? team1Team : team2Team;
-        const loseTeam = winningChampions === team1Champions ? team2Team : team1Team;
-
-        logEvent(commentary.generateTeamfightCommentary(winTeam, loseTeam, kills, lane));
+        logEvent(commentary.generateTeamfightCommentary(winningTeam, losingTeam, kills, lane));
     } else {
         logEvent(`${winningTeam.name} wins the teamfight in ${lane} lane!`);
     }
 
-    // Check for pentakill (all 5 enemies dead)
-    if (kills >= 5) {
-        // Pentakill already announced via "ace" template
-    }
+    // Return winning team and kills for tower damage logic
+    return { winningTeam, losingTeam, kills };
 }
 
 module.exports = { simulateTeamfight };

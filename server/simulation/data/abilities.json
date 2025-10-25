@@ -490,5 +490,328 @@
     "effects": ["magic_damage", "execute", "aoe"],
     "flavor": "Collapses reality itself, dealing massive damage to low-HP enemies",
     "roles": ["mid"]
+  },
+  {
+    "id": "gravity_well",
+    "name": "Gravity Well",
+    "type": "cc",
+    "damageType": "magic",
+    "cooldown": 14,
+    "manaCost": 75,
+    "damage": {
+      "base": 60,
+      "scaling": {
+        "ap": 0.5
+      }
+    },
+    "effects": ["magic_damage", "pull", "aoe"],
+    "flavor": "Creates a gravitational field that pulls enemies inward",
+    "roles": ["support", "jungle"]
+  },
+  {
+    "id": "phase_shift",
+    "name": "Phase Shift",
+    "type": "mobility",
+    "damageType": null,
+    "cooldown": 18,
+    "manaCost": 50,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["dash", "self", "untargetable"],
+    "flavor": "Phases out of reality briefly",
+    "roles": ["mid", "bot"]
+  },
+  {
+    "id": "chain_lightning",
+    "name": "Chain Lightning",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 9,
+    "manaCost": 70,
+    "damage": {
+      "base": 85,
+      "scaling": {
+        "ap": 0.65
+      }
+    },
+    "effects": ["magic_damage", "bounce", "multi_hit"],
+    "flavor": "Lightning that bounces between multiple enemies",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "frost_nova",
+    "name": "Frost Nova",
+    "type": "cc",
+    "damageType": "magic",
+    "cooldown": 11,
+    "manaCost": 65,
+    "damage": {
+      "base": 70,
+      "scaling": {
+        "ap": 0.55
+      }
+    },
+    "effects": ["magic_damage", "root", "aoe"],
+    "flavor": "Freezes enemies in place with icy explosion",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "blood_pact",
+    "name": "Blood Pact",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 25,
+    "manaCost": 80,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["heal", "ally", "lifesteal_share"],
+    "flavor": "Bonds with an ally, sharing life force",
+    "roles": ["support"]
+  },
+  {
+    "id": "phantom_blade",
+    "name": "Phantom Blade",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 8,
+    "manaCost": 55,
+    "damage": {
+      "base": 95,
+      "scaling": {
+        "ad": 1.15
+      }
+    },
+    "effects": ["physical_damage", "pierce", "skillshot"],
+    "flavor": "Throws a blade that pierces through enemies",
+    "roles": ["jungle", "bot", "mid"]
+  },
+  {
+    "id": "whirlwind",
+    "name": "Whirlwind",
+    "type": "cc",
+    "damageType": "physical",
+    "cooldown": 13,
+    "manaCost": 60,
+    "damage": {
+      "base": 55,
+      "scaling": {
+        "ad": 0.7
+      }
+    },
+    "effects": ["physical_damage", "knockup", "aoe"],
+    "flavor": "Spins rapidly, knocking up nearby enemies",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "soul_shackles",
+    "name": "Soul Shackles",
+    "type": "cc",
+    "damageType": "magic",
+    "cooldown": 15,
+    "manaCost": 85,
+    "damage": {
+      "base": 50,
+      "scaling": {
+        "ap": 0.4
+      }
+    },
+    "effects": ["magic_damage", "tether", "slow"],
+    "flavor": "Binds enemy souls, slowing them if they stay nearby",
+    "roles": ["support", "mid"]
+  },
+  {
+    "id": "battle_cry",
+    "name": "Battle Cry",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 28,
+    "manaCost": 70,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["buff", "ally", "aoe", "attack_speed", "movement_speed"],
+    "flavor": "Rallies allies with a fearsome battle cry",
+    "roles": ["top", "support"]
+  },
+  {
+    "id": "lightning_dash",
+    "name": "Lightning Dash",
+    "type": "mobility",
+    "damageType": "magic",
+    "cooldown": 12,
+    "manaCost": 45,
+    "damage": {
+      "base": 65,
+      "scaling": {
+        "ap": 0.5
+      }
+    },
+    "effects": ["magic_damage", "dash", "trail"],
+    "flavor": "Dashes forward in a bolt of lightning",
+    "roles": ["mid", "jungle", "bot"]
+  },
+  {
+    "id": "corruption_wave",
+    "name": "Corruption Wave",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 10,
+    "manaCost": 75,
+    "damage": {
+      "base": 100,
+      "scaling": {
+        "ap": 0.75
+      }
+    },
+    "effects": ["magic_damage", "aoe", "cone", "slow"],
+    "flavor": "Unleashes a wave of corrupting energy",
+    "roles": ["mid"]
+  },
+  {
+    "id": "smokescreen",
+    "name": "Smokescreen",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 20,
+    "manaCost": 60,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["blind", "aoe", "vision_deny"],
+    "flavor": "Creates a cloud that blinds enemies",
+    "roles": ["bot", "jungle"]
+  },
+  {
+    "id": "soul_reap",
+    "name": "Soul Reap",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 7,
+    "manaCost": 50,
+    "damage": {
+      "base": 55,
+      "scaling": {
+        "ap": 0.45
+      }
+    },
+    "effects": ["magic_damage", "heal_on_kill"],
+    "flavor": "Reaps enemy souls, healing on kills",
+    "roles": ["mid", "jungle"]
+  },
+  {
+    "id": "meteor_strike",
+    "name": "Meteor Strike",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 11,
+    "manaCost": 80,
+    "damage": {
+      "base": 115,
+      "scaling": {
+        "ap": 0.8,
+        "level": 6
+      }
+    },
+    "effects": ["magic_damage", "aoe", "delayed"],
+    "flavor": "Calls down a meteor after a brief delay",
+    "roles": ["mid"]
+  },
+  {
+    "id": "iron_fortress",
+    "name": "Iron Fortress",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 22,
+    "manaCost": 80,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["self", "shield", "armor_buff", "mr_buff"],
+    "flavor": "Hardens skin to steel, massively increasing resistances",
+    "roles": ["top", "support"]
+  },
+  {
+    "id": "venom_strike",
+    "name": "Venom Strike",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 8,
+    "manaCost": 55,
+    "damage": {
+      "base": 65,
+      "scaling": {
+        "ad": 0.95
+      }
+    },
+    "effects": ["physical_damage", "poison", "dot"],
+    "flavor": "Strikes with venomous force, poisoning the target",
+    "roles": ["jungle", "top"]
+  },
+  {
+    "id": "grappling_hook",
+    "name": "Grappling Hook",
+    "type": "mobility",
+    "damageType": "physical",
+    "cooldown": 16,
+    "manaCost": 40,
+    "damage": {
+      "base": 40,
+      "scaling": {
+        "ad": 0.5
+      }
+    },
+    "effects": ["physical_damage", "dash", "pull"],
+    "flavor": "Hooks a target and pulls yourself to them",
+    "roles": ["top", "jungle", "bot"]
+  },
+  {
+    "id": "starfall",
+    "name": "Starfall",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 9,
+    "manaCost": 70,
+    "damage": {
+      "base": 90,
+      "scaling": {
+        "ap": 0.7
+      }
+    },
+    "effects": ["magic_damage", "aoe", "multi_hit"],
+    "flavor": "Calls down multiple stars from the sky",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "aegis_stance",
+    "name": "Aegis Stance",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 24,
+    "manaCost": 65,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["self", "block", "damage_reduction"],
+    "flavor": "Enters a defensive stance, blocking incoming damage",
+    "roles": ["top", "support"]
+  },
+  {
+    "id": "backstab",
+    "name": "Backstab",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 6,
+    "manaCost": 45,
+    "damage": {
+      "base": 70,
+      "scaling": {
+        "ad": 1.0
+      }
+    },
+    "effects": ["physical_damage", "crit", "bonus_from_behind"],
+    "flavor": "Strikes from the shadows, dealing extra damage from behind",
+    "roles": ["jungle", "bot"]
   }
 ]

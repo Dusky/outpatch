@@ -1,5 +1,5 @@
 
-function simulateObjective(team1, team2, wave, logEvent, commentary) {
+function simulateObjective(team1, team2, wave, logEvent, commentary, match) {
     let objectiveContested = false;
     let objectiveName = "";
 
@@ -46,10 +46,13 @@ function simulateObjective(team1, team2, wave, logEvent, commentary) {
             }
         }
 
-        // Give team buffs/gold for securing objective
-        winningTeam.champions.forEach(c => {
-            c.gold += 100; // Objective gold
-        });
+        // Give team buffs/gold for securing objective (with weather modifier and shop check)
+        if (!match.chaosState?.shopClosed) {
+            winningTeam.champions.forEach(c => {
+                const objectiveGold = match.weatherSystem ? match.weatherSystem.modifyGold(100) : 100;
+                c.gold += objectiveGold;
+            });
+        }
     }
 }
 
