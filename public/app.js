@@ -190,6 +190,10 @@ socket.addEventListener('message', (event) => {
             updateOddsDisplay(parsedMessage);
         } else if (parsedMessage.type === 'bet_results') {
             showBetResults(parsedMessage);
+            // Update balance if we received a payout
+            if (parsedMessage.newBalance !== undefined) {
+                balanceSpan.textContent = parsedMessage.newBalance;
+            }
         } else if (parsedMessage.type === 'match_status') {
             updateMatchStatus(parsedMessage);
         } else if (parsedMessage.type === 'admin_message') {
@@ -679,10 +683,19 @@ function updateOddsDisplay(oddsData) {
 
 function showBetResults(results) {
     if (results.yourPayout) {
-        const message = `WINNER: ${results.winner}! You won ${results.yourPayout.payout}⌬ (Profit: +${results.yourPayout.profit}⌬)`;
+        const message = `🎉 WINNER: ${results.winner}! You won ${results.yourPayout.payout}⌬ (Profit: +${results.yourPayout.profit}⌬)`;
         showNotification(message, 'success');
+
+        // Add celebratory feed message
+        addToMatchFeed(`💰 You won ${results.yourPayout.payout}⌬! New balance: ${results.newBalance}⌬`, 'announcement');
     } else {
-        showNotification(`Match ended. Winner: ${results.winner}`, 'error');
+        // Check if user had a bet on this match (by checking if we have active bets)
+        const hadBet = currentMatchId && results.matchId === currentMatchId;
+        if (hadBet) {
+            showNotification(`Match ended. Winner: ${results.winner}. Better luck next time!`, 'error');
+        } else {
+            showNotification(`Match ended. Winner: ${results.winner}`, 'info');
+        }
     }
 }
 

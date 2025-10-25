@@ -431,13 +431,30 @@ class MatchAdapter {
 
         // Get live champion stats from simulator
         let championStats = null;
+        let team1Gold = 0;
+        let team2Gold = 0;
         try {
             const state = this.simulator.getState();
             if (state && state.champions) {
                 championStats = state.champions;
+
+                // Calculate actual team gold from champions
+                championStats.forEach(champ => {
+                    if (champ.teamId === 'team1') {
+                        team1Gold += champ.gold || 0;
+                    } else if (champ.teamId === 'team2') {
+                        team2Gold += champ.gold || 0;
+                    }
+                });
             }
         } catch (error) {
             console.error('Error getting champion states:', error);
+        }
+
+        // If we couldn't get real gold, use estimates
+        if (team1Gold === 0 && team2Gold === 0) {
+            team1Gold = Math.floor(this.team1Kills * 300 + this.wave * 100);
+            team2Gold = Math.floor(this.team2Kills * 300 + this.wave * 100);
         }
 
         this.wss.clients.forEach(client => {
@@ -453,9 +470,9 @@ class MatchAdapter {
                     // Kill counts
                     team1Kills: this.team1Kills,
                     team2Kills: this.team2Kills,
-                    // Gold amounts (placeholder for now)
-                    team1Gold: Math.floor(this.team1Kills * 300 + this.wave * 100), // Estimate
-                    team2Gold: Math.floor(this.team2Kills * 300 + this.wave * 100), // Estimate
+                    // Gold amounts (calculated from champion gold)
+                    team1Gold: team1Gold,
+                    team2Gold: team2Gold
                     // Legacy support
                     team1Structures: this.team1Towers,
                     team2Structures: this.team2Towers,
@@ -510,6 +527,29 @@ class MatchAdapter {
                 winner = this.team2;
                 loser = this.team1;
             }
+        }
+
+        // Update team champion stats with final simulation data
+        try {
+            const state = this.simulator.getState();
+            if (state && state.champions) {
+                state.champions.forEach(champState => {
+                    // Find the champion in the appropriate team
+                    const team = champState.teamId === 'team1' ? this.team1 : this.team2;
+                    const champ = team.champions.find(c => c.name === champState.name);
+
+                    if (champ) {
+                        // Update with final stats from simulation
+                        champ.kda = champState.kda || { k: 0, d: 0, a: 0 };
+                        champ.cs = champState.cs || 0;
+                        champ.gold = champState.gold || 0;
+                        champ.level = champState.level || 1;
+                        champ.items = champState.items || [];
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error updating champion stats at match end:', error);
         }
 
         this.logEvent(`\n🏆 ${winner.name} WINS! 🏆\n`);
