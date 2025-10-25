@@ -71,17 +71,6 @@ class Match {
 
             this.simulateWave();
 
-            // Check for tower deaths after mid/late game teamfights
-            if (this.wave > 20 && Math.random() < 0.1 && (this.team1Towers > 0 || this.team2Towers > 0)) { // 10% chance for a tower to fall
-                if (Math.random() > 0.5 && this.team1Towers > 0) {
-                    this.team1Towers--;
-                    this.logEvent(`A moment of silence for a fallen tower of ${this.team1.name}.`);
-                } else if (this.team2Towers > 0) {
-                    this.team2Towers--;
-                    this.logEvent(`A moment of silence for a fallen tower of ${this.team2.name}.`);
-                }
-            }
-
             if (this.wave >= 60 || this.team1Towers <= 0 || this.team2Towers <= 0) { // End if max waves or all towers down
                 this.end();
             }
@@ -100,32 +89,40 @@ class Match {
 
         // Laning phase (waves 1-20)
         if (this.wave <= 20) {
-            const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'];
-            roles.forEach(role => {
+            // Only laners lane (not junglers)
+            const laningRoles = ['Top', 'Mid', 'ADC', 'Support'];
+            laningRoles.forEach(role => {
                 const team1Champ = this.team1Lanes[role];
                 const team2Champ = this.team2Lanes[role];
                 if (team1Champ && team2Champ) {
-                    simulateLaning(team1Champ, team2Champ, this.logEvent.bind(this), this.commentary);
+                    simulateLaning(team1Champ, team2Champ, this.logEvent.bind(this), this.commentary, this);
                 }
             });
-            simulateJungling(this.team1Lanes['Jungle'], this.logEvent.bind(this), this.commentary);
-            simulateJungling(this.team2Lanes['Jungle'], this.logEvent.bind(this), this.commentary);
+            // Junglers do jungle things
+            if (this.team1Lanes['Jungle']) {
+                simulateJungling(this.team1Lanes['Jungle'], this.logEvent.bind(this), this.commentary, this);
+            }
+            if (this.team2Lanes['Jungle']) {
+                simulateJungling(this.team2Lanes['Jungle'], this.logEvent.bind(this), this.commentary, this);
+            }
         }
 
         // Mid game (waves 21-40)
         if (this.wave > 20 && this.wave <= 40) {
             if (Math.random() < 0.3) { // 30% chance of a teamfight in mid game
-                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this), this.commentary);
+                const result = simulateTeamfight(this.team1, this.team2, this.logEvent.bind(this), this.commentary, this);
+                this.processTowerDamage(result);
             }
-            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary);
+            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary, this);
         }
 
         // Late game (waves 41+)
         if (this.wave > 40) {
             if (Math.random() < 0.5) { // 50% chance of a teamfight in late game
-                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this), this.commentary);
+                const result = simulateTeamfight(this.team1, this.team2, this.logEvent.bind(this), this.commentary, this);
+                this.processTowerDamage(result);
             }
-            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary);
+            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary, this);
         }
 
         // Occasional wave commentary (not every wave)
@@ -137,6 +134,37 @@ class Match {
         // Keep some absurdist commentary for flavor (10% chance)
         if (Math.random() < 0.1) {
             this.logEvent(getRandomAbsurdistCommentary('wave', { wave: this.wave }));
+        }
+    }
+
+    processTowerDamage(teamfightResult) {
+        if (!teamfightResult) return;
+
+        const { winningTeam, losingTeam, kills } = teamfightResult;
+
+        // Tower damage based on kills and ace potential
+        let towerDamage = 0;
+
+        if (kills >= 5) {
+            // Ace - guaranteed tower
+            towerDamage = 1;
+        } else if (kills >= 3) {
+            // 3-4 kills - 50% chance for tower
+            towerDamage = Math.random() < 0.5 ? 1 : 0;
+        } else if (kills >= 2) {
+            // 2 kills - 20% chance for tower
+            towerDamage = Math.random() < 0.2 ? 1 : 0;
+        }
+
+        if (towerDamage > 0) {
+            const losingTeamName = losingTeam.name;
+            if (losingTeam === this.team1 && this.team1Towers > 0) {
+                this.team1Towers--;
+                this.logEvent(`💥 ${winningTeam.name} destroys a tower of ${losingTeamName}! (${this.team1Towers} remaining)`);
+            } else if (losingTeam === this.team2 && this.team2Towers > 0) {
+                this.team2Towers--;
+                this.logEvent(`💥 ${winningTeam.name} destroys a tower of ${losingTeamName}! (${this.team2Towers} remaining)`);
+            }
         }
     }
 

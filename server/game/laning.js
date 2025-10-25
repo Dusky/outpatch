@@ -1,11 +1,21 @@
 
-function simulateLaning(team1Champion, team2Champion, logEvent, commentary) {
+function simulateLaning(team1Champion, team2Champion, logEvent, commentary, match) {
     // Simplified CS calculation
     const csAttempt1 = Math.random() < team1Champion.mechanical_skill ? 1 : 0;
     const csAttempt2 = Math.random() < team2Champion.mechanical_skill ? 1 : 0;
 
     team1Champion.cs += csAttempt1;
     team2Champion.cs += csAttempt2;
+
+    // Award gold for CS (with weather modifier and shop check)
+    if (csAttempt1 && !match.chaosState?.shopClosed) {
+        const csGold = match.weatherSystem ? match.weatherSystem.modifyGold(20) : 20;
+        team1Champion.gold += csGold;
+    }
+    if (csAttempt2 && !match.chaosState?.shopClosed) {
+        const csGold = match.weatherSystem ? match.weatherSystem.modifyGold(20) : 20;
+        team2Champion.gold += csGold;
+    }
 
     // Use commentary engine for farming commentary (only sometimes)
     if (csAttempt1) {
@@ -32,7 +42,12 @@ function simulateLaning(team1Champion, team2Champion, logEvent, commentary) {
         if (Math.random() < 0.05) {
             winner.kda.k++;
             loser.kda.d++;
-            winner.gold += 300; // Kill gold
+
+            // Apply weather modifier and check shop status
+            if (!match.chaosState?.shopClosed) {
+                const killGold = match.weatherSystem ? match.weatherSystem.modifyGold(300) : 300;
+                winner.gold += killGold;
+            }
 
             // Use commentary engine for kill
             if (commentary) {
