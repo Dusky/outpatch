@@ -68,6 +68,9 @@ class CHiddenStats {
         this.tilt_resistance = data.tilt_resistance || 0.5;
         this.clutch_factor = data.clutch_factor || 0.5;
 
+        // Power curve (when champion is strongest)
+        this.power_curve = data.power_curve || 'mid';  // 'early', 'mid', 'late'
+
         // Dynamic state
         this.tilt_level = data.tilt_level || 0;  // 0-1, increases with stress
         this.mental_boom_threshold = data.mental_boom_threshold || 0.7;
@@ -287,6 +290,17 @@ class CQuirks {
     }
 }
 
+/**
+ * Leveling component - tracks XP and level progression
+ */
+class CLeveling {
+    constructor() {
+        this.level = 1;
+        this.xp = 0;
+        this.pendingXP = 0;  // XP to be awarded next update
+    }
+}
+
 module.exports = {
     CPosition,
     CStats,
@@ -297,5 +311,6 @@ module.exports = {
     CIdentity,
     CStatus,
     CController,
-    CQuirks
+    CQuirks,
+    CLeveling
 };

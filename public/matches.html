@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match History - MOBA Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="matches.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="header-bar">
+        <div class="logo-section">
+            <a href="/" class="logo-link">
+                <div class="logo-text">MOBA NETWORK</div>
+                <div class="logo-subtitle">MATCH HISTORY</div>
+            </a>
+        </div>
+        <div class="season-info">
+            <span class="season-label">TOTAL MATCHES</span>
+            <span class="season-number" id="total-matches">0</span>
+        </div>
+        <div class="countdown-section">
+            <div class="user-info">
+                <span class="user-label">USER</span>
+                <span id="user-display-name" class="user-name">Loading...</span>
+            </div>
+            <button id="logout-btn" class="logout-btn">LOGOUT</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="matches-container">
+        <!-- Filters Panel -->
+        <aside class="filters-panel">
+            <h2 class="panel-title">FILTERS</h2>
+
+            <!-- Search -->
+            <div class="filter-group">
+                <label class="filter-label">SEARCH</label>
+                <input type="text" id="search-input" class="filter-input" placeholder="Team or champion name...">
+            </div>
+
+            <!-- Team Filter -->
+            <div class="filter-group">
+                <label class="filter-label">TEAM</label>
+                <select id="team-filter" class="filter-select">
+                    <option value="">All Teams</option>
+                </select>
+            </div>
+
+            <!-- Champion Filter -->
+            <div class="filter-group">
+                <label class="filter-label">CHAMPION</label>
+                <input type="text" id="champion-filter" class="filter-input" placeholder="Champion name...">
+            </div>
+
+            <!-- Date Range -->
+            <div class="filter-group">
+                <label class="filter-label">DATE RANGE</label>
+                <select id="date-filter" class="filter-select">
+                    <option value="all">All Time</option>
+                    <option value="today">Today</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="month">Last 30 Days</option>
+                </select>
+            </div>
+
+            <!-- Result Filter -->
+            <div class="filter-group">
+                <label class="filter-label">RESULT</label>
+                <select id="result-filter" class="filter-select">
+                    <option value="">All Matches</option>
+                    <option value="victory">Victories Only</option>
+                    <option value="defeat">Defeats Only</option>
+                </select>
+            </div>
+
+            <!-- Actions -->
+            <div class="filter-actions">
+                <button id="apply-filters-btn" class="btn-primary">APPLY FILTERS</button>
+                <button id="clear-filters-btn" class="btn-secondary">CLEAR</button>
+            </div>
+        </aside>
+
+        <!-- Matches List -->
+        <main class="matches-list-container">
+            <!-- Loading State -->
+            <div id="loading-container" class="loading-container">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Loading matches...</p>
+            </div>
+
+            <!-- Matches Table -->
+            <div id="matches-table-container" style="display:none;">
+                <div class="table-header">
+                    <h2 class="table-title">MATCH RESULTS</h2>
+                    <div class="results-info">
+                        <span id="results-count">0 matches</span>
+                    </div>
+                </div>
+
+                <table class="matches-table" id="matches-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>TEAMS</th>
+                            <th>SCORE</th>
+                            <th>DURATION</th>
+                            <th>WINNER</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matches-tbody"></tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button id="prev-page-btn" class="pagination-btn" disabled>
+                        <span>◀</span> Previous
+                    </button>
+                    <div class="pagination-info">
+                        <span>Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
+                    </div>
+                    <button id="next-page-btn" class="pagination-btn">
+                        Next <span>▶</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display:none;">
+                <div class="empty-icon">📭</div>
+                <h3>No Matches Found</h3>
+                <p>Try adjusting your filters or search terms.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-item">MATCH HISTORY BROWSER</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">EXPLORE THE ARCHIVES</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">THE VOID FORGETS NOTHING</span>
+        </div>
+    </footer>
+
+    <script src="matches.js"></script>
+</body>
+</html>

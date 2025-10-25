@@ -283,6 +283,103 @@ class MatchAdapter {
             case 'mental.boom':
                 this.logEvent(`💥 ${event.championName} has mentally boomed!`);
                 break;
+
+            // === LEVELING EVENTS ===
+            case 'leveling.level_up':
+                this.logEvent(`⬆️ ${event.championName} reached level ${event.newLevel}!`);
+
+                // Announce power spikes
+                if (event.powerSpike) {
+                    if (event.powerSpike.type === 'ultimate_unlock') {
+                        this.logEvent(`   🌟 ULTIMATE UNLOCKED! ${event.championName} now has their R ability!`);
+                    } else if (event.powerSpike.type === 'early_spike') {
+                        this.logEvent(`   💪 ${event.championName} hits an early game power spike!`);
+                    } else if (event.powerSpike.type === 'late_spike') {
+                        this.logEvent(`   💥 ${event.championName} reaches late game scaling!`);
+                    } else if (event.powerSpike.type === 'max_rank_ult') {
+                        this.logEvent(`   🌟 ${event.championName}'s ultimate is now max rank!`);
+                    }
+                }
+
+                // Announce ability unlocks
+                if (event.unlockedAbilities && event.unlockedAbilities.length > 0) {
+                    for (const ability of event.unlockedAbilities) {
+                        this.logEvent(`   ✨ ${event.championName} unlocked ability ${ability}!`);
+                    }
+                }
+                break;
+
+            // === CHAOS EVENTS ===
+            case 'chaos.event':
+                this.logEvent(`🌀 CHAOS EVENT: ${event.eventName.toUpperCase()}`);
+                const chaosMessage = event.message || event.description;
+                if (chaosMessage) {
+                    this.logEvent(`   ${chaosMessage}`);
+                }
+                break;
+
+            case 'chaos.effect':
+                // Individual champion/team effects from chaos events
+                if (event.championName && event.message) {
+                    this.logEvent(`   ${event.message}`);
+                } else if (event.message) {
+                    this.logEvent(`   ${event.message}`);
+                }
+                break;
+
+            case 'chaos.expire':
+                this.logEvent(`   Chaos subsides: ${event.eventName} has ended`);
+                break;
+
+            // === WEATHER EVENTS ===
+            case 'weather.change':
+                const weatherIcon = event.weatherIcon || event.icon || '☁️';
+                this.logEvent(`${weatherIcon} WEATHER: ${event.weatherName.toUpperCase()}`);
+                if (event.description) {
+                    this.logEvent(`   ${event.description}`);
+                }
+                break;
+
+            case 'weather.effect':
+                if (event.effect === 'gold_rain' && event.amount) {
+                    this.logEvent(`✨ Gold rains from the sky! Everyone gains ${event.amount} gold!`);
+                }
+                break;
+
+            // === ABILITY EVENTS ===
+            case 'ability.cast':
+                this.logEvent(`⚡ ${event.casterName} cast ${event.abilityName} (${event.abilitySlot}) on ${event.targetName} for ${event.damage} damage!`);
+                if (event.isKill) {
+                    this.logEvent(`💀 ${event.targetName} eliminated by ${event.abilityName}!`);
+                }
+                break;
+
+            case 'ultimate.cast':
+                this.logEvent(`🌟 ULTIMATE! ${event.casterName} unleashed ${event.abilityName} (${event.abilitySlot}) on ${event.targetName}!`);
+                if (event.damage) {
+                    this.logEvent(`   ${event.damage} damage dealt!`);
+                }
+                if (event.isKill) {
+                    this.logEvent(`   💀 ${event.targetName} eliminated!`);
+                }
+                break;
+
+            // === OBJECTIVE BUFFS ===
+            case 'buff.applied':
+                if (event.buffType === 'VOID EMPOWERED') {
+                    this.logEvent(`🌑 ${event.championName} is ${event.buffType}! ${event.message}`);
+                }
+                break;
+
+            // === COMEBACK MECHANICS ===
+            case 'shutdown':
+                this.logEvent(`💰 SHUTDOWN! ${event.killerName} ended ${event.victimName}'s kill streak! +${event.shutdownGold} gold`);
+                break;
+
+            case 'ace':
+                const aceTeamName = event.aceTeam === 'team1' ? this.team1.name : this.team2.name;
+                this.logEvent(`🏆 ACE! ${aceTeamName} wiped the enemy team! +${event.aceGold} gold per survivor!`);
+                break;
         }
     }
 
@@ -406,7 +503,44 @@ class MatchAdapter {
         }
 
         this.logEvent(`\n🏆 ${winner.name} WINS! 🏆\n`);
+
+        // Export replay data for storage
+        this.replayData = this._exportReplayData(winner, loser);
+
         this.emit('end', winner, loser);
+    }
+
+    /**
+     * Export replay data for deterministic replay
+     */
+    _exportReplayData(winner, loser) {
+        try {
+            const eventLog = this.simulator.getEventLog();
+
+            return {
+                matchId: this.simulator.matchId,
+                seed: this.simulator.seed,
+                team1: this.team1.name,
+                team2: this.team2.name,
+                winner: winner.name,
+                loser: loser.name,
+                events: eventLog.getAllEvents(),
+                snapshots: eventLog.getSnapshots(),
+                finalState: this.simulator.getState(),
+                duration: this.wave,
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            console.error('Error exporting replay data:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Get replay data (public API)
+     */
+    getReplayData() {
+        return this.replayData;
     }
 
     /**

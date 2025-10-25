@@ -359,8 +359,30 @@ class Game {
 
             match.start();
 
-            match.on('end', (winner, loser) => {
+            match.on('end', async (winner, loser) => {
                 this.match_history.push(match.log);
+
+                // Save replay data if using new simulator
+                if (this.useNewSimulation && match.getReplayData) {
+                    try {
+                        const replayData = match.getReplayData();
+                        if (replayData && this.db) {
+                            await this.db.saveMatchReplay(replayData);
+                            console.log(`Replay saved for match ${matchId}`);
+                        }
+                    } catch (error) {
+                        console.error('Error saving replay:', error);
+                    }
+                }
+
+                // Update career progression for all champions
+                if (this.db) {
+                    try {
+                        await this._updateCareerProgression(winner, loser, match);
+                    } catch (error) {
+                        console.error('Error updating career progression:', error);
+                    }
+                }
 
                 resolve({
                     winner,
@@ -372,6 +394,70 @@ class Game {
 
             this.activeMatches.push(match);
         });
+    }
+
+    /**
+     * Update career progression after match
+     */
+    async _updateCareerProgression(winner, loser, match) {
+        const allChampions = [...winner.champions, ...loser.champions];
+
+        // Award career XP and update form
+        for (const champ of allChampions) {
+            const won = winner.champions.includes(champ);
+            const kda = champ.kda || { kills: 0, deaths: 0, assists: 0 };
+
+            // Calculate career XP: base 100 + 50 per kill + 25 per assist + 200 if won
+            const careerXP = 100 +
+                            (kda.kills * 50) +
+                            (kda.assists * 25) +
+                            (won ? 200 : 0);
+
+            try {
+                const result = await this.db.updateChampionCareerXP(champ.name, careerXP, won);
+                if (result && result.levelUp) {
+                    console.log(`${champ.name} reached career level ${result.newLevel}!`);
+                }
+            } catch (error) {
+                console.error(`Error updating career for ${champ.name}:`, error);
+            }
+        }
+
+        // Update grudges (track kills between specific champions)
+        for (const champ of allChampions) {
+            const kda = champ.kda || { kills: 0, deaths: 0, assists: 0 };
+
+            // If they got killed, track grudge against their killers
+            if (kda.deaths > 0) {
+                // Find champions who killed them (from opposite team with kills)
+                const enemyTeam = winner.champions.includes(champ) ? loser.champions : winner.champions;
+                for (const enemy of enemyTeam) {
+                    if (enemy.kda && enemy.kda.kills > 0) {
+                        try {
+                            await this.db.addOrUpdateGrudge(champ.name, enemy.name, true);
+                        } catch (error) {
+                            console.error('Error updating grudge:', error);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Update synergies (teammates who won together)
+        if (winner.champions) {
+            for (let i = 0; i < winner.champions.length; i++) {
+                for (let j = i + 1; j < winner.champions.length; j++) {
+                    try {
+                        const champ1 = winner.champions[i];
+                        const champ2 = winner.champions[j];
+                        await this.db.addOrUpdateSynergy(champ1.name, champ2.name, true);
+                        await this.db.addOrUpdateSynergy(champ2.name, champ1.name, true);
+                    } catch (error) {
+                        console.error('Error updating synergy:', error);
+                    }
+                }
+            }
+        }
     }
 
     /**

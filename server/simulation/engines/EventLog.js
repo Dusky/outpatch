@@ -184,6 +184,10 @@ EventLog.EventTypes = {
     FIGHT_ASSIST: 'fight.assist',
     FIGHT_END: 'fight.end',
 
+    // Abilities
+    ABILITY_CAST: 'ability.cast',
+    ULTIMATE_CAST: 'ultimate.cast',
+
     // Objectives
     OBJECTIVE_START: 'objective.start',
     OBJECTIVE_CONTEST: 'objective.contest',

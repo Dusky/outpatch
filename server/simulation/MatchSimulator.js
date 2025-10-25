@@ -9,7 +9,8 @@ const {
     CPosition,
     CController,
     CStatus,
-    CQuirks
+    CQuirks,
+    CLeveling
 } = require('./core/Component');
 const LaneSystem = require('./systems/LaneSystem');
 const ItemSystem = require('./systems/ItemSystem');
@@ -18,6 +19,11 @@ const TeamfightSystem = require('./systems/TeamfightSystem');
 const JungleSystem = require('./systems/JungleSystem');
 const ObjectiveSystem = require('./systems/ObjectiveSystem');
 const StructureSystem = require('./systems/StructureSystem');
+const AbilitySystem = require('./systems/AbilitySystem');
+const ChaosSystem = require('./systems/ChaosSystem');
+const { WeatherSystem } = require('./systems/WeatherSystem');
+const LevelingSystem = require('./systems/LevelingSystem');
+const abilitiesData = require('./data/abilities.json');
 
 /**
  * MatchSimulator - Public API for match simulation
@@ -63,22 +69,66 @@ class MatchSimulator {
         // Register systems (order matters - priority)
         const structureSystem = new StructureSystem();
         const itemSystem = new ItemSystem();
+        const abilitySystem = new AbilitySystem();
+        const levelingSystem = new LevelingSystem();
         const tiltSystem = new TiltSystem();
         const laneSystem = new LaneSystem();
         const jungleSystem = new JungleSystem();
         const objectiveSystem = new ObjectiveSystem();
         const teamfightSystem = new TeamfightSystem();
+        const chaosSystem = new ChaosSystem();
+        const weatherSystem = new WeatherSystem();
+
+        // Load abilities into AbilitySystem
+        abilitySystem.loadAbilities(abilitiesData);
+
+        // Connect systems that need to communicate
+        laneSystem.setAbilitySystem(abilitySystem);
+        laneSystem.setLevelingSystem(levelingSystem);  // For CS XP rewards
+        teamfightSystem.setAbilitySystem(abilitySystem);
+        teamfightSystem.setLevelingSystem(levelingSystem);  // For kill/assist XP
+        abilitySystem.setObjectiveSystem(objectiveSystem);  // For rift buffs (CDR, damage)
+        objectiveSystem.setLevelingSystem(levelingSystem);  // For objective XP
 
         this.engine.registerSystem(structureSystem, 5);   // Structures first (win condition)
+        this.engine.registerSystem(weatherSystem, 8);     // Weather (affects multipliers)
         this.engine.registerSystem(itemSystem, 10);       // Items (gold → purchases)
+        this.engine.registerSystem(abilitySystem, 12);    // Abilities (mana regen, cooldowns)
+        this.engine.registerSystem(levelingSystem, 13);   // Leveling (XP → level ups) - after abilities
         this.engine.registerSystem(tiltSystem, 15);       // Tilt (affects all performance)
         this.engine.registerSystem(laneSystem, 20);       // Lane phase
         this.engine.registerSystem(jungleSystem, 25);     // Jungle actions
         this.engine.registerSystem(objectiveSystem, 30);  // Objectives
         this.engine.registerSystem(teamfightSystem, 35);  // Teamfights last
+        this.engine.registerSystem(chaosSystem, 40);      // Chaos events after everything
+
+        // Store references for later use
+        this.abilitySystem = abilitySystem;
+        this.weatherSystem = weatherSystem;
+        this.chaosSystem = chaosSystem;
+        this.levelingSystem = levelingSystem;
+
+        // Initialize weather
+        const rng = this.engine.getRNG();
+        const eventLog = this.engine.getEventLog();
+        weatherSystem.initialize(rng.fork('weather_init'), eventLog, 0);
 
         // Create champion entities
         this._createChampionEntities();
+
+        // Initialize abilities for all champions
+        for (const champion of champions) {
+            const identity = champion.getComponent('identity');
+            if (identity.abilities) {
+                const abilityIds = [
+                    identity.abilities.q,
+                    identity.abilities.w,
+                    identity.abilities.e,
+                    identity.abilities.r
+                ];
+                abilitySystem.initializeChampionAbilities(champion, abilityIds);
+            }
+        }
 
         // Initialize structures
         structureSystem.initialize(this.engine.getWorld());
@@ -138,13 +188,20 @@ class MatchSimulator {
         const entity = new Entity();
 
         // Identity
+        const abilityIds = championData.abilities || ['void_bolt', 'reality_slash', 'shadow_step', 'black_hole'];
         entity.addComponent('identity', new CIdentity({
             id: `${teamId}-${role}`,
             name: championData.name,
             role: role,
             lore: championData.lore,
             teamId: teamId,
-            archetype: championData.archetype || 'balanced'
+            archetype: championData.archetype || 'balanced',
+            abilities: {
+                q: abilityIds[0],
+                w: abilityIds[1],
+                e: abilityIds[2],
+                r: abilityIds[3]
+            }
         }));
 
         // Stats
@@ -161,19 +218,18 @@ class MatchSimulator {
             game_sense: championData.game_sense || 0.5,
             tilt_resistance: championData.tilt_resistance || 0.5,
             clutch_factor: championData.clutch_factor || 0.5,
-            tilt_level: 0
+            tilt_level: 0,
+            power_curve: championData.power_curve || 'mid'  // 'early', 'mid', 'late'
         }));
 
         // Items
         entity.addComponent('items', new CItems());
 
-        // Abilities (placeholder for now)
-        entity.addComponent('abilities', new CAbilities([
-            { name: 'Q', cooldown: 5, damage: 60 },
-            { name: 'W', cooldown: 8, damage: 80 },
-            { name: 'E', cooldown: 12, damage: 100 },
-            { name: 'R', cooldown: 60, damage: 250 }
-        ]));
+        // Abilities component (CAbilities is used for ability-specific data)
+        entity.addComponent('abilities', new CAbilities());
+
+        // Leveling component (for XP and level progression)
+        entity.addComponent('leveling', new CLeveling());
 
         // Position
         entity.addComponent('position', new CPosition(role, 'lane'));

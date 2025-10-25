@@ -1,0 +1,494 @@
+[
+  {
+    "id": "void_bolt",
+    "name": "Void Bolt",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 8,
+    "manaCost": 60,
+    "damage": {
+      "base": 80,
+      "scaling": {
+        "ap": 0.6
+      }
+    },
+    "effects": ["magic_damage"],
+    "flavor": "Hurls corrupted energy from beyond reality",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "reality_slash",
+    "name": "Reality Slash",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 6,
+    "manaCost": 50,
+    "damage": {
+      "base": 60,
+      "scaling": {
+        "ad": 1.1
+      }
+    },
+    "effects": ["physical_damage", "can_crit"],
+    "flavor": "Tears through the fabric of space itself",
+    "roles": ["top", "jungle", "bot"]
+  },
+  {
+    "id": "chaos_orb",
+    "name": "Chaos Orb",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 10,
+    "manaCost": 80,
+    "damage": {
+      "base": 120,
+      "scaling": {
+        "ap": 0.8,
+        "level": 5
+      }
+    },
+    "effects": ["magic_damage", "aoe"],
+    "flavor": "Detonates chaotic energy in an area",
+    "roles": ["mid"]
+  },
+  {
+    "id": "time_stutter",
+    "name": "Time Stutter",
+    "type": "cc",
+    "damageType": "magic",
+    "cooldown": 12,
+    "manaCost": 70,
+    "damage": {
+      "base": 40,
+      "scaling": {
+        "ap": 0.4
+      }
+    },
+    "effects": ["magic_damage", "stun"],
+    "flavor": "Freezes an enemy in a temporal loop",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "entropy_shield",
+    "name": "Entropy Shield",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 18,
+    "manaCost": 60,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["shield", "self"],
+    "flavor": "Wraps self in protective chaos",
+    "roles": ["top", "support"]
+  },
+  {
+    "id": "blood_strike",
+    "name": "Blood Strike",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 7,
+    "manaCost": 55,
+    "damage": {
+      "base": 70,
+      "scaling": {
+        "ad": 0.9
+      }
+    },
+    "effects": ["physical_damage", "lifesteal"],
+    "flavor": "Strikes with life-draining force",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "shadow_step",
+    "name": "Shadow Step",
+    "type": "mobility",
+    "damageType": null,
+    "cooldown": 15,
+    "manaCost": 40,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["dash", "self"],
+    "flavor": "Blinks through shadows",
+    "roles": ["jungle", "mid", "bot"]
+  },
+  {
+    "id": "consecrated_ground",
+    "name": "Consecrated Ground",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 20,
+    "manaCost": 100,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["heal", "aoe", "ally"],
+    "flavor": "Blesses the ground with healing light",
+    "roles": ["support"]
+  },
+  {
+    "id": "armor_break",
+    "name": "Armor Break",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 9,
+    "manaCost": 65,
+    "damage": {
+      "base": 50,
+      "scaling": {
+        "ad": 0.8
+      }
+    },
+    "effects": ["physical_damage", "armor_shred"],
+    "flavor": "Shatters enemy defenses",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "void_spear",
+    "name": "Void Spear",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 8,
+    "manaCost": 60,
+    "damage": {
+      "base": 90,
+      "scaling": {
+        "ad": 1.2
+      }
+    },
+    "effects": ["physical_damage", "can_crit", "skillshot"],
+    "flavor": "Hurls a spear forged in the void",
+    "roles": ["top", "jungle", "bot"]
+  },
+  {
+    "id": "arcane_missiles",
+    "name": "Arcane Missiles",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 6,
+    "manaCost": 50,
+    "damage": {
+      "base": 60,
+      "scaling": {
+        "ap": 0.5
+      }
+    },
+    "effects": ["magic_damage", "multi_hit"],
+    "flavor": "Fires three homing missiles",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "crushing_blow",
+    "name": "Crushing Blow",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 10,
+    "manaCost": 70,
+    "damage": {
+      "base": 100,
+      "scaling": {
+        "ad": 1.4
+      }
+    },
+    "effects": ["physical_damage", "execute"],
+    "flavor": "Deals massive damage to low-HP enemies",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "mana_drain",
+    "name": "Mana Drain",
+    "type": "utility",
+    "damageType": "magic",
+    "cooldown": 14,
+    "manaCost": 0,
+    "damage": {
+      "base": 30,
+      "scaling": {
+        "ap": 0.3
+      }
+    },
+    "effects": ["magic_damage", "mana_drain"],
+    "flavor": "Siphons mana from the enemy",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "temporal_flux",
+    "name": "Temporal Flux",
+    "type": "cc",
+    "damageType": "magic",
+    "cooldown": 16,
+    "manaCost": 80,
+    "damage": {
+      "base": 50,
+      "scaling": {
+        "ap": 0.5
+      }
+    },
+    "effects": ["magic_damage", "slow", "aoe"],
+    "flavor": "Slows time for all nearby enemies",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "berserker_rage",
+    "name": "Berserker Rage",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 22,
+    "manaCost": 50,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["self_buff", "attack_speed", "damage"],
+    "flavor": "Enters a furious rage",
+    "roles": ["top", "jungle", "bot"]
+  },
+  {
+    "id": "spectral_arrow",
+    "name": "Spectral Arrow",
+    "type": "damage",
+    "damageType": "physical",
+    "cooldown": 7,
+    "manaCost": 55,
+    "damage": {
+      "base": 75,
+      "scaling": {
+        "ad": 1.0
+      }
+    },
+    "effects": ["physical_damage", "skillshot", "can_crit"],
+    "flavor": "Fires an arrow that phases through reality",
+    "roles": ["bot", "jungle"]
+  },
+  {
+    "id": "void_rift",
+    "name": "Void Rift",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 11,
+    "manaCost": 85,
+    "damage": {
+      "base": 110,
+      "scaling": {
+        "ap": 0.7,
+        "level": 4
+      }
+    },
+    "effects": ["magic_damage", "aoe", "zone"],
+    "flavor": "Tears open a rift to the void",
+    "roles": ["mid"]
+  },
+  {
+    "id": "holy_smite",
+    "name": "Holy Smite",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 8,
+    "manaCost": 60,
+    "damage": {
+      "base": 85,
+      "scaling": {
+        "ap": 0.6
+      }
+    },
+    "effects": ["magic_damage", "execute"],
+    "flavor": "Smites the enemy with holy fire",
+    "roles": ["support", "mid"]
+  },
+  {
+    "id": "corrupting_touch",
+    "name": "Corrupting Touch",
+    "type": "damage",
+    "damageType": "magic",
+    "cooldown": 9,
+    "manaCost": 65,
+    "damage": {
+      "base": 45,
+      "scaling": {
+        "ap": 0.5
+      }
+    },
+    "effects": ["magic_damage", "dot"],
+    "flavor": "Inflicts corruption that deals damage over time",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "reality_anchor",
+    "name": "Reality Anchor",
+    "type": "utility",
+    "damageType": null,
+    "cooldown": 24,
+    "manaCost": 100,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["cc_immunity", "self"],
+    "flavor": "Anchors self to reality, immune to crowd control",
+    "roles": ["top", "jungle", "bot"]
+  },
+  {
+    "id": "black_hole",
+    "name": "Black Hole",
+    "type": "ultimate",
+    "damageType": "magic",
+    "cooldown": 90,
+    "manaCost": 150,
+    "damage": {
+      "base": 250,
+      "scaling": {
+        "ap": 1.2,
+        "level": 15
+      }
+    },
+    "effects": ["magic_damage", "aoe", "cc", "stun"],
+    "flavor": "Creates a singularity that consumes all nearby enemies",
+    "roles": ["mid"]
+  },
+  {
+    "id": "void_ascension",
+    "name": "Void Ascension",
+    "type": "ultimate",
+    "damageType": null,
+    "cooldown": 100,
+    "manaCost": 100,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["self_buff", "invulnerable", "damage"],
+    "flavor": "Transcends reality, becoming unstoppable",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "divine_intervention",
+    "name": "Divine Intervention",
+    "type": "ultimate",
+    "damageType": null,
+    "cooldown": 120,
+    "manaCost": 150,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["heal", "aoe", "ally", "revive"],
+    "flavor": "Calls upon divine power to restore all allies",
+    "roles": ["support"]
+  },
+  {
+    "id": "perfect_execution",
+    "name": "Perfect Execution",
+    "type": "ultimate",
+    "damageType": "physical",
+    "cooldown": 80,
+    "manaCost": 120,
+    "damage": {
+      "base": 300,
+      "scaling": {
+        "ad": 2.0
+      }
+    },
+    "effects": ["physical_damage", "execute", "true_damage"],
+    "flavor": "Delivers a flawless killing blow",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "arrow_storm",
+    "name": "Arrow Storm",
+    "type": "ultimate",
+    "damageType": "physical",
+    "cooldown": 85,
+    "manaCost": 140,
+    "damage": {
+      "base": 200,
+      "scaling": {
+        "ad": 1.5
+      }
+    },
+    "effects": ["physical_damage", "aoe", "can_crit"],
+    "flavor": "Unleashes a devastating storm of arrows",
+    "roles": ["bot"]
+  },
+  {
+    "id": "time_reversal",
+    "name": "Time Reversal",
+    "type": "ultimate",
+    "damageType": null,
+    "cooldown": 110,
+    "manaCost": 100,
+    "damage": {
+      "base": 0
+    },
+    "effects": ["heal", "self", "rewind"],
+    "flavor": "Rewinds time to undo recent damage",
+    "roles": ["mid", "bot"]
+  },
+  {
+    "id": "cataclysm",
+    "name": "Cataclysm",
+    "type": "ultimate",
+    "damageType": "magic",
+    "cooldown": 95,
+    "manaCost": 160,
+    "damage": {
+      "base": 280,
+      "scaling": {
+        "ap": 1.4,
+        "level": 20
+      }
+    },
+    "effects": ["magic_damage", "aoe", "zone", "slow"],
+    "flavor": "Summons a catastrophic void eruption",
+    "roles": ["mid"]
+  },
+  {
+    "id": "chaos_reign",
+    "name": "Chaos Reign",
+    "type": "ultimate",
+    "damageType": "magic",
+    "cooldown": 100,
+    "manaCost": 150,
+    "damage": {
+      "base": 220,
+      "scaling": {
+        "ap": 1.0,
+        "level": 12
+      }
+    },
+    "effects": ["magic_damage", "random", "chaos"],
+    "flavor": "Unleashes pure chaos with unpredictable effects",
+    "roles": ["mid", "support"]
+  },
+  {
+    "id": "titan_slam",
+    "name": "Titan Slam",
+    "type": "ultimate",
+    "damageType": "physical",
+    "cooldown": 90,
+    "manaCost": 130,
+    "damage": {
+      "base": 260,
+      "scaling": {
+        "ad": 1.6
+      }
+    },
+    "effects": ["physical_damage", "aoe", "cc", "knockup"],
+    "flavor": "Slams the ground with titanic force",
+    "roles": ["top", "jungle"]
+  },
+  {
+    "id": "void_collapse",
+    "name": "Void Collapse",
+    "type": "ultimate",
+    "damageType": "magic",
+    "cooldown": 105,
+    "manaCost": 170,
+    "damage": {
+      "base": 300,
+      "scaling": {
+        "ap": 1.5,
+        "level": 18
+      }
+    },
+    "effects": ["magic_damage", "execute", "aoe"],
+    "flavor": "Collapses reality itself, dealing massive damage to low-HP enemies",
+    "roles": ["mid"]
+  }
+]

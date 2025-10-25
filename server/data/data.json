@@ -1,129 +1,19 @@
 {
   "teams": [
     {
-      "name": "Gravity's Rainbow",
-      "champions": [
-        {
-          "name": "Boots McLargeHuge",
-          "role": "Top",
-          "lore": "Is wanted in three servers for tax evasion",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.401314104657462,
-          "game_sense": 0.43377696213100125,
-          "tilt_resistance": 0.8600785534920006,
-          "synergy_map": {},
-          "clutch_factor": 0.25275205987799243,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9865895150508551
-        },
-        {
-          "name": "xXx_DeathLord_xXx (real name: Timothy)",
-          "role": "Jungle",
-          "lore": "Accidentally deleted their own lore file",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.46874719873390647,
-          "game_sense": 0.12637084832521595,
-          "tilt_resistance": 0.2975570091705315,
-          "synergy_map": {},
-          "clutch_factor": 0.9570066447107604,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.773885560433169
-        },
-        {
-          "name": "The Number 7",
-          "role": "Mid",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.1997522074626683,
-          "game_sense": 0.8896182743115577,
-          "tilt_resistance": 0.15041136281390877,
-          "synergy_map": {},
-          "clutch_factor": 0.07757184975437159,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9479938633790442
-        },
-        {
-          "name": "The Forbidden Snacks",
-          "role": "ADC",
-          "lore": "Mains themselves in another dimension",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.954305317579117,
-          "game_sense": 0.9451209687282798,
-          "tilt_resistance": 0.11828650346100744,
-          "synergy_map": {},
-          "clutch_factor": 0.7101273957849512,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.775781461664796
-        },
-        {
-          "name": "Former President Crab",
-          "role": "Support",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.5369428141910269,
-          "game_sense": 0.19024737159627492,
-          "tilt_resistance": 0.4996989696173968,
-          "synergy_map": {},
-          "clutch_factor": 0.14240746720451947,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9940451177351541
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
       "name": "The Void Accountants",
       "champions": [
         {
-          "name": "Desktop Background Energy",
+          "name": "Former President Crab",
           "role": "Top",
-          "lore": "Legally cannot be banned due to a typo in their contract",
+          "lore": "Haunted by the ghost of a particularly salty laner",
+          "personality": "Cocky",
+          "abilities": [
+            "blood_strike",
+            "reality_anchor",
+            "crushing_blow",
+            "perfect_execution"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -133,19 +23,192 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.37397048332548777,
-          "game_sense": 0.38154483493642943,
-          "tilt_resistance": 0.43996445028817277,
+          "mechanical_skill": 0.660794363451007,
+          "game_sense": 0.82324520257155,
+          "tilt_resistance": 0.5123671259564402,
+          "power_curve": "early",
           "synergy_map": {},
-          "clutch_factor": 0.9291970715034799,
+          "clutch_factor": 0.2850529072227168,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.6046914851504279
+          "mental_boom_threshold": 0.5094010119820198
+        },
+        {
+          "name": "A Single, Unassuming Pigeon",
+          "role": "Jungle",
+          "lore": "Believes they are in a different game entirely",
+          "personality": "Humble",
+          "abilities": [
+            "reality_anchor",
+            "reality_slash",
+            "blood_strike",
+            "titan_slam"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.33083552360317525,
+          "game_sense": 0.7866428917872532,
+          "tilt_resistance": 0.6088335542226873,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.4448214934128778,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9800117685874504
+        },
+        {
+          "name": "Boots McLargeHuge",
+          "role": "Mid",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Humble",
+          "abilities": [
+            "temporal_flux",
+            "void_rift",
+            "time_stutter",
+            "black_hole"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.5707878616529343,
+          "game_sense": 0.4976430922602191,
+          "tilt_resistance": 0.09443306426348252,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.5510790247262365,
+          "tilt_level": 0,
+          "grudges": [
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.6390379560334094
+        },
+        {
+          "name": "Former President Crab",
+          "role": "ADC",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Humble",
+          "abilities": [
+            "reality_slash",
+            "shadow_step",
+            "spectral_arrow",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.6298512060673185,
+          "game_sense": 0.7517629084938142,
+          "tilt_resistance": 0.47758771248736065,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.12627155817552227,
+          "tilt_level": 0,
+          "grudges": [
+            "Boots McLargeHuge"
+          ],
+          "mental_boom_threshold": 0.9272401036428128
+        },
+        {
+          "name": "Boots McLargeHuge",
+          "role": "Support",
+          "lore": "Believes they are in a different game entirely",
+          "personality": "Cocky",
+          "abilities": [
+            "temporal_flux",
+            "mana_drain",
+            "arcane_missiles",
+            "divine_intervention"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.8755289670216937,
+          "game_sense": 0.21124922772832022,
+          "tilt_resistance": 0.8169479403098621,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.95848514982194,
+          "tilt_level": 0,
+          "grudges": [
+            "Desktop Background Energy"
+          ],
+          "mental_boom_threshold": 0.5562095627048563
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "The Screaming Meemies",
+      "champions": [
+        {
+          "name": "Basement Dwellers United",
+          "role": "Top",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Chaotic",
+          "abilities": [
+            "reality_anchor",
+            "reality_slash",
+            "entropy_shield",
+            "perfect_execution"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.5814223531270872,
+          "game_sense": 0.7818764207581785,
+          "tilt_resistance": 0.33864629746083796,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.1320955451988628,
+          "tilt_level": 0,
+          "grudges": [
+            "?????? ??????"
+          ],
+          "mental_boom_threshold": 0.7102646894704169
         },
         {
           "name": "Boots McLargeHuge",
           "role": "Jungle",
-          "lore": "Died twice in one game due to a rounding error",
+          "lore": "Believes they are in a different game entirely",
+          "personality": "Humble",
+          "abilities": [
+            "crushing_blow",
+            "void_spear",
+            "spectral_arrow",
+            "void_ascension"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -155,63 +218,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.6652517940053242,
-          "game_sense": 0.8564775450980806,
-          "tilt_resistance": 0.9676991136310877,
+          "mechanical_skill": 0.41374979473740625,
+          "game_sense": 0.16844981523900748,
+          "tilt_resistance": 0.5864068069111539,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.48384336714664133,
+          "clutch_factor": 0.5762003876748716,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.8549766079169742
+          "mental_boom_threshold": 0.7698173857594242
         },
         {
-          "name": "Basement Dwellers United",
+          "name": "Mysterious Creep (Derek)",
           "role": "Mid",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9463764753499486,
-          "game_sense": 0.3627024349739958,
-          "tilt_resistance": 0.6605902945221853,
-          "synergy_map": {},
-          "clutch_factor": 0.4483093651988299,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9536664606116594
-        },
-        {
-          "name": "The Void Accountants",
-          "role": "ADC",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.2843705552857212,
-          "game_sense": 0.8247171272035403,
-          "tilt_resistance": 0.7415247141488437,
-          "synergy_map": {},
-          "clutch_factor": 0.803330616711017,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7881428151544652
-        },
-        {
-          "name": "Desktop Background Energy",
-          "role": "Support",
           "lore": "Died twice in one game due to a rounding error",
+          "personality": "Cocky",
+          "abilities": [
+            "time_stutter",
+            "chaos_orb",
+            "shadow_step",
+            "void_collapse"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -221,26 +248,96 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.03518219560502911,
-          "game_sense": 0.48024123665565677,
-          "tilt_resistance": 0.0820069792952478,
+          "mechanical_skill": 0.6116656731221048,
+          "game_sense": 0.8606498552824389,
+          "tilt_resistance": 0.842961024045457,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.9725310313379087,
+          "clutch_factor": 0.6695903097088878,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.9145082366191902
+          "mental_boom_threshold": 0.5564080104883928
+        },
+        {
+          "name": "xXx_DeathLord_xXx (real name: Timothy)",
+          "role": "ADC",
+          "lore": "Mains themselves in another dimension",
+          "personality": "Chaotic",
+          "abilities": [
+            "shadow_step",
+            "berserker_rage",
+            "reality_anchor",
+            "arrow_storm"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.193536897894786,
+          "game_sense": 0.02046600644950436,
+          "tilt_resistance": 0.01583626155322504,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.8594926433710259,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.8809394899294668
+        },
+        {
+          "name": "xXx_DeathLord_xXx (real name: Timothy)",
+          "role": "Support",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Tilted",
+          "abilities": [
+            "arcane_missiles",
+            "holy_smite",
+            "consecrated_ground",
+            "chaos_reign"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.5592730417526788,
+          "game_sense": 0.8412277280582641,
+          "tilt_resistance": 0.06278160605222127,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.9818982858900236,
+          "tilt_level": 0,
+          "grudges": [
+            "The Number 7"
+          ],
+          "mental_boom_threshold": 0.603714421734744
         }
       ],
       "wins": 0,
       "losses": 0
     },
     {
-      "name": "Mom's Credit Card FC",
+      "name": "Desktop Background Energy",
       "champions": [
         {
-          "name": "A Mild Inconvenience",
+          "name": "The Number 7",
           "role": "Top",
-          "lore": "Source code contains several commented-out recipes for lasagna",
+          "lore": "Accidentally deleted their own lore file",
+          "personality": "Cocky",
+          "abilities": [
+            "reality_anchor",
+            "reality_slash",
+            "entropy_shield",
+            "perfect_execution"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -250,19 +347,29 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.550158833308872,
-          "game_sense": 0.4638944041252242,
-          "tilt_resistance": 0.20165119019277378,
+          "mechanical_skill": 0.20983218473744292,
+          "game_sense": 0.9079091305141975,
+          "tilt_resistance": 0.8175422011721076,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.7596339616754664,
+          "clutch_factor": 0.09077956439342527,
           "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7606622848232145
+          "grudges": [
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.857052590866138
         },
         {
-          "name": "The Number 7",
+          "name": "Former President Crab",
           "role": "Jungle",
-          "lore": "Believes they are in a different game entirely",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Chaotic",
+          "abilities": [
+            "spectral_arrow",
+            "berserker_rage",
+            "crushing_blow",
+            "titan_slam"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -272,19 +379,194 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.1868824153241082,
-          "game_sense": 0.5816699473719154,
-          "tilt_resistance": 0.23277932436193005,
+          "mechanical_skill": 0.12952841675991045,
+          "game_sense": 0.2933814390802161,
+          "tilt_resistance": 0.4363631035785642,
+          "power_curve": "early",
           "synergy_map": {},
-          "clutch_factor": 0.5644412334082785,
+          "clutch_factor": 0.8922655288004364,
+          "tilt_level": 0,
+          "grudges": [
+            "A Literal Bag of Gold"
+          ],
+          "mental_boom_threshold": 0.7390288677409192
+        },
+        {
+          "name": "xXx_DeathLord_xXx (real name: Timothy)",
+          "role": "Mid",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Chaotic",
+          "abilities": [
+            "arcane_missiles",
+            "temporal_flux",
+            "holy_smite",
+            "void_collapse"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.8078008145194504,
+          "game_sense": 0.21373052427069772,
+          "tilt_resistance": 0.7184645308119944,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.16095669960205594,
+          "tilt_level": 0,
+          "grudges": [
+            "The Void Accountants"
+          ],
+          "mental_boom_threshold": 0.5936285669826226
+        },
+        {
+          "name": "Former President Crab",
+          "role": "ADC",
+          "lore": "Mains themselves in another dimension",
+          "personality": "Humble",
+          "abilities": [
+            "void_spear",
+            "spectral_arrow",
+            "berserker_rage",
+            "arrow_storm"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.13914526909669078,
+          "game_sense": 0.13171653655976967,
+          "tilt_resistance": 0.7735950668238187,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.9017977721199817,
+          "tilt_level": 0,
+          "grudges": [
+            "Boots McLargeHuge"
+          ],
+          "mental_boom_threshold": 0.5853845503606784
+        },
+        {
+          "name": "xXx_DeathLord_xXx (real name: Timothy)",
+          "role": "Support",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Humble",
+          "abilities": [
+            "holy_smite",
+            "temporal_flux",
+            "mana_drain",
+            "divine_intervention"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.7013276436942741,
+          "game_sense": 0.309899181815819,
+          "tilt_resistance": 0.5289909223578513,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.7588139821304576,
+          "tilt_level": 0,
+          "grudges": [
+            "The Concept of Thursday"
+          ],
+          "mental_boom_threshold": 0.5098179132152465
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "The Screaming Meemies",
+      "champions": [
+        {
+          "name": "Desktop Background Energy",
+          "role": "Top",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Humble",
+          "abilities": [
+            "armor_break",
+            "berserker_rage",
+            "blood_strike",
+            "perfect_execution"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.40723299548443537,
+          "game_sense": 0.6572522657105258,
+          "tilt_resistance": 0.9625526919999072,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.4049213200354844,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.9915120788641333
+          "mental_boom_threshold": 0.8665204742955435
+        },
+        {
+          "name": "The Void Accountants",
+          "role": "Jungle",
+          "lore": "Constantly followed by a flock of non-aggressive seagulls",
+          "personality": "Humble",
+          "abilities": [
+            "berserker_rage",
+            "void_spear",
+            "shadow_step",
+            "perfect_execution"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.08503240376560384,
+          "game_sense": 0.26951425274109764,
+          "tilt_resistance": 0.8514817397823455,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.8217827451376529,
+          "tilt_level": 0,
+          "grudges": [
+            "Former President Crab"
+          ],
+          "mental_boom_threshold": 0.8093104115169089
         },
         {
           "name": "The Forbidden Snacks",
           "role": "Mid",
-          "lore": "Legally cannot be banned due to a typo in their contract",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Calculated",
+          "abilities": [
+            "void_bolt",
+            "chaos_orb",
+            "mana_drain",
+            "chaos_reign"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -294,136 +576,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.27580736129701644,
-          "game_sense": 0.3825385671546784,
-          "tilt_resistance": 0.6348280338302683,
+          "mechanical_skill": 0.6795896731969857,
+          "game_sense": 0.5756419844911873,
+          "tilt_resistance": 0.9860789490838302,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.4300343606096382,
+          "clutch_factor": 0.621860019864344,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.6934650949252207
-        },
-        {
-          "name": "Mom's Credit Card FC",
-          "role": "ADC",
-          "lore": "Haunted by the ghost of a particularly salty laner",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.5704048090170886,
-          "game_sense": 0.12369894812599003,
-          "tilt_resistance": 0.9419063909667171,
-          "synergy_map": {},
-          "clutch_factor": 0.9464023247372086,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.5302621154343659
-        },
-        {
-          "name": "Mom's Credit Card FC",
-          "role": "Support",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.5327008556627524,
-          "game_sense": 0.5243228161144478,
-          "tilt_resistance": 0.7661200511600366,
-          "synergy_map": {},
-          "clutch_factor": 0.4698231492002518,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.6161300258419216
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
-      "name": "The Forbidden Snacks",
-      "champions": [
-        {
-          "name": "A Literal Bag of Gold",
-          "role": "Top",
-          "lore": "Source code contains several commented-out recipes for lasagna",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.44653576525525573,
-          "game_sense": 0.43606732437966644,
-          "tilt_resistance": 0.17735817310568636,
-          "synergy_map": {},
-          "clutch_factor": 0.4102448428760461,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7689419271923352
+          "mental_boom_threshold": 0.86791687435671
         },
         {
           "name": "xXx_DeathLord_xXx (real name: Timothy)",
-          "role": "Jungle",
-          "lore": "Is wanted in three servers for tax evasion",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.7351649257025172,
-          "game_sense": 0.930249530438598,
-          "tilt_resistance": 0.7228814266163213,
-          "synergy_map": {},
-          "clutch_factor": 0.8068793535450856,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9328407445246478
-        },
-        {
-          "name": "The Concept of Thursday",
-          "role": "Mid",
-          "lore": "Believes they are in a different game entirely",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.013145763661725818,
-          "game_sense": 0.9366978891876456,
-          "tilt_resistance": 0.5623056159345139,
-          "synergy_map": {},
-          "clutch_factor": 0.7792287196341061,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9082838717021493
-        },
-        {
-          "name": "The Void Accountants",
           "role": "ADC",
-          "lore": "Haunted by the ghost of a particularly salty laner",
+          "lore": "Is wanted in three servers for tax evasion",
+          "personality": "Calculated",
+          "abilities": [
+            "reality_slash",
+            "shadow_step",
+            "reality_anchor",
+            "time_reversal"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -433,92 +606,29 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.6239551811299164,
-          "game_sense": 0.03457914520705718,
-          "tilt_resistance": 0.9605656128956097,
+          "mechanical_skill": 0.6347416350278787,
+          "game_sense": 0.37346177148128556,
+          "tilt_resistance": 0.11376248345671347,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.29687067436001335,
+          "clutch_factor": 0.2724217210087989,
           "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.5223433797735874
+          "grudges": [
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.7986877412325343
         },
         {
-          "name": "Sentient Error Message",
+          "name": "A Single, Unassuming Pigeon",
           "role": "Support",
-          "lore": "Mains themselves in another dimension",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.6199478010169766,
-          "game_sense": 0.7382906011436023,
-          "tilt_resistance": 0.7574015717572917,
-          "synergy_map": {},
-          "clutch_factor": 0.8479193029717049,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.8231164062414241
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
-      "name": "The Forbidden Snacks",
-      "champions": [
-        {
-          "name": "The Concept of Thursday",
-          "role": "Top",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.4552169960471417,
-          "game_sense": 0.47606189597194715,
-          "tilt_resistance": 0.5913553956001969,
-          "synergy_map": {},
-          "clutch_factor": 0.881139166271176,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7359853419788409
-        },
-        {
-          "name": "Mom's Credit Card FC",
-          "role": "Jungle",
-          "lore": "Accidentally deleted their own lore file",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.8982627318775898,
-          "game_sense": 0.7020282161228735,
-          "tilt_resistance": 0.2814884326710385,
-          "synergy_map": {},
-          "clutch_factor": 0.15629849755520775,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.8863758234944642
-        },
-        {
-          "name": "?????? ??????",
-          "role": "Mid",
           "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Calculated",
+          "abilities": [
+            "void_bolt",
+            "time_stutter",
+            "temporal_flux",
+            "divine_intervention"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -528,58 +638,15 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.26211228930195585,
-          "game_sense": 0.4444975973770595,
-          "tilt_resistance": 0.5541058476276977,
+          "mechanical_skill": 0.9877937296253936,
+          "game_sense": 0.2527370467015184,
+          "tilt_resistance": 0.8620377038563605,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.010635494563804526,
+          "clutch_factor": 0.2893253369485884,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.5331413521410014
-        },
-        {
-          "name": "A Mild Inconvenience",
-          "role": "ADC",
-          "lore": "Is wanted in three servers for tax evasion",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.35049550081474434,
-          "game_sense": 0.544551631209278,
-          "tilt_resistance": 0.15298628339926013,
-          "synergy_map": {},
-          "clutch_factor": 0.8297913633883054,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.8986647872612712
-        },
-        {
-          "name": "The Void Accountants",
-          "role": "Support",
-          "lore": "Is actually three smaller champions in a trenchcoat",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.1347153920811408,
-          "game_sense": 0.40716546101079065,
-          "tilt_resistance": 0.6122088241369943,
-          "synergy_map": {},
-          "clutch_factor": 0.31322141209503496,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.5307673670669545
+          "mental_boom_threshold": 0.8594739545833735
         }
       ],
       "wins": 0,
@@ -589,9 +656,16 @@
       "name": "The Infinite Jest",
       "champions": [
         {
-          "name": "Basement Dwellers United",
+          "name": "The Void Accountants",
           "role": "Top",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Chaotic",
+          "abilities": [
+            "berserker_rage",
+            "crushing_blow",
+            "reality_anchor",
+            "perfect_execution"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -601,19 +675,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.08186711649861222,
-          "game_sense": 0.8531120327276815,
-          "tilt_resistance": 0.6288661278914218,
+          "mechanical_skill": 0.5453011106243539,
+          "game_sense": 0.07557214096314446,
+          "tilt_resistance": 0.2078878497559884,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.5278443087447797,
+          "clutch_factor": 0.9867842025075926,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.6508887658390358
+          "mental_boom_threshold": 0.860649075594988
         },
         {
-          "name": "Basement Dwellers United",
+          "name": "A Single, Unassuming Pigeon",
           "role": "Jungle",
-          "lore": "Died twice in one game due to a rounding error",
+          "lore": "Accidentally deleted their own lore file",
+          "personality": "Tilted",
+          "abilities": [
+            "spectral_arrow",
+            "shadow_step",
+            "crushing_blow",
+            "void_ascension"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -623,19 +705,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.901468931237021,
-          "game_sense": 0.2926631831557631,
-          "tilt_resistance": 0.5267321792447812,
+          "mechanical_skill": 0.9867509542280051,
+          "game_sense": 0.2736739399434467,
+          "tilt_resistance": 0.5209740697357008,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.2812582623757036,
+          "clutch_factor": 0.06002602542193802,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.780335858783619
+          "mental_boom_threshold": 0.8994331524023323
         },
         {
-          "name": "The Number 7",
+          "name": "Sentient Error Message",
           "role": "Mid",
-          "lore": "Believes they are in a different game entirely",
+          "lore": "Is wanted in three servers for tax evasion",
+          "personality": "Chaotic",
+          "abilities": [
+            "void_bolt",
+            "temporal_flux",
+            "shadow_step",
+            "black_hole"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -645,19 +735,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.6488517279690089,
-          "game_sense": 0.5107419109411313,
-          "tilt_resistance": 0.2137912596222875,
+          "mechanical_skill": 0.5763289807698952,
+          "game_sense": 0.0715140109271275,
+          "tilt_resistance": 0.7522610730095185,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.4061960968989582,
+          "clutch_factor": 0.052500948153993754,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.8181802005709459
+          "mental_boom_threshold": 0.7158722661863114
         },
         {
-          "name": "A Literal Bag of Gold",
+          "name": "Mom's Credit Card FC",
           "role": "ADC",
-          "lore": "Died twice in one game due to a rounding error",
+          "lore": "Accidentally deleted their own lore file",
+          "personality": "Cocky",
+          "abilities": [
+            "berserker_rage",
+            "reality_anchor",
+            "spectral_arrow",
+            "time_reversal"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -667,19 +765,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.3989262241512468,
-          "game_sense": 0.19715002348176802,
-          "tilt_resistance": 0.21583502138803845,
+          "mechanical_skill": 0.1674986850347917,
+          "game_sense": 0.5483609000034784,
+          "tilt_resistance": 0.5279081024436889,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.4014361370284125,
+          "clutch_factor": 0.3497331528006109,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.8554751816014241
+          "mental_boom_threshold": 0.9775800207078829
         },
         {
-          "name": "Former President Crab",
+          "name": "A Single, Unassuming Pigeon",
           "role": "Support",
           "lore": "Mains themselves in another dimension",
+          "personality": "Cocky",
+          "abilities": [
+            "mana_drain",
+            "corrupting_touch",
+            "temporal_flux",
+            "chaos_reign"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -689,14 +795,172 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.990573856688048,
-          "game_sense": 0.14867252222256577,
-          "tilt_resistance": 0.4219896456319683,
+          "mechanical_skill": 0.6709081944332025,
+          "game_sense": 0.24797016492570534,
+          "tilt_resistance": 0.9265801280531183,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.5332473230267065,
+          "clutch_factor": 0.4295862613791397,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.8770082084248996
+          "mental_boom_threshold": 0.8293060091259884
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "Basement Dwellers United",
+      "champions": [
+        {
+          "name": "Sentient Error Message",
+          "role": "Top",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Tilted",
+          "abilities": [
+            "crushing_blow",
+            "armor_break",
+            "reality_slash",
+            "void_ascension"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.42348626530360267,
+          "game_sense": 0.2176793461120774,
+          "tilt_resistance": 0.7192454207399219,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.9398058052447147,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9353567711808439
+        },
+        {
+          "name": "The Concept of Thursday",
+          "role": "Jungle",
+          "lore": "Constantly followed by a flock of non-aggressive seagulls",
+          "personality": "Chaotic",
+          "abilities": [
+            "crushing_blow",
+            "reality_anchor",
+            "void_spear",
+            "perfect_execution"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.1582920579938274,
+          "game_sense": 0.9186226457496935,
+          "tilt_resistance": 0.9605881228461968,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.44656591702718185,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9112394650497032
+        },
+        {
+          "name": "Jessica Telephone",
+          "role": "Mid",
+          "lore": "Is wanted in three servers for tax evasion",
+          "personality": "Humble",
+          "abilities": [
+            "arcane_missiles",
+            "time_stutter",
+            "void_rift",
+            "cataclysm"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.2637777293831711,
+          "game_sense": 0.40997402375652015,
+          "tilt_resistance": 0.660735548632172,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.14131270627792092,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.6810005199265343
+        },
+        {
+          "name": "Sentient Error Message",
+          "role": "ADC",
+          "lore": "Constantly followed by a flock of non-aggressive seagulls",
+          "personality": "Cocky",
+          "abilities": [
+            "void_spear",
+            "reality_slash",
+            "reality_anchor",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.40551101310100046,
+          "game_sense": 0.19509356613269047,
+          "tilt_resistance": 0.220273426904519,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.6817501369320786,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9573494486512721
+        },
+        {
+          "name": "The Concept of Thursday",
+          "role": "Support",
+          "lore": "Accidentally deleted their own lore file",
+          "personality": "Tilted",
+          "abilities": [
+            "time_stutter",
+            "void_bolt",
+            "mana_drain",
+            "chaos_reign"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.4535288045933754,
+          "game_sense": 0.9230360288836661,
+          "tilt_resistance": 0.03986663482396091,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.4096040197820927,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9868805174839195
         }
       ],
       "wins": 0,
@@ -708,29 +972,14 @@
         {
           "name": "?????? ??????",
           "role": "Top",
-          "lore": "Is wanted in three servers for tax evasion",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9531598459496808,
-          "game_sense": 0.47000281610430883,
-          "tilt_resistance": 0.9144012212166688,
-          "synergy_map": {},
-          "clutch_factor": 0.6376241676029468,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9016322802199251
-        },
-        {
-          "name": "xXx_DeathLord_xXx (real name: Timothy)",
-          "role": "Jungle",
           "lore": "Haunted by the ghost of a particularly salty laner",
+          "personality": "Tilted",
+          "abilities": [
+            "armor_break",
+            "entropy_shield",
+            "crushing_blow",
+            "perfect_execution"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -740,275 +989,31 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.0008536892885115943,
-          "game_sense": 0.708035690504156,
-          "tilt_resistance": 0.3457475816623121,
+          "mechanical_skill": 0.9702117972150632,
+          "game_sense": 0.8582095836015537,
+          "tilt_resistance": 0.01932837400629861,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.7844615155212638,
+          "clutch_factor": 0.6888260166590692,
           "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9794050094535978
-        },
-        {
-          "name": "xXx_DeathLord_xXx (real name: Timothy)",
-          "role": "Mid",
-          "lore": "Source code contains several commented-out recipes for lasagna",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.527900267346002,
-          "game_sense": 0.15354006339573845,
-          "tilt_resistance": 0.13847309495161553,
-          "synergy_map": {},
-          "clutch_factor": 0.14337207401801488,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.5814398039260913
-        },
-        {
-          "name": "Mom's Credit Card FC",
-          "role": "ADC",
-          "lore": "Mains themselves in another dimension",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.1117648545296206,
-          "game_sense": 0.6772123430762738,
-          "tilt_resistance": 0.04482027642434172,
-          "synergy_map": {},
-          "clutch_factor": 0.5369101983201288,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.6893510750901292
-        },
-        {
-          "name": "Mom's Credit Card FC",
-          "role": "Support",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.07787942507448964,
-          "game_sense": 0.4633465117956601,
-          "tilt_resistance": 0.17433050732297306,
-          "synergy_map": {},
-          "clutch_factor": 0.9084553358509764,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.6840806962135093
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
-      "name": "Desktop Background Energy",
-      "champions": [
-        {
-          "name": "?????? ??????",
-          "role": "Top",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.6328242779216431,
-          "game_sense": 0.8784277113765466,
-          "tilt_resistance": 0.8339006899567527,
-          "synergy_map": {},
-          "clutch_factor": 0.46045783184430134,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7533035355547902
-        },
-        {
-          "name": "Mysterious Creep (Derek)",
-          "role": "Jungle",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9739176435912544,
-          "game_sense": 0.8830866409647344,
-          "tilt_resistance": 0.8816626048500464,
-          "synergy_map": {},
-          "clutch_factor": 0.9866648908705762,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7474394076442521
-        },
-        {
-          "name": "Boots McLargeHuge",
-          "role": "Mid",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.6855701640695153,
-          "game_sense": 0.21970905661073137,
-          "tilt_resistance": 0.6067237914200463,
-          "synergy_map": {},
-          "clutch_factor": 0.12063202147958463,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9245378591428768
+          "grudges": [
+            "Basement Dwellers United",
+            "The Forbidden Snacks",
+            "Former President Crab"
+          ],
+          "mental_boom_threshold": 0.6250628206582398
         },
         {
           "name": "The Concept of Thursday",
-          "role": "ADC",
-          "lore": "Haunted by the ghost of a particularly salty laner",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9932796650710702,
-          "game_sense": 0.5457047290162411,
-          "tilt_resistance": 0.7662154072065082,
-          "synergy_map": {},
-          "clutch_factor": 0.6431944273603798,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.759030991249656
-        },
-        {
-          "name": "Sentient Error Message",
-          "role": "Support",
-          "lore": "Haunted by the ghost of a particularly salty laner",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.7640586435401329,
-          "game_sense": 0.05794532616581183,
-          "tilt_resistance": 0.9941418412139127,
-          "synergy_map": {},
-          "clutch_factor": 0.5582277172906045,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.947508131495765
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
-      "name": "Desktop Background Energy",
-      "champions": [
-        {
-          "name": "?????? ??????",
-          "role": "Top",
-          "lore": "Legally cannot be banned due to a typo in their contract",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.2179695901794334,
-          "game_sense": 0.8987283467664211,
-          "tilt_resistance": 0.34014994222466033,
-          "synergy_map": {},
-          "clutch_factor": 0.5865651551546611,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7210960798100338
-        },
-        {
-          "name": "xXx_DeathLord_xXx (real name: Timothy)",
           "role": "Jungle",
-          "lore": "Constantly followed by a flock of non-aggressive seagulls",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9447550158862699,
-          "game_sense": 0.4464113868894126,
-          "tilt_resistance": 0.8360554378387646,
-          "synergy_map": {},
-          "clutch_factor": 0.5629071240932899,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9293352136854935
-        },
-        {
-          "name": "Mysterious Creep (Derek)",
-          "role": "Mid",
-          "lore": "Is wanted in three servers for tax evasion",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.7701772741130468,
-          "game_sense": 0.2633355149886778,
-          "tilt_resistance": 0.514762880987075,
-          "synergy_map": {},
-          "clutch_factor": 0.4663597009153886,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.8714460904107487
-        },
-        {
-          "name": "Sentient Error Message",
-          "role": "ADC",
           "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Calculated",
+          "abilities": [
+            "shadow_step",
+            "blood_strike",
+            "spectral_arrow",
+            "perfect_execution"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -1018,114 +1023,27 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.7998514441345621,
-          "game_sense": 0.764372130872881,
-          "tilt_resistance": 0.6086925960802638,
+          "mechanical_skill": 0.9311346230289879,
+          "game_sense": 0.36869211606680974,
+          "tilt_resistance": 0.7829033670315442,
+          "power_curve": "mid",
           "synergy_map": {},
-          "clutch_factor": 0.4136749736937093,
+          "clutch_factor": 0.6219875855388075,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.9589654264929112
-        },
-        {
-          "name": "Boots McLargeHuge",
-          "role": "Support",
-          "lore": "Source code contains several commented-out recipes for lasagna",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.5059580204872458,
-          "game_sense": 0.16521179111050244,
-          "tilt_resistance": 0.45427665371636516,
-          "synergy_map": {},
-          "clutch_factor": 0.9998591700400694,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.637792635055322
-        }
-      ],
-      "wins": 0,
-      "losses": 0
-    },
-    {
-      "name": "Mom's Credit Card FC",
-      "champions": [
-        {
-          "name": "Boots McLargeHuge",
-          "role": "Top",
-          "lore": "Haunted by the ghost of a particularly salty laner",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.08420936655345779,
-          "game_sense": 0.029290365495511228,
-          "tilt_resistance": 0.2694251937940182,
-          "synergy_map": {},
-          "clutch_factor": 0.6007207456539874,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.6322042715054884
-        },
-        {
-          "name": "The Forbidden Snacks",
-          "role": "Jungle",
-          "lore": "Believes they are in a different game entirely",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.9930956339018557,
-          "game_sense": 0.3521830096057039,
-          "tilt_resistance": 0.33035027259517147,
-          "synergy_map": {},
-          "clutch_factor": 0.049786687842546584,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.9479620897803988
-        },
-        {
-          "name": "xXx_DeathLord_xXx (real name: Timothy)",
-          "role": "Mid",
-          "lore": "Died twice in one game due to a rounding error",
-          "kda": {
-            "k": 0,
-            "d": 0,
-            "a": 0
-          },
-          "cs": 0,
-          "gold": 500,
-          "items": [],
-          "level": 1,
-          "mechanical_skill": 0.1605767078218867,
-          "game_sense": 0.3869191727791501,
-          "tilt_resistance": 0.8306015276844272,
-          "synergy_map": {},
-          "clutch_factor": 0.6534193832945507,
-          "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.7374056005875815
+          "mental_boom_threshold": 0.5605135731578056
         },
         {
           "name": "?????? ??????",
-          "role": "ADC",
-          "lore": "Believes they are in a different game entirely",
+          "role": "Mid",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Humble",
+          "abilities": [
+            "corrupting_touch",
+            "void_bolt",
+            "chaos_orb",
+            "void_collapse"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -1135,19 +1053,63 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.2531901109578074,
-          "game_sense": 0.5433640816614183,
-          "tilt_resistance": 0.5285144208540151,
+          "mechanical_skill": 0.35561707337594695,
+          "game_sense": 0.7301164560007949,
+          "tilt_resistance": 0.28754373290091806,
+          "power_curve": "late",
           "synergy_map": {},
-          "clutch_factor": 0.020815019032767612,
+          "clutch_factor": 0.11914276236487598,
           "tilt_level": 0,
-          "grudges": [],
-          "mental_boom_threshold": 0.934661350346876
+          "grudges": [
+            "Former President Crab",
+            "A Literal Bag of Gold"
+          ],
+          "mental_boom_threshold": 0.9191639724893648
+        },
+        {
+          "name": "A Single, Unassuming Pigeon",
+          "role": "ADC",
+          "lore": "Mains themselves in another dimension",
+          "personality": "Humble",
+          "abilities": [
+            "shadow_step",
+            "reality_slash",
+            "spectral_arrow",
+            "arrow_storm"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.904801338168693,
+          "game_sense": 0.7763458617589964,
+          "tilt_resistance": 0.7749624138167108,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.20303239819733498,
+          "tilt_level": 0,
+          "grudges": [
+            "Boots McLargeHuge",
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.7283224168903303
         },
         {
           "name": "A Single, Unassuming Pigeon",
           "role": "Support",
-          "lore": "Died twice in one game due to a rounding error",
+          "lore": "Haunted by the ghost of a particularly salty laner",
+          "personality": "Humble",
+          "abilities": [
+            "consecrated_ground",
+            "mana_drain",
+            "void_bolt",
+            "chaos_reign"
+          ],
           "kda": {
             "k": 0,
             "d": 0,
@@ -1157,14 +1119,501 @@
           "gold": 500,
           "items": [],
           "level": 1,
-          "mechanical_skill": 0.15588120957478013,
-          "game_sense": 0.4944317745068749,
-          "tilt_resistance": 0.3151682661158661,
+          "mechanical_skill": 0.9212146844930904,
+          "game_sense": 0.7432564587249253,
+          "tilt_resistance": 0.7309344925672052,
+          "power_curve": "early",
           "synergy_map": {},
-          "clutch_factor": 0.39697674457711063,
+          "clutch_factor": 0.3663870508662781,
           "tilt_level": 0,
           "grudges": [],
-          "mental_boom_threshold": 0.9478008039956397
+          "mental_boom_threshold": 0.9041124079837397
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "Desktop Background Energy",
+      "champions": [
+        {
+          "name": "The Number 7",
+          "role": "Top",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Tilted",
+          "abilities": [
+            "reality_anchor",
+            "armor_break",
+            "crushing_blow",
+            "void_ascension"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.006956913303262757,
+          "game_sense": 0.3836835040235844,
+          "tilt_resistance": 0.6111407277885428,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.3827367572554632,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9068340169654201
+        },
+        {
+          "name": "The Void Accountants",
+          "role": "Jungle",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Tilted",
+          "abilities": [
+            "shadow_step",
+            "spectral_arrow",
+            "berserker_rage",
+            "titan_slam"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.24668979218198306,
+          "game_sense": 0.12415621220741557,
+          "tilt_resistance": 0.23266888945292563,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.9641684082074287,
+          "tilt_level": 0,
+          "grudges": [
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.7048201350533114
+        },
+        {
+          "name": "Boots McLargeHuge",
+          "role": "Mid",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Calculated",
+          "abilities": [
+            "void_bolt",
+            "corrupting_touch",
+            "shadow_step",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.37630140568234616,
+          "game_sense": 0.9785897946189459,
+          "tilt_resistance": 0.5612276892593884,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.8962196783520531,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.967636735567884
+        },
+        {
+          "name": "Boots McLargeHuge",
+          "role": "ADC",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Tilted",
+          "abilities": [
+            "berserker_rage",
+            "reality_slash",
+            "spectral_arrow",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.1954159862506879,
+          "game_sense": 0.33132964914584817,
+          "tilt_resistance": 0.08540671460247551,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.8856701421106279,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.5084886563047158
+        },
+        {
+          "name": "A Literal Bag of Gold",
+          "role": "Support",
+          "lore": "Is actually three smaller champions in a trenchcoat",
+          "personality": "Humble",
+          "abilities": [
+            "consecrated_ground",
+            "mana_drain",
+            "time_stutter",
+            "chaos_reign"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.5698100247536204,
+          "game_sense": 0.2349122643074706,
+          "tilt_resistance": 0.3059880601527505,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.5727873895448772,
+          "tilt_level": 0,
+          "grudges": [
+            "?????? ??????"
+          ],
+          "mental_boom_threshold": 0.5987433154306228
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "Desktop Background Energy",
+      "champions": [
+        {
+          "name": "Boots McLargeHuge",
+          "role": "Top",
+          "lore": "Haunted by the ghost of a particularly salty laner",
+          "personality": "Chaotic",
+          "abilities": [
+            "reality_anchor",
+            "blood_strike",
+            "crushing_blow",
+            "titan_slam"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.8182128501870531,
+          "game_sense": 0.39128634659485306,
+          "tilt_resistance": 0.2484639337167036,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.4171662561043885,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.915830165547642
+        },
+        {
+          "name": "The Forbidden Snacks",
+          "role": "Jungle",
+          "lore": "Haunted by the ghost of a particularly salty laner",
+          "personality": "Cocky",
+          "abilities": [
+            "berserker_rage",
+            "spectral_arrow",
+            "armor_break",
+            "titan_slam"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.9399755778602377,
+          "game_sense": 0.7446795017783778,
+          "tilt_resistance": 0.029633198674219985,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.8298732551185426,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.9689699495139826
+        },
+        {
+          "name": "A Literal Bag of Gold",
+          "role": "Mid",
+          "lore": "Accidentally deleted their own lore file",
+          "personality": "Calculated",
+          "abilities": [
+            "time_stutter",
+            "chaos_orb",
+            "corrupting_touch",
+            "black_hole"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.7270569776329128,
+          "game_sense": 0.4193035897195665,
+          "tilt_resistance": 0.8947533613427072,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.14512725709707852,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.6753220320480795
+        },
+        {
+          "name": "The Forbidden Snacks",
+          "role": "ADC",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Chaotic",
+          "abilities": [
+            "berserker_rage",
+            "reality_slash",
+            "shadow_step",
+            "arrow_storm"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.1585377930875811,
+          "game_sense": 0.5483682323225088,
+          "tilt_resistance": 0.2534824479668678,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.9047757587884571,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.7680347669527885
+        },
+        {
+          "name": "Desktop Background Energy",
+          "role": "Support",
+          "lore": "Is wanted in three servers for tax evasion",
+          "personality": "Cocky",
+          "abilities": [
+            "void_bolt",
+            "time_stutter",
+            "entropy_shield",
+            "divine_intervention"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.8685279177128911,
+          "game_sense": 0.3735577501485927,
+          "tilt_resistance": 0.5522462188216763,
+          "power_curve": "mid",
+          "synergy_map": {},
+          "clutch_factor": 0.29177851622977946,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.6760548124896314
+        }
+      ],
+      "wins": 0,
+      "losses": 0
+    },
+    {
+      "name": "Desktop Background Energy",
+      "champions": [
+        {
+          "name": "Basement Dwellers United",
+          "role": "Top",
+          "lore": "Constantly followed by a flock of non-aggressive seagulls",
+          "personality": "Tilted",
+          "abilities": [
+            "berserker_rage",
+            "blood_strike",
+            "armor_break",
+            "titan_slam"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.23602980297455955,
+          "game_sense": 0.7759277859396592,
+          "tilt_resistance": 0.028804539500017157,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.29694075042903045,
+          "tilt_level": 0,
+          "grudges": [
+            "The Concept of Thursday"
+          ],
+          "mental_boom_threshold": 0.9797491875892708
+        },
+        {
+          "name": "Former President Crab",
+          "role": "Jungle",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Tilted",
+          "abilities": [
+            "reality_anchor",
+            "spectral_arrow",
+            "berserker_rage",
+            "void_ascension"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.7421221687385093,
+          "game_sense": 0.08931378990756111,
+          "tilt_resistance": 0.5715766220609928,
+          "power_curve": "late",
+          "synergy_map": {},
+          "clutch_factor": 0.14257986846453652,
+          "tilt_level": 0,
+          "grudges": [
+            "The Void Accountants",
+            "?????? ??????"
+          ],
+          "mental_boom_threshold": 0.8525005585183092
+        },
+        {
+          "name": "?????? ??????",
+          "role": "Mid",
+          "lore": "Source code contains several commented-out recipes for lasagna",
+          "personality": "Calculated",
+          "abilities": [
+            "holy_smite",
+            "chaos_orb",
+            "void_bolt",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.025478776696520322,
+          "game_sense": 0.39764653077262246,
+          "tilt_resistance": 0.5234514350472013,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.4661800361266344,
+          "tilt_level": 0,
+          "grudges": [],
+          "mental_boom_threshold": 0.7632632534054647
+        },
+        {
+          "name": "xXx_DeathLord_xXx (real name: Timothy)",
+          "role": "ADC",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Chaotic",
+          "abilities": [
+            "reality_anchor",
+            "spectral_arrow",
+            "berserker_rage",
+            "time_reversal"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.3021234477072279,
+          "game_sense": 0.7422460984768078,
+          "tilt_resistance": 0.11777030557716062,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.7826291809321049,
+          "tilt_level": 0,
+          "grudges": [
+            "Boots McLargeHuge",
+            "A Single, Unassuming Pigeon",
+            "xXx_DeathLord_xXx (real name: Timothy)"
+          ],
+          "mental_boom_threshold": 0.8474657776779991
+        },
+        {
+          "name": "Jessica Telephone",
+          "role": "Support",
+          "lore": "Legally cannot be banned due to a typo in their contract",
+          "personality": "Chaotic",
+          "abilities": [
+            "arcane_missiles",
+            "mana_drain",
+            "consecrated_ground",
+            "divine_intervention"
+          ],
+          "kda": {
+            "k": 0,
+            "d": 0,
+            "a": 0
+          },
+          "cs": 0,
+          "gold": 500,
+          "items": [],
+          "level": 1,
+          "mechanical_skill": 0.7547553051648019,
+          "game_sense": 0.3004251738316126,
+          "tilt_resistance": 0.9023136399360887,
+          "power_curve": "early",
+          "synergy_map": {},
+          "clutch_factor": 0.2315512380155893,
+          "tilt_level": 0,
+          "grudges": [
+            "Boots McLargeHuge"
+          ],
+          "mental_boom_threshold": 0.7523386693883992
         }
       ],
       "wins": 0,

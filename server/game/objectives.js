@@ -1,5 +1,5 @@
 
-function simulateObjective(team1, team2, wave, logEvent) {
+function simulateObjective(team1, team2, wave, logEvent, commentary) {
     let objectiveContested = false;
     let objectiveName = "";
 
@@ -16,23 +16,40 @@ function simulateObjective(team1, team2, wave, logEvent) {
     }
 
     if (objectiveContested) {
-        logEvent(`OBJECTIVE CONTEST: ${objectiveName} is being fought over!`); // Dramatic pause message
+        logEvent(`OBJECTIVE CONTEST: ${objectiveName} is being fought over!`);
 
         // Simplified objective contest: higher total skill wins
         const team1Power = team1.champions.reduce((sum, champ) => sum + champ.game_sense, 0);
         const team2Power = team2.champions.reduce((sum, champ) => sum + champ.game_sense, 0);
 
-        if (Math.random() < 0.1) { // 10% chance for a steal
-            if (team1Power > team2Power) {
-                logEvent(`${team2.name} STEALS the ${objectiveName} from ${team1.name}!`); // Steal message
-            } else {
-                logEvent(`${team1.name} STEALS the ${objectiveName} from ${team2.name}!`); // Steal message
-            }
-        } else if (team1Power > team2Power) {
-            logEvent(`${team1.name} secures ${objectiveName}!`);
+        const wasStolen = Math.random() < 0.1; // 10% chance for a steal
+        let winningTeam, losingTeam;
+
+        if (wasStolen) {
+            // Steal: weaker team gets it
+            winningTeam = team1Power < team2Power ? team1 : team2;
+            losingTeam = team1Power < team2Power ? team2 : team1;
         } else {
-            logEvent(`${team2.name} secures ${objectiveName}!`);
+            // Normal: stronger team gets it
+            winningTeam = team1Power > team2Power ? team1 : team2;
+            losingTeam = team1Power > team2Power ? team2 : team1;
         }
+
+        // Use commentary engine for objective commentary
+        if (commentary) {
+            logEvent(commentary.generateObjectiveCommentary(winningTeam, objectiveName, wasStolen));
+        } else {
+            if (wasStolen) {
+                logEvent(`${winningTeam.name} STEALS the ${objectiveName} from ${losingTeam.name}!`);
+            } else {
+                logEvent(`${winningTeam.name} secures ${objectiveName}!`);
+            }
+        }
+
+        // Give team buffs/gold for securing objective
+        winningTeam.champions.forEach(c => {
+            c.gold += 100; // Objective gold
+        });
     }
 }
 

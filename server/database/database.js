@@ -298,6 +298,22 @@ class Database {
                 )
             `);
 
+            // Match replays table - stores deterministic replay data
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS match_replays (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    match_id TEXT UNIQUE,
+                    seed TEXT NOT NULL,
+                    team1_name TEXT,
+                    team2_name TEXT,
+                    events_json TEXT,
+                    snapshots_json TEXT,
+                    final_state_json TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (match_id) REFERENCES match_results(match_id)
+                )
+            `);
+
             // Team standings table - stores current season team records
             this.db.run(`
                 CREATE TABLE IF NOT EXISTS team_standings (
@@ -323,6 +339,44 @@ class Database {
                     is_running INTEGER DEFAULT 0,
                     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (season_number) REFERENCES seasons(season_number)
+                )
+            `);
+
+            // Add career progression columns to champion_careers (if they don't exist)
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN career_xp INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN career_level INTEGER DEFAULT 1`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN form REAL DEFAULT 1.0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN win_streak INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN loss_streak INTEGER DEFAULT 0`, () => {});
+            this.db.run(`ALTER TABLE champion_careers ADD COLUMN void_touched INTEGER DEFAULT 0`, () => {});
+
+            // Champion grudges table - tracks rivalries
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS champion_grudges (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    champion_name TEXT NOT NULL,
+                    grudge_target_name TEXT NOT NULL,
+                    intensity REAL DEFAULT 0.0,
+                    times_killed_by INTEGER DEFAULT 0,
+                    times_killed INTEGER DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(champion_name, grudge_target_name)
+                )
+            `);
+
+            // Champion synergies table - tracks positive relationships
+            this.db.run(`
+                CREATE TABLE IF NOT EXISTS champion_synergies (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    champion_name TEXT NOT NULL,
+                    synergy_target_name TEXT NOT NULL,
+                    strength REAL DEFAULT 0.0,
+                    games_together INTEGER DEFAULT 0,
+                    wins_together INTEGER DEFAULT 0,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(champion_name, synergy_target_name)
                 )
             `);
 
@@ -996,6 +1050,381 @@ class Database {
                         });
                         resolve(achievements);
                     }
+                }
+            );
+        });
+    }
+
+    // ==================== MATCH REPLAY METHODS ====================
+
+    /**
+     * Save match replay data for deterministic replay
+     */
+    async saveMatchReplay(replayData) {
+        return new Promise((resolve, reject) => {
+            const {
+                matchId,
+                seed,
+                team1,
+                team2,
+                events,
+                snapshots,
+                finalState
+            } = replayData;
+
+            this.db.run(
+                `INSERT OR REPLACE INTO match_replays
+                (match_id, seed, team1_name, team2_name, events_json, snapshots_json, final_state_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    matchId,
+                    seed,
+                    team1,
+                    team2,
+                    JSON.stringify(events),
+                    JSON.stringify(snapshots || []),
+                    JSON.stringify(finalState || {})
+                ],
+                function(err) {
+                    if (err) {
+                        console.error('Error saving match replay:', err);
+                        reject(err);
+                    } else {
+                        resolve({ id: this.lastID, matchId });
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get match replay by match ID
+     */
+    async getMatchReplay(matchId) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                'SELECT * FROM match_replays WHERE match_id = ?',
+                [matchId],
+                (err, replay) => {
+                    if (err) {
+                        console.error('Error fetching match replay:', err);
+                        reject(err);
+                    } else if (!replay) {
+                        resolve(null);
+                    } else {
+                        // Parse JSON fields
+                        try {
+                            replay.events = JSON.parse(replay.events_json);
+                            replay.snapshots = JSON.parse(replay.snapshots_json || '[]');
+                            replay.finalState = JSON.parse(replay.final_state_json || '{}');
+                            delete replay.events_json;
+                            delete replay.snapshots_json;
+                            delete replay.final_state_json;
+                            resolve(replay);
+                        } catch (parseErr) {
+                            console.error('Error parsing replay JSON:', parseErr);
+                            reject(parseErr);
+                        }
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get all match replays (paginated)
+     */
+    async getAllMatchReplays(limit = 20, offset = 0) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT id, match_id, seed, team1_name, team2_name, created_at
+                 FROM match_replays
+                 ORDER BY created_at DESC
+                 LIMIT ? OFFSET ?`,
+                [limit, offset],
+                (err, replays) => {
+                    if (err) {
+                        console.error('Error fetching match replays:', err);
+                        reject(err);
+                    } else {
+                        resolve(replays);
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * Get replays by team name
+     */
+    async getReplaysByTeam(teamName, limit = 10) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT id, match_id, seed, team1_name, team2_name, created_at
+                 FROM match_replays
+                 WHERE team1_name = ? OR team2_name = ?
+                 ORDER BY created_at DESC
+                 LIMIT ?`,
+                [teamName, teamName, limit],
+                (err, replays) => {
+                    if (err) reject(err);
+                    else resolve(replays);
+                }
+            );
+        });
+    }
+
+    // ==================== CAREER PROGRESSION ====================
+
+    /**
+     * Update champion career XP and level
+     */
+    async updateChampionCareerXP(championName, xpGained, won) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                'SELECT career_xp, career_level, form, win_streak, loss_streak FROM champion_careers WHERE champion_name = ?',
+                [championName],
+                (err, row) => {
+                    if (err) return reject(err);
+                    if (!row) return resolve(null);
+
+                    const newXP = (row.career_xp || 0) + xpGained;
+                    let newLevel = row.career_level || 1;
+
+                    // Simple level formula: 1000 XP per level
+                    while (newXP >= newLevel * 1000 && newLevel < 50) {
+                        newLevel++;
+                    }
+
+                    // Update form based on win/loss
+                    let newForm = row.form || 1.0;
+                    let newWinStreak = row.win_streak || 0;
+                    let newLossStreak = row.loss_streak || 0;
+
+                    if (won) {
+                        newWinStreak++;
+                        newLossStreak = 0;
+                        newForm = Math.min(1.5, newForm + 0.05); // +0.05 per win, cap at 1.5
+                    } else {
+                        newLossStreak++;
+                        newWinStreak = 0;
+                        newForm = Math.max(0.5, newForm - 0.05); // -0.05 per loss, floor at 0.5
+                    }
+
+                    this.db.run(
+                        `UPDATE champion_careers
+                         SET career_xp = ?, career_level = ?, form = ?, win_streak = ?, loss_streak = ?
+                         WHERE champion_name = ?`,
+                        [newXP, newLevel, newForm, newWinStreak, newLossStreak, championName],
+                        (err) => {
+                            if (err) reject(err);
+                            else resolve({ newLevel, newForm, levelUp: newLevel > row.career_level });
+                        }
+                    );
+                }
+            );
+        });
+    }
+
+    /**
+     * Add or update a grudge
+     */
+    async addOrUpdateGrudge(championName, targetName, killedByTarget) {
+        return new Promise((resolve, reject) => {
+            const intensityIncrease = killedByTarget ? 0.1 : -0.02; // +0.1 if killed by them, -0.02 if killed them
+
+            this.db.run(
+                `INSERT INTO champion_grudges (champion_name, grudge_target_name, intensity, times_killed_by, times_killed)
+                 VALUES (?, ?, ?, ?, ?)
+                 ON CONFLICT(champion_name, grudge_target_name) DO UPDATE SET
+                    intensity = MIN(1.0, MAX(0.0, intensity + ?)),
+                    times_killed_by = times_killed_by + ?,
+                    times_killed = times_killed + ?,
+                    updated_at = CURRENT_TIMESTAMP`,
+                [
+                    championName, targetName,
+                    Math.max(0, intensityIncrease),
+                    killedByTarget ? 1 : 0,
+                    killedByTarget ? 0 : 1,
+                    intensityIncrease,
+                    killedByTarget ? 1 : 0,
+                    killedByTarget ? 0 : 1
+                ],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    /**
+     * Add or update a synergy
+     */
+    async addOrUpdateSynergy(championName, targetName, won) {
+        return new Promise((resolve, reject) => {
+            const strengthIncrease = won ? 0.05 : 0.01; // +0.05 if won together, +0.01 just for playing
+
+            this.db.run(
+                `INSERT INTO champion_synergies (champion_name, synergy_target_name, strength, games_together, wins_together)
+                 VALUES (?, ?, ?, 1, ?)
+                 ON CONFLICT(champion_name, synergy_target_name) DO UPDATE SET
+                    strength = MIN(1.0, strength + ?),
+                    games_together = games_together + 1,
+                    wins_together = wins_together + ?,
+                    updated_at = CURRENT_TIMESTAMP`,
+                [
+                    championName, targetName,
+                    strengthIncrease,
+                    won ? 1 : 0,
+                    strengthIncrease,
+                    won ? 1 : 0
+                ],
+                (err) => {
+                    if (err) reject(err);
+                    else resolve();
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's grudges
+     */
+    async getChampionGrudges(championName, minIntensity = 0.3) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT grudge_target_name, intensity, times_killed_by, times_killed
+                 FROM champion_grudges
+                 WHERE champion_name = ? AND intensity >= ?
+                 ORDER BY intensity DESC
+                 LIMIT 5`,
+                [championName, minIntensity],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows || []);
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's synergies
+     */
+    async getChampionSynergies(championName, minStrength = 0.2) {
+        return new Promise((resolve, reject) => {
+            this.db.all(
+                `SELECT synergy_target_name, strength, games_together, wins_together
+                 FROM champion_synergies
+                 WHERE champion_name = ? AND strength >= ?
+                 ORDER BY strength DESC
+                 LIMIT 3`,
+                [championName, minStrength],
+                (err, rows) => {
+                    if (err) reject(err);
+                    else resolve(rows || []);
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's career statistics
+     */
+    async getChampionCareerStats(championName) {
+        return new Promise((resolve, reject) => {
+            this.db.get(
+                `SELECT * FROM champion_careers WHERE champion_name = ?`,
+                [championName],
+                (err, row) => {
+                    if (err) reject(err);
+                    else resolve(row || {
+                        champion_name: championName,
+                        games_played: 0,
+                        wins: 0,
+                        losses: 0,
+                        total_kills: 0,
+                        total_deaths: 0,
+                        total_assists: 0,
+                        avg_gold: 0,
+                        avg_cs: 0,
+                        career_xp: 0,
+                        career_level: 1,
+                        form: 1.0,
+                        win_streak: 0,
+                        loss_streak: 0,
+                        void_touched: 0
+                    });
+                }
+            );
+        });
+    }
+
+    /**
+     * Get champion's match history
+     */
+    async getChampionMatchHistory(championName, limit = 20) {
+        return new Promise((resolve, reject) => {
+            // This is a simplified version - we're querying the replays table
+            // and extracting champion performance from the replay data
+            this.db.all(
+                `SELECT id, team1_name, team2_name, winner, replay_data, created_at
+                 FROM match_replays
+                 ORDER BY created_at DESC
+                 LIMIT ?`,
+                [limit * 2], // Get more matches since we'll filter for this champion
+                (err, rows) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    const matches = [];
+                    for (const row of rows) {
+                        if (matches.length >= limit) break;
+
+                        try {
+                            const replayData = JSON.parse(row.replay_data);
+                            const events = replayData.events || [];
+
+                            // Find champion in the match
+                            let championData = null;
+                            let teamName = null;
+
+                            // Look through events for champion data
+                            for (const event of events) {
+                                if (event.type === 'match.end' && event.data && event.data.champions) {
+                                    const found = event.data.champions.find(c => c.name === championName);
+                                    if (found) {
+                                        championData = found;
+                                        // Determine team
+                                        teamName = event.data.team1.champions.some(c => c.name === championName)
+                                            ? row.team1_name
+                                            : row.team2_name;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (championData) {
+                                const won = row.winner === teamName;
+                                matches.push({
+                                    matchId: row.id,
+                                    won,
+                                    kda: championData.kda || { kills: 0, deaths: 0, assists: 0 },
+                                    gold: championData.gold || 0,
+                                    cs: championData.cs || 0,
+                                    level: championData.level || 1,
+                                    date: row.created_at
+                                });
+                            }
+                        } catch (parseError) {
+                            // Skip matches with invalid replay data
+                            console.error('Error parsing replay data:', parseError);
+                        }
+                    }
+
+                    resolve(matches);
                 }
             );
         });

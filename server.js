@@ -127,6 +127,65 @@ app.get('/api/champions', async (req, res) => {
     }
 });
 
+// Get all teams
+app.get('/api/teams', async (req, res) => {
+    try {
+        const teams = game ? game.teams : [];
+        res.json({
+            success: true,
+            teams: teams.map(t => ({ name: t.name, id: t.id }))
+        });
+    } catch (error) {
+        res.json({ success: false, error: 'Failed to fetch teams' });
+    }
+});
+
+// Get champion detail (full profile for detail page)
+app.get('/api/champions/:name', async (req, res) => {
+    try {
+        const championName = decodeURIComponent(req.params.name);
+
+        // Get champion data from current teams
+        const teams = game ? game.teams : [];
+        let champion = null;
+        for (const team of teams) {
+            const found = team.champions.find(c => c.name === championName);
+            if (found) {
+                champion = found;
+                break;
+            }
+        }
+
+        if (!champion) {
+            return res.status(404).json({ success: false, error: 'Champion not found' });
+        }
+
+        // Get career stats from database
+        const careerStats = await db.getChampionCareerStats(championName);
+
+        // Get grudges
+        const grudges = await db.getChampionGrudges(championName);
+
+        // Get synergies
+        const synergies = await db.getChampionSynergies(championName);
+
+        // Get match history (last 20 matches)
+        const matchHistory = await db.getChampionMatchHistory(championName, 20);
+
+        res.json({
+            success: true,
+            champion,
+            careerStats: careerStats || {},
+            grudges: grudges || [],
+            synergies: synergies || [],
+            matchHistory: matchHistory || []
+        });
+    } catch (error) {
+        console.error('Error fetching champion detail:', error);
+        res.status(500).json({ success: false, error: 'Failed to fetch champion data' });
+    }
+});
+
 // ==================== ADMIN API ====================
 
 // Middleware to check admin status
@@ -147,6 +206,80 @@ async function requireAdmin(req, res, next) {
         res.json({ success: false, error: 'Authentication failed' });
     }
 }
+
+// ==================== REPLAY API ENDPOINTS ====================
+
+// Get replay by match ID
+app.get('/api/replays/:matchId', async (req, res) => {
+    try {
+        const replay = await db.getMatchReplay(req.params.matchId);
+
+        if (!replay) {
+            return res.status(404).json({
+                success: false,
+                error: 'Replay not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            replay: replay
+        });
+    } catch (error) {
+        console.error('Error fetching replay:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch replay'
+        });
+    }
+});
+
+// Get all replays (paginated)
+app.get('/api/replays', async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || 20;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const replays = await db.getAllMatchReplays(limit, offset);
+
+        res.json({
+            success: true,
+            replays: replays,
+            limit: limit,
+            offset: offset
+        });
+    } catch (error) {
+        console.error('Error fetching replays:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch replays'
+        });
+    }
+});
+
+// Get replays by team
+app.get('/api/replays/team/:teamName', async (req, res) => {
+    try {
+        const teamName = decodeURIComponent(req.params.teamName);
+        const limit = parseInt(req.query.limit) || 10;
+
+        const replays = await db.getReplaysByTeam(teamName, limit);
+
+        res.json({
+            success: true,
+            team: teamName,
+            replays: replays
+        });
+    } catch (error) {
+        console.error('Error fetching team replays:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Failed to fetch team replays'
+        });
+    }
+});
+
+// ==================== ADMIN API ENDPOINTS ====================
 
 // Get admin status
 app.get('/api/admin/status', async (req, res) => {

@@ -1,3 +1,4 @@
+const abilitiesData = require('../simulation/data/abilities.json');
 
 const championNames = [
     "Jessica Telephone",
@@ -45,6 +46,13 @@ const loreSnippets = [
     "Is wanted in three servers for tax evasion"
 ];
 
+const personalities = [
+    'Cocky',      // Showboats, brags, taunts enemies
+    'Humble',     // Quiet, efficient, no flair
+    'Chaotic',    // Unpredictable, maniacal, loves chaos
+    'Calculated', // Strategic, analytical, methodical
+    'Tilted'      // Angry, frustrated, emotional
+];
 
 const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'];
 
@@ -60,11 +68,78 @@ function generateTeamName() {
     return getRandomElement(teamNames);
 }
 
+/**
+ * Get abilities suitable for a role
+ * Returns {basic: [...], ultimates: [...]}
+ */
+function getAbilitiesForRole(role) {
+    // Map ADC to bot for ability lookup
+    let roleNormalized = role.toLowerCase();
+    if (roleNormalized === 'adc') {
+        roleNormalized = 'bot';
+    }
+
+    const basic = abilitiesData.filter(ability =>
+        ability.type !== 'ultimate' &&
+        ability.roles &&
+        ability.roles.includes(roleNormalized)
+    );
+
+    const ultimates = abilitiesData.filter(ability =>
+        ability.type === 'ultimate' &&
+        ability.roles &&
+        ability.roles.includes(roleNormalized)
+    );
+
+    return { basic, ultimates };
+}
+
+/**
+ * Select 4 abilities for a champion (Q/W/E/R)
+ */
+function selectAbilities(role) {
+    const { basic, ultimates } = getAbilitiesForRole(role);
+
+    if (basic.length === 0 || ultimates.length === 0) {
+        console.warn(`Warning: Not enough abilities for role ${role}`);
+        return ['void_bolt', 'reality_slash', 'shadow_step', 'black_hole'];
+    }
+
+    // Shuffle basic abilities
+    const shuffledBasic = [...basic].sort(() => Math.random() - 0.5);
+
+    // Take first 3 for Q/W/E
+    const q = shuffledBasic[0]?.id || 'void_bolt';
+    const w = shuffledBasic[1]?.id || 'reality_slash';
+    const e = shuffledBasic[2]?.id || 'shadow_step';
+
+    // Pick random ultimate for R
+    const r = getRandomElement(ultimates)?.id || 'black_hole';
+
+    return [q, w, e, r];
+}
+
 function generateChampion(role) {
+    const abilities = selectAbilities(role);
+
+    // Determine power curve
+    const curveRoll = Math.random();
+    let powerCurve;
+    if (curveRoll < 0.25) {
+        powerCurve = 'early'; // 25% early game champions
+    } else if (curveRoll < 0.6) {
+        powerCurve = 'mid';   // 35% mid game champions
+    } else {
+        powerCurve = 'late';  // 40% late game champions
+    }
+
     return {
         name: generateChampionName(),
         role: role,
         lore: getRandomElement(loreSnippets),
+        personality: getRandomElement(personalities), // NEW: Affects commentary
+        // Abilities (Q/W/E/R)
+        abilities: abilities,
         // Visible Stats
         kda: { k: 0, d: 0, a: 0 },
         cs: 0,
@@ -75,6 +150,7 @@ function generateChampion(role) {
         mechanical_skill: Math.random(),
         game_sense: Math.random(),
         tilt_resistance: Math.random(),
+        power_curve: powerCurve,
         synergy_map: {},
         clutch_factor: Math.random(),
         tilt_level: 0,
@@ -98,11 +174,47 @@ function generateTeam() {
     return team;
 }
 
+/**
+ * Generate rivalries/grudges between champions
+ * Creates narrative tension and special commentary
+ */
+function generateRivalries(teams) {
+    const allChampions = teams.flatMap(team => team.champions);
+
+    // 30% chance each champion has a grudge against someone
+    allChampions.forEach(champion => {
+        if (Math.random() < 0.3) {
+            // Pick 1-2 random other champions to have grudges with
+            const grudgeCount = Math.random() < 0.7 ? 1 : 2;
+            const potentialRivals = allChampions.filter(c => c !== champion);
+
+            for (let i = 0; i < grudgeCount && potentialRivals.length > 0; i++) {
+                const rivalIndex = Math.floor(Math.random() * potentialRivals.length);
+                const rival = potentialRivals.splice(rivalIndex, 1)[0];
+
+                // Add grudge (store by name since champions don't have IDs yet)
+                if (!champion.grudges.includes(rival.name)) {
+                    champion.grudges.push(rival.name);
+                }
+
+                // 50% chance the grudge is mutual
+                if (Math.random() < 0.5 && !rival.grudges.includes(champion.name)) {
+                    rival.grudges.push(champion.name);
+                }
+            }
+        }
+    });
+}
+
 function generateAllData() {
     const teams = [];
     for (let i = 0; i < 10; i++) {
         teams.push(generateTeam());
     }
+
+    // Generate rivalries after all teams exist
+    generateRivalries(teams);
+
     return { teams };
 }
 

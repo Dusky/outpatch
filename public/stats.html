@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Dashboard - MOBA Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="stats.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="header-bar">
+        <div class="logo-section">
+            <a href="/" class="logo-link">
+                <div class="logo-text">MOBA NETWORK</div>
+                <div class="logo-subtitle">STATISTICS DASHBOARD</div>
+            </a>
+        </div>
+        <div class="season-info">
+            <span class="season-label">SEASON</span>
+            <span class="season-number" id="season-number">1</span>
+        </div>
+        <div class="countdown-section">
+            <div class="user-info">
+                <span class="user-label">USER</span>
+                <span id="user-display-name" class="user-name">Loading...</span>
+            </div>
+            <button id="logout-btn" class="logout-btn">LOGOUT</button>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading-container" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading statistics...</p>
+    </div>
+
+    <!-- Stats Container -->
+    <div id="stats-container" class="stats-container" style="display:none;">
+        <!-- Tab Navigation -->
+        <div class="stats-tabs">
+            <button class="stats-tab active" data-tab="champions">🏆 CHAMPIONS</button>
+            <button class="stats-tab" data-tab="teams">👥 TEAMS</button>
+            <button class="stats-tab" data-tab="items">⚔️ ITEMS</button>
+            <button class="stats-tab" data-tab="chaos">🌀 CHAOS</button>
+        </div>
+
+        <!-- Champions Tab -->
+        <div id="champions-tab" class="stats-tab-content active">
+            <div class="stats-grid">
+                <!-- KDA Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">🏆 HIGHEST KDA</h2>
+                    <div class="leaderboard" id="leaderboard-kda"></div>
+                </div>
+
+                <!-- Kills Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">⚔️ MOST KILLS</h2>
+                    <div class="leaderboard" id="leaderboard-kills"></div>
+                </div>
+
+                <!-- Gold Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">💰 HIGHEST AVG GOLD</h2>
+                    <div class="leaderboard" id="leaderboard-gold"></div>
+                </div>
+
+                <!-- Win Rate Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">📈 BEST WIN RATE</h2>
+                    <div class="leaderboard" id="leaderboard-winrate"></div>
+                </div>
+
+                <!-- CS Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">🎯 MOST CS</h2>
+                    <div class="leaderboard" id="leaderboard-cs"></div>
+                </div>
+
+                <!-- Assists Leaderboard -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">🤝 MOST ASSISTS</h2>
+                    <div class="leaderboard" id="leaderboard-assists"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teams Tab -->
+        <div id="teams-tab" class="stats-tab-content">
+            <div class="stats-grid">
+                <!-- Team Win Rates -->
+                <div class="stats-panel wide-panel">
+                    <h2 class="panel-title">📊 TEAM PERFORMANCE</h2>
+                    <div id="team-performance" class="team-performance"></div>
+                </div>
+
+                <!-- Head to Head -->
+                <div class="stats-panel wide-panel">
+                    <h2 class="panel-title">⚔️ HEAD-TO-HEAD RECORDS</h2>
+                    <div id="head-to-head" class="head-to-head"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Tab -->
+        <div id="items-tab" class="stats-tab-content">
+            <div class="stats-grid">
+                <!-- Most Purchased -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">🛒 MOST PURCHASED</h2>
+                    <div class="leaderboard" id="most-purchased-items"></div>
+                </div>
+
+                <!-- Highest Win Rate Items -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">✨ HIGHEST WIN RATE</h2>
+                    <div class="leaderboard" id="winrate-items"></div>
+                </div>
+
+                <!-- Most Expensive -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">💎 MOST VALUABLE</h2>
+                    <div class="leaderboard" id="expensive-items"></div>
+                </div>
+
+                <!-- By Role -->
+                <div class="stats-panel wide-panel">
+                    <h2 class="panel-title">📋 ITEMS BY ROLE</h2>
+                    <div id="items-by-role" class="items-by-role"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chaos Tab -->
+        <div id="chaos-tab" class="stats-tab-content">
+            <div class="stats-grid">
+                <!-- Most Frequent Events -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">🌀 MOST FREQUENT CHAOS</h2>
+                    <div class="leaderboard" id="chaos-frequency"></div>
+                </div>
+
+                <!-- Impact on Win Rate -->
+                <div class="stats-panel">
+                    <h2 class="panel-title">📈 CHAOS IMPACT</h2>
+                    <div class="leaderboard" id="chaos-impact"></div>
+                </div>
+
+                <!-- Chaos Timeline -->
+                <div class="stats-panel wide-panel">
+                    <h2 class="panel-title">📊 CHAOS OVER TIME</h2>
+                    <canvas id="chaos-timeline" width="800" height="300"></canvas>
+                </div>
+
+                <!-- Global Chaos Stats -->
+                <div class="stats-panel wide-panel">
+                    <h2 class="panel-title">🌐 GLOBAL CHAOS STATISTICS</h2>
+                    <div id="global-chaos-stats" class="global-stats"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-item">STATISTICS DASHBOARD</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">TRACK THE LEGENDS</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">DATA FROM THE VOID</span>
+        </div>
+    </footer>
+
+    <script src="stats.js"></script>
+</body>
+</html>

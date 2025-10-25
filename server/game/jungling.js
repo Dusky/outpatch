@@ -1,16 +1,31 @@
 
-function simulateJungling(jungler, logEvent) {
+function simulateJungling(jungler, logEvent, commentary) {
     const decision = Math.random();
 
     if (decision < 0.4) { // 40% chance to farm
-        logEvent(`${jungler.name} is farming jungle camps.`);
-        jungler.cs += Math.floor(Math.random() * 3) + 1; // Gain 1-3 CS
+        const csGained = Math.floor(Math.random() * 3) + 1;
+        jungler.cs += csGained;
+        jungler.gold += csGained * 20; // Jungle farm gold
+
+        // Use commentary engine for farming (only sometimes)
+        if (commentary) {
+            const farmCommentary = commentary.generateFarmCommentary(jungler, jungler.cs);
+            if (farmCommentary) {
+                logEvent(farmCommentary);
+            }
+        } else if (Math.random() < 0.1) { // 10% chance to comment if no engine
+            logEvent(`${jungler.name} is farming jungle camps.`);
+        }
     } else if (decision < 0.7) { // 30% chance to gank
-        logEvent(`${jungler.name} is looking for a gank.`);
-        // In a more complex simulation, this would involve checking lane states and gank success chance
+        // Don't always announce ganks
+        if (Math.random() < 0.15) { // 15% chance to mention
+            logEvent(`${jungler.name} is looking for a gank opportunity...`);
+        }
     } else { // 30% chance to eye an objective
-        logEvent(`${jungler.name} is eyeing an objective.`);
-        // In a more complex simulation, this would involve checking objective timers and team readiness
+        // Don't always announce objective prep
+        if (Math.random() < 0.1) { // 10% chance to mention
+            logEvent(`${jungler.name} is preparing for an objective.`);
+        }
     }
 }
 
