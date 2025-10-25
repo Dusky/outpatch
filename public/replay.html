@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Replay - MOBA Network</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="replay.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Bar -->
+    <header class="header-bar">
+        <div class="logo-section">
+            <a href="/" class="logo-link">
+                <div class="logo-text">MOBA NETWORK</div>
+                <div class="logo-subtitle">MATCH REPLAY</div>
+            </a>
+        </div>
+        <div class="season-info">
+            <span id="replay-title" class="replay-title">Loading Replay...</span>
+        </div>
+        <div class="countdown-section">
+            <div class="user-info">
+                <span class="user-label">USER</span>
+                <span id="user-display-name" class="user-name">Loading...</span>
+            </div>
+            <button id="logout-btn" class="logout-btn">LOGOUT</button>
+        </div>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading-container" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading replay data...</p>
+    </div>
+
+    <!-- Replay Container -->
+    <div id="replay-container" class="replay-container" style="display:none;">
+        <!-- Replay Controls -->
+        <div class="replay-controls">
+            <button id="play-pause-btn" class="control-btn control-btn-primary">
+                <span class="btn-icon">▶️</span>
+                <span class="btn-text">PLAY</span>
+            </button>
+
+            <div class="speed-controls">
+                <label class="control-label">SPEED:</label>
+                <button class="speed-btn" data-speed="0.5">0.5x</button>
+                <button class="speed-btn active" data-speed="1">1x</button>
+                <button class="speed-btn" data-speed="2">2x</button>
+                <button class="speed-btn" data-speed="5">5x</button>
+            </div>
+
+            <div class="wave-display">
+                <span class="control-label">WAVE:</span>
+                <span id="current-wave-display" class="wave-number">0</span>
+                <span class="wave-separator">/</span>
+                <span id="max-wave-display" class="wave-number">0</span>
+            </div>
+
+            <button id="restart-btn" class="control-btn">
+                <span class="btn-icon">🔄</span>
+                <span class="btn-text">RESTART</span>
+            </button>
+        </div>
+
+        <!-- Wave Scrubber -->
+        <div class="scrubber-container">
+            <input type="range" id="wave-scrubber" class="wave-scrubber" min="0" max="100" value="0">
+            <div id="event-markers" class="event-markers"></div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="replay-content-grid">
+            <!-- Left: Visualization -->
+            <div class="replay-left-panel">
+                <!-- Match Status Bar -->
+                <div id="replay-status-bar" class="match-status-bar">
+                    <div class="match-status-info">
+                        <div class="status-item">
+                            <span class="status-label">KILLS</span>
+                            <span class="status-value kill-counts">
+                                <span id="replay-team1-kills">0</span>
+                                <span class="status-separator">-</span>
+                                <span id="replay-team2-kills">0</span>
+                            </span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">GOLD</span>
+                            <span class="status-value gold-amounts">
+                                <span id="replay-team1-gold">0</span>
+                                <span class="gold-diff" id="replay-gold-diff">+0</span>
+                                <span id="replay-team2-gold">0</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visualization Section -->
+                <div class="replay-visualization">
+                    <div class="visualization-grid">
+                        <!-- Mini-map -->
+                        <div class="visualization-panel minimap-panel">
+                            <h3 class="visualization-title">TACTICAL MAP</h3>
+                            <canvas id="replay-minimap" width="300" height="300"></canvas>
+                        </div>
+
+                        <!-- Graphs -->
+                        <div class="visualization-panel graphs-panel">
+                            <h3 class="visualization-title">MATCH ANALYTICS</h3>
+                            <div class="graphs-container">
+                                <div class="graph-item">
+                                    <canvas id="replay-gold-graph" width="400" height="200"></canvas>
+                                </div>
+                                <div class="graph-item">
+                                    <canvas id="replay-kill-graph" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Match Feed -->
+            <div class="replay-right-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">MATCH COMMENTARY</h2>
+                    <div class="auto-scroll-toggle">
+                        <input type="checkbox" id="auto-scroll-checkbox" checked>
+                        <label for="auto-scroll-checkbox">Auto-scroll</label>
+                    </div>
+                </div>
+                <div id="replay-feed" class="replay-feed"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="ticker-bar">
+        <div class="ticker-content">
+            <span class="ticker-item">MATCH REPLAY SYSTEM</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">RELIVE THE CHAOS</span>
+            <span class="ticker-separator">⬥</span>
+            <span class="ticker-item">THE VOID REMEMBERS ALL</span>
+        </div>
+    </footer>
+
+    <script src="visualization.js"></script>
+    <script src="replay.js"></script>
+</body>
+</html>
