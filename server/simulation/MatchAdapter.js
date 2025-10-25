@@ -182,23 +182,29 @@ class MatchAdapter {
                 break;
 
             case 'lane.trade':
-                this.logEvent(`⚔️ ${event.champ1Name} and ${event.champ2Name} trade blows in ${event.lane}`);
+                this.logEvent(`⚔️ ${event.initiator} and ${event.defender} trade blows in ${event.lane}`);
                 break;
 
             case 'jungle.camp':
-                this.logEvent(`${event.championName} cleared ${event.campType} for ${event.goldEarned}g`);
+                this.logEvent(`${event.championName} cleared ${event.csGained} CS for ${event.goldGained}g`);
                 break;
 
             case 'jungle.gank':
                 if (event.success) {
-                    this.logEvent(`🎯 ${event.jungler} ganked ${event.lane} lane successfully!`);
+                    this.logEvent(`🎯 ${event.gankerName} ganked ${event.lane} lane successfully!`);
+                    // Track successful gank kill
+                    if (event.gankerTeam === 'team1') {
+                        this.team1Kills++;
+                    } else if (event.gankerTeam === 'team2') {
+                        this.team2Kills++;
+                    }
                 } else {
-                    this.logEvent(`${event.jungler} attempted a gank in ${event.lane} but failed`);
+                    this.logEvent(`${event.gankerName} attempted a gank in ${event.lane} but failed`);
                 }
                 break;
 
             case 'jungle.countergank':
-                this.logEvent(`🔄 ${event.counterJungler} counter-ganked in ${event.lane}!`);
+                this.logEvent(`🔄 ${event.counterGankerName} counter-ganked ${event.gankerName} in ${event.lane}! ${event.winnerName} wins the duel!`);
                 break;
 
             case 'fight.start':
@@ -216,7 +222,11 @@ class MatchAdapter {
                 break;
 
             case 'fight.end':
-                this.logEvent(`Teamfight concluded. ${event.kills} kills.`);
+                const totalCasualties = (event.team1Casualties || 0) + (event.team2Casualties || 0);
+                const winningTeamFight = event.winner === 'team1' ? this.team1.name :
+                                        event.winner === 'team2' ? this.team2.name :
+                                        'Neither team';
+                this.logEvent(`Teamfight concluded. ${winningTeamFight} wins! ${totalCasualties} total kills.`);
                 break;
 
             case 'item.purchase':
