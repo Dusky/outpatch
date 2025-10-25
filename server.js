@@ -127,6 +127,19 @@ app.get('/api/champions', async (req, res) => {
     }
 });
 
+// Get all teams
+app.get('/api/teams', async (req, res) => {
+    try {
+        const teams = game ? game.teams : [];
+        res.json({
+            success: true,
+            teams: teams.map(t => ({ name: t.name, id: t.id }))
+        });
+    } catch (error) {
+        res.json({ success: false, error: 'Failed to fetch teams' });
+    }
+});
+
 // Get champion detail (full profile for detail page)
 app.get('/api/champions/:name', async (req, res) => {
     try {
