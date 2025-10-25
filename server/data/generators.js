@@ -46,6 +46,13 @@ const loreSnippets = [
     "Is wanted in three servers for tax evasion"
 ];
 
+const personalities = [
+    'Cocky',      // Showboats, brags, taunts enemies
+    'Humble',     // Quiet, efficient, no flair
+    'Chaotic',    // Unpredictable, maniacal, loves chaos
+    'Calculated', // Strategic, analytical, methodical
+    'Tilted'      // Angry, frustrated, emotional
+];
 
 const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'];
 
@@ -130,6 +137,7 @@ function generateChampion(role) {
         name: generateChampionName(),
         role: role,
         lore: getRandomElement(loreSnippets),
+        personality: getRandomElement(personalities), // NEW: Affects commentary
         // Abilities (Q/W/E/R)
         abilities: abilities,
         // Visible Stats
@@ -166,11 +174,47 @@ function generateTeam() {
     return team;
 }
 
+/**
+ * Generate rivalries/grudges between champions
+ * Creates narrative tension and special commentary
+ */
+function generateRivalries(teams) {
+    const allChampions = teams.flatMap(team => team.champions);
+
+    // 30% chance each champion has a grudge against someone
+    allChampions.forEach(champion => {
+        if (Math.random() < 0.3) {
+            // Pick 1-2 random other champions to have grudges with
+            const grudgeCount = Math.random() < 0.7 ? 1 : 2;
+            const potentialRivals = allChampions.filter(c => c !== champion);
+
+            for (let i = 0; i < grudgeCount && potentialRivals.length > 0; i++) {
+                const rivalIndex = Math.floor(Math.random() * potentialRivals.length);
+                const rival = potentialRivals.splice(rivalIndex, 1)[0];
+
+                // Add grudge (store by name since champions don't have IDs yet)
+                if (!champion.grudges.includes(rival.name)) {
+                    champion.grudges.push(rival.name);
+                }
+
+                // 50% chance the grudge is mutual
+                if (Math.random() < 0.5 && !rival.grudges.includes(champion.name)) {
+                    rival.grudges.push(champion.name);
+                }
+            }
+        }
+    });
+}
+
 function generateAllData() {
     const teams = [];
     for (let i = 0; i < 10; i++) {
         teams.push(generateTeam());
     }
+
+    // Generate rivalries after all teams exist
+    generateRivalries(teams);
+
     return { teams };
 }
 

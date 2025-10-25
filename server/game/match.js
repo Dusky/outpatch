@@ -6,6 +6,7 @@ const { simulateTeamfight } = require('./teamfights');
 const { simulateObjective } = require('./objectives');
 const { ChaosManager } = require('./chaosEvents');
 const { WeatherSystem } = require('./weather');
+const { CommentaryEngine } = require('./commentaryEngine');
 
 class Match {
     constructor(team1, team2, wss) {
@@ -17,8 +18,11 @@ class Match {
         this.interval = null;
         this.eventListeners = {};
 
+        // Initialize commentary engine before using it
+        this.commentary = new CommentaryEngine(this);
+
         this.logEvent(`Match starting: ${team1.name} vs ${team2.name}`);
-        this.logEvent(getRandomAbsurdistCommentary('start', { team1: team1.name, team2: team2.name }));
+        this.logEvent(this.commentary.getTemplate('start', { team1: team1.name, team2: team2.name }));
 
         // Map champions to roles for easier access during simulation
         this.team1Lanes = {};
@@ -85,6 +89,15 @@ class Match {
     }
 
     simulateWave() {
+        // Update commentary engine match state
+        this.commentary.updateMatchState(this.team1.champions, this.team2.champions);
+
+        // Check for comeback status and announce if needed
+        const comebackCommentary = this.commentary.checkComebackStatus();
+        if (comebackCommentary) {
+            this.logEvent(comebackCommentary);
+        }
+
         // Laning phase (waves 1-20)
         if (this.wave <= 20) {
             const roles = ['Top', 'Jungle', 'Mid', 'ADC', 'Support'];
@@ -92,30 +105,39 @@ class Match {
                 const team1Champ = this.team1Lanes[role];
                 const team2Champ = this.team2Lanes[role];
                 if (team1Champ && team2Champ) {
-                    simulateLaning(team1Champ, team2Champ, this.logEvent.bind(this));
+                    simulateLaning(team1Champ, team2Champ, this.logEvent.bind(this), this.commentary);
                 }
             });
-            simulateJungling(this.team1Lanes['Jungle'], this.logEvent.bind(this));
-            simulateJungling(this.team2Lanes['Jungle'], this.logEvent.bind(this));
+            simulateJungling(this.team1Lanes['Jungle'], this.logEvent.bind(this), this.commentary);
+            simulateJungling(this.team2Lanes['Jungle'], this.logEvent.bind(this), this.commentary);
         }
 
         // Mid game (waves 21-40)
         if (this.wave > 20 && this.wave <= 40) {
             if (Math.random() < 0.3) { // 30% chance of a teamfight in mid game
-                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this));
+                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this), this.commentary);
             }
-            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this));
+            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary);
         }
 
         // Late game (waves 41+)
         if (this.wave > 40) {
             if (Math.random() < 0.5) { // 50% chance of a teamfight in late game
-                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this));
+                simulateTeamfight(this.team1.champions, this.team2.champions, this.logEvent.bind(this), this.commentary);
             }
-            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this));
+            simulateObjective(this.team1, this.team2, this.wave, this.logEvent.bind(this), this.commentary);
         }
 
-        this.logEvent(getRandomAbsurdistCommentary('wave', { wave: this.wave }));
+        // Occasional wave commentary (not every wave)
+        const waveCommentary = this.commentary.generateWaveCommentary(this.wave);
+        if (waveCommentary) {
+            this.logEvent(waveCommentary);
+        }
+
+        // Keep some absurdist commentary for flavor (10% chance)
+        if (Math.random() < 0.1) {
+            this.logEvent(getRandomAbsurdistCommentary('wave', { wave: this.wave }));
+        }
     }
 
     end() {
@@ -136,7 +158,15 @@ class Match {
         }
 
         this.logEvent(`Match ended! ${winner.name} wins!`);
-        this.logEvent(getRandomAbsurdistCommentary('end', { winner: winner.name, loser: loser.name }));
+
+        // Use commentary engine for end commentary
+        const descriptor = Math.abs(this.commentary.momentum) > 50 ? 'dominant' : 'hard-fought';
+        this.logEvent(this.commentary.getTemplate('end', {
+            winner: winner.name,
+            loser: loser.name,
+            descriptor
+        }));
+
         this.emit('end', winner, loser);
     }
 }
