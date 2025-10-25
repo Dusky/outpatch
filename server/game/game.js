@@ -317,7 +317,7 @@ class Game {
         // Lock betting and resolve bets
         this.bettingSystem.lockBetting(matchId);
         const { payouts, totalPaid } = this.bettingSystem.resolveBets(matchId, match.winner.name);
-        this.broadcastBetResults(matchId, payouts);
+        await this.broadcastBetResults(matchId, payouts);
 
         // Update team records if not practice
         if (phase !== 'PRACTICE') {
@@ -546,11 +546,74 @@ class Game {
     }
 
     /**
-     * Broadcast bet results
+     * Broadcast bet results AND pay out winners
      */
-    broadcastBetResults(matchId, payouts) {
+    async broadcastBetResults(matchId, payouts) {
         const pool = this.bettingSystem.getPool(matchId);
+        const allBets = [...pool.team1Bets, ...pool.team2Bets];
 
+        // Pay out winners
+        for (const payout of payouts) {
+            // Find the WebSocket client for this user
+            for (const client of this.wss.clients) {
+                if (client._userId === payout.userId) {
+                    // Update WebSocket balance
+                    client.balance = (client.balance || 0) + payout.payout;
+
+                    // Persist to database if authenticated
+                    if (client._dbUserId && this.database) {
+                        try {
+                            await this.database.updateUserBalance(client._dbUserId, client.balance);
+
+                            // Record bet result in database
+                            if (client._activeBets && client._activeBets[matchId]) {
+                                await this.database.resolveBet(
+                                    client._activeBets[matchId],
+                                    'win',
+                                    payout.payout,
+                                    payout.profit
+                                );
+                                delete client._activeBets[matchId]; // Clean up
+                            }
+                        } catch (error) {
+                            console.error('Error updating user balance after payout:', error);
+                        }
+                    }
+
+                    console.log(`Paid out ${payout.payout}⌬ to user ${payout.userId} (profit: ${payout.profit}⌬)`);
+                    break;
+                }
+            }
+        }
+
+        // Record losing bets
+        const winningUserIds = new Set(payouts.map(p => p.userId));
+        for (const bet of allBets) {
+            if (!winningUserIds.has(bet.userId)) {
+                // Find the WebSocket client for this user
+                for (const client of this.wss.clients) {
+                    if (client._userId === bet.userId && client._dbUserId && this.database) {
+                        try {
+                            // Record losing bet in database
+                            if (client._activeBets && client._activeBets[matchId]) {
+                                await this.database.resolveBet(
+                                    client._activeBets[matchId],
+                                    'loss',
+                                    0,
+                                    -bet.amount
+                                );
+                                delete client._activeBets[matchId]; // Clean up
+                            }
+                        } catch (error) {
+                            console.error('Error recording losing bet:', error);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Broadcast results to all clients
         this.wss.clients.forEach(client => {
             const userId = client._userId;
             const userPayout = payouts.find(p => p.userId === userId);
@@ -560,7 +623,8 @@ class Game {
                 matchId,
                 winner: pool.winner,
                 yourPayout: userPayout || null,
-                totalPayouts: payouts.length
+                totalPayouts: payouts.length,
+                newBalance: userPayout ? client.balance : undefined
             }));
         });
     }
