@@ -1,6 +1,21 @@
 # Simulation Code Review - Issues Found
 
-## CRITICAL BUGS
+**⚠️ IMPORTANT CONTEXT:**
+This review primarily covers **legacy Match.js**. The project currently uses the **ECS engine** (`useNewSimulation = true` in game.js), which already has many "missing" features:
+
+✅ **Active in ECS Engine:**
+- **LevelingSystem** - Champions level 1-18, gain stats per level
+- **ItemSystem** - Auto-purchases items following role-specific builds
+- **AbilitySystem** - Abilities cast in lane (30%) and fights (90%), with cooldowns/mana
+- **WeatherSystem** - Fully integrated with effects
+- **ChaosSystem** - Chaos events with gameplay effects
+- **TiltSystem** - Tilt affects champion performance
+
+The bugs/fixes below apply to the legacy system (used when `useNewSimulation = false`).
+
+---
+
+## CRITICAL BUGS (Legacy Match.js - NOT CURRENTLY USED)
 
 ### 1. Jungler Doing Double Duty (match.js:103-112)
 **File:** `server/game/match.js`
@@ -81,15 +96,16 @@ But no file checks `if (match.chaosState.shopClosed)` before adding gold.
 
 ---
 
-### 6. No Champion Leveling
-**Issue:** Champions start at level 1 and never level up. No XP system exists.
+### 6. ~~No Champion Leveling~~ ✅ IMPLEMENTED (ECS Engine)
+**Status:** LEVELING EXISTS in ECS engine (`server/simulation/systems/LevelingSystem.js`)
 
-**Missing:**
-- XP gain from CS, kills, assists
-- Level-up stat increases
-- Ability scaling with level
+**Implemented features:**
+- XP gain: CS (50), Kills (300), Assists (150), Objectives (200)
+- Level cap: 18
+- Stats per level: +85 HP, +3 AD, +5 AP, +3.5 Armor, +1.25 MR
+- Ability unlocks at levels 1, 3, 5, 6
 
-**Current state:** Champions stay level 1 for entire match.
+**Current state:** ✅ Active in ECS engine (feature flag `useNewSimulation = true`)
 
 ---
 
