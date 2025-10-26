@@ -86,11 +86,7 @@ logoutBtn?.addEventListener('click', () => {
 
 // Collapse functionality
 const standingsCollapse = document.getElementById('standings-collapse');
-const rostersCollapse = document.getElementById('rosters-collapse');
-const statsCollapse = document.getElementById('stats-collapse');
 const standingsContent = document.getElementById('standings-content');
-const rostersContent = document.getElementById('rosters-content');
-const statsContent = document.getElementById('stats-content');
 
 let tickerMessages = [
     'WELCOME TO THE VOID MOBA NETWORK',
@@ -116,18 +112,6 @@ standingsCollapse?.addEventListener('click', () => {
     const isCollapsed = standingsContent.style.display === 'none';
     standingsContent.style.display = isCollapsed ? 'block' : 'none';
     standingsCollapse.textContent = isCollapsed ? '▼' : '▲';
-});
-
-rostersCollapse?.addEventListener('click', () => {
-    const isCollapsed = rostersContent.style.display === 'none';
-    rostersContent.style.display = isCollapsed ? 'block' : 'none';
-    rostersCollapse.textContent = isCollapsed ? '▼' : '▲';
-});
-
-statsCollapse?.addEventListener('click', () => {
-    const isCollapsed = statsContent.style.display === 'none';
-    statsContent.style.display = isCollapsed ? 'block' : 'none';
-    statsCollapse.textContent = isCollapsed ? '▼' : '▲';
 });
 
 const socket = new WebSocket('ws://' + window.location.host);
@@ -208,9 +192,28 @@ socket.addEventListener('message', (event) => {
             addToMatchFeed(parsedMessage.message, 'announcement');
         } else if (parsedMessage.type === 'finals_match_start') {
             addToMatchFeed(parsedMessage.message, 'announcement');
+        } else if (parsedMessage.type === 'countdown') {
+            // Update countdown timer display
+            if (parsedMessage.seconds !== undefined) {
+                updateCountdownDisplay(parsedMessage.seconds * 1000);
+            }
+        } else if (parsedMessage.type === 'matches_today') {
+            // Display today's match schedule
+            if (parsedMessage.matches && parsedMessage.matches.length > 0) {
+                addToMatchFeed(`📅 Today's Matches: ${parsedMessage.matches.length} scheduled`, 'announcement');
+            }
+        } else if (parsedMessage.type === 'draft_complete') {
+            // Handle draft completion
+            showNotification(parsedMessage.message || 'Draft complete!', 'info');
+            addToMatchFeed(parsedMessage.message || 'Draft complete!', 'announcement');
+        } else if (parsedMessage.type === 'reckoning_results') {
+            // Handle reckoning results
+            if (parsedMessage.message) {
+                addToMatchFeed(parsedMessage.message, 'announcement');
+            }
         } else {
             // Only log if it's not a known type that should be ignored
-            // This prevents countdown spam from appearing in feeds
+            // This prevents unknown message types from being lost
             console.log('Unhandled message type:', parsedMessage.type);
         }
     } catch (e) {
@@ -591,7 +594,7 @@ function showNotification(message, type) {
         top: 80px;
         right: 20px;
         padding: 16px 24px;
-        background: ${type === 'success' ? 'var(--accent-normal)' : 'var(--glitch-red)'};
+        background: ${type === 'success' ? 'var(--accent-success)' : type === 'error' ? 'var(--accent-danger)' : 'var(--accent-primary)'};
         color: var(--bg-primary);
         font-family: var(--font-primary);
         font-weight: 700;
@@ -675,7 +678,7 @@ function updateOddsDisplay(oddsData) {
         document.getElementById('total-pool').textContent = `${totalPool}⌬`;
 
         if (oddsData.locked) {
-            oddsDisplay.style.borderColor = 'var(--glitch-red)';
+            oddsDisplay.style.borderColor = 'var(--accent-danger)';
             document.querySelector('.odds-title').textContent = 'BETTING LOCKED';
         }
     }

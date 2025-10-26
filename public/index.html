@@ -48,7 +48,7 @@
             <div class="panel standings-panel">
                 <div class="panel-header">
                     <h2 class="panel-title">STANDINGS</h2>
-                    <button class="collapse-btn" id="standings-collapse">▼</button>
+                    <button class="panel-collapse" id="standings-collapse">▼</button>
                 </div>
                 <div class="panel-content" id="standings-content">
                     <table class="standings-table" id="standings-table">
@@ -94,17 +94,17 @@
 
                     <form id="bet-form" class="bet-form">
                         <div class="form-group">
-                            <label for="team-select">SELECT TEAM</label>
-                            <select id="team-select" class="team-select"></select>
+                            <label for="team-select" class="form-label">SELECT TEAM</label>
+                            <select id="team-select" class="form-select"></select>
                         </div>
                         <div class="form-group">
-                            <label for="bet-amount">WAGER AMOUNT</label>
-                            <input type="number" id="bet-amount" class="bet-input" placeholder="0" min="1">
+                            <label for="bet-amount" class="form-label">WAGER AMOUNT</label>
+                            <input type="number" id="bet-amount" class="form-input" placeholder="0" min="1">
                         </div>
                         <div id="potential-win" class="potential-win" style="display:none;">
                             Potential Win: <span id="potential-win-amount">0⌬</span>
                         </div>
-                        <button type="submit" class="bet-button">PLACE BET</button>
+                        <button type="submit" class="btn-primary">PLACE BET</button>
                     </form>
                 </div>
             </div>

@@ -11,7 +11,9 @@
   --text-primary: #ffffff;
   --text-secondary: #b4b8c5;
   --text-dim: #7a7f8f;
+  --text-muted: #6a6f7f;
   --accent-primary: #4a9eff;
+  --accent-secondary: #74c0fc;
   --accent-success: #27ae60;
   --accent-danger: #e74c3c;
   --accent-warning: #f39c12;
@@ -342,6 +344,17 @@ body {
   font-family: var(--font-mono);
 }
 
+.currency-symbol {
+  font-size: 1.5rem;
+  color: var(--accent-success);
+  margin-left: var(--spacing-xs);
+  font-family: var(--font-mono);
+}
+
+.bet-form {
+  /* Form container styles if needed */
+}
+
 .form-group {
   margin-bottom: var(--spacing-md);
 }
@@ -439,6 +452,13 @@ body {
   font-family: var(--font-mono);
 }
 
+.odds-pools {
+  margin-top: var(--spacing-sm);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
 .potential-win {
   background: rgba(74, 158, 255, 0.1);
   padding: var(--spacing-sm);
@@ -507,6 +527,14 @@ body {
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
+}
+
+.structures-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex: 1.5;
 }
 
 .status-label {
@@ -1464,6 +1492,28 @@ body {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
   }
 }
 
