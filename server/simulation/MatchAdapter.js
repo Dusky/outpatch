@@ -25,12 +25,19 @@ class MatchAdapter {
 
         // Create the actual simulator
         const seed = `match-${Date.now()}-${Math.random()}`;
+
+        // Match length tuning:
+        // 30s/wave * 40 waves = 20 min (regular)
+        // 30s/wave * 50 waves = 25 min (playoffs, with 1.3x intensity)
+        // 30s/wave * 60 waves = 30 min (championship, with 1.5x intensity)
+        const maxWaves = options.maxWaves || 40; // Default 40 waves = ~20 minutes
+
         this.simulator = new MatchSimulator({
             matchId: `live-${Date.now()}`,
             seed: seed,
             team1: team1,
             team2: team2,
-            maxWaves: 150,
+            maxWaves: maxWaves,
             intensityMultiplier: this.intensityMultiplier  // Pass to simulator
         });
 
@@ -60,7 +67,7 @@ class MatchAdapter {
 
         // Match timing
         this.matchStartTime = null;
-        this.maxWaves = options.maxWaves || 150;
+        this.maxWaves = options.maxWaves || 40;
 
         // Initial log
         this.logEvent(`Match starting: ${team1.name} vs ${team2.name}`);
@@ -120,7 +127,8 @@ class MatchAdapter {
             this._startEventQueueProcessor();
 
             // Run simulation wave by wave with intervals
-            const waveInterval = 30000; // 30 seconds per wave for better viewer pacing
+            // Tuned for engaging match pacing: not too fast, not too slow
+            const waveInterval = 20000; // 20 seconds per wave (40 waves = ~13 min matches)
 
             this.interval = setInterval(async () => {
                 if (this.match_ended) {
@@ -512,12 +520,55 @@ class MatchAdapter {
             }
         }
 
+        // CRITICAL: Populate team objects with champion stats from ECS simulation
+        this._attachChampionStats(winner, loser);
+
         this.logEvent(`\n🏆 ${winner.name} WINS! 🏆\n`);
 
         // Export replay data for storage
         this.replayData = this._exportReplayData(winner, loser);
 
         this.emit('end', winner, loser);
+    }
+
+    /**
+     * Attach champion stats from ECS simulation to team objects
+     * This is needed for career progression tracking
+     */
+    _attachChampionStats(team1, team2) {
+        try {
+            const championStates = this.simulator.getState().champions;
+
+            // Populate team1 champions
+            for (let i = 0; i < team1.champions.length; i++) {
+                const champ = team1.champions[i];
+                const state = championStates.find(c => c.name === champ.name && c.teamId === 'team1');
+                if (state) {
+                    champ.kda = state.kda || { kills: 0, deaths: 0, assists: 0 };
+                    champ.cs = state.cs || 0;
+                    champ.gold = state.gold || 0;
+                    champ.level = state.level || 1;
+                    champ.items = state.items || [];
+                    champ.tilt = state.tilt || 0;
+                }
+            }
+
+            // Populate team2 champions
+            for (let i = 0; i < team2.champions.length; i++) {
+                const champ = team2.champions[i];
+                const state = championStates.find(c => c.name === champ.name && c.teamId === 'team2');
+                if (state) {
+                    champ.kda = state.kda || { kills: 0, deaths: 0, assists: 0 };
+                    champ.cs = state.cs || 0;
+                    champ.gold = state.gold || 0;
+                    champ.level = state.level || 1;
+                    champ.items = state.items || [];
+                    champ.tilt = state.tilt || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Error attaching champion stats:', error);
+        }
     }
 
     /**

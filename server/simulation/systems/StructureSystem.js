@@ -26,24 +26,27 @@ const { CIdentity, CStats } = require('../core/Component');
 class StructureSystem {
     constructor() {
         this.config = {
-            // Spire (tower) stats
-            spireHealth: 800,  // Reduced for faster matches
-            spireArmor: 30,
+            // Spire (tower) stats - tuned for ~40 wave matches
+            spireHealth: 600,  // Reduced for match pacing
+            spireArmor: 20,    // Lower armor = faster destruction
 
             // Gateway (inhibitor) stats
-            gatewayHealth: 1200,
-            gatewayArmor: 50,
+            gatewayHealth: 800,   // Reduced
+            gatewayArmor: 30,     // Reduced
 
             // The Core (nexus) stats
-            coreHealth: 2000,
-            coreArmor: 60,
+            coreHealth: 1200,     // Reduced for faster endings
+            coreArmor: 40,        // Reduced
 
             // Damage rates (per wave with minions present)
-            baseMinionDamage: 100,  // Increased base damage
-            pressureMultiplier: 2.0,  // Stronger pressure bonus
+            // Math: 150 base damage * 0.83 reduction (20 armor) = ~125 dmg/wave
+            // Spire destroyed in: 600/125 = ~5 waves per spire
+            // 9 spires + 3 gateways + 1 core in ~25-30 waves
+            baseMinionDamage: 150,  // Increased for faster structure destruction
+            pressureMultiplier: 2.5,  // Strong pressure bonus for winning team
 
             // Timing
-            minWaveForStructureDamage: 5,  // Structures can't be damaged before wave 5
+            minWaveForStructureDamage: 3,  // Structures can be damaged earlier
             gatewayRespawnWaves: 999,  // Gateways don't respawn (permanent destruction)
         };
 
