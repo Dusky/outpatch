@@ -783,6 +783,7 @@ function updateMatchStatus(statusData) {
     if (statusData.champions) {
         updateLiveChampionStats(statusData.champions);
         updateRosterWithLiveStats(statusData.champions);
+        updateChampionStatsTable(statusData.champions, statusData.team1Name, statusData.team2Name);
     }
 
     // Update header countdown timer with match elapsed time
@@ -893,6 +894,70 @@ function buildChampionCard(champ, roleIcons) {
             </div>
         </div>
     `;
+}
+
+function updateChampionStatsTable(champions, team1Name, team2Name) {
+    const statsPanel = document.getElementById('champion-stats-panel');
+    const team1Body = document.getElementById('champion-stats-team1-body');
+    const team2Body = document.getElementById('champion-stats-team2-body');
+    const team1NameEl = document.getElementById('champion-stats-team1-name');
+    const team2NameEl = document.getElementById('champion-stats-team2-name');
+
+    if (!statsPanel || !team1Body || !team2Body || !champions || champions.length === 0) return;
+
+    // Show the panel
+    statsPanel.style.display = 'block';
+
+    // Update team names
+    if (team1NameEl) team1NameEl.textContent = team1Name || 'Team 1';
+    if (team2NameEl) team2NameEl.textContent = team2Name || 'Team 2';
+
+    // Role order for sorting
+    const roleOrder = { 'Top': 0, 'Jungle': 1, 'Mid': 2, 'ADC': 3, 'Support': 4 };
+
+    // Group and sort champions by team
+    const team1Champs = champions.filter(c => c.teamId === 'team1').sort((a, b) =>
+        (roleOrder[a.role] || 99) - (roleOrder[b.role] || 99)
+    );
+    const team2Champs = champions.filter(c => c.teamId === 'team2').sort((a, b) =>
+        (roleOrder[a.role] || 99) - (roleOrder[b.role] || 99)
+    );
+
+    // Build Team 1 table
+    team1Body.innerHTML = team1Champs.map(champ => {
+        const kda = champ.kda || { kills: 0, deaths: 0, assists: 0 };
+        const items = (champ.items || []).slice(0, 3);
+        const itemsText = items.map(i => i.name || i).join(', ') || 'None';
+
+        return `
+            <tr>
+                <td class="champ-name-cell" title="${champ.role}">${champ.name}</td>
+                <td>${champ.level || 1}</td>
+                <td>${kda.kills}/${kda.deaths}/${kda.assists}</td>
+                <td>${champ.cs || 0}</td>
+                <td>${(champ.gold || 0).toLocaleString()}</td>
+                <td class="items-cell" title="${itemsText}">${items.length || 0}</td>
+            </tr>
+        `;
+    }).join('');
+
+    // Build Team 2 table
+    team2Body.innerHTML = team2Champs.map(champ => {
+        const kda = champ.kda || { kills: 0, deaths: 0, assists: 0 };
+        const items = (champ.items || []).slice(0, 3);
+        const itemsText = items.map(i => i.name || i).join(', ') || 'None';
+
+        return `
+            <tr>
+                <td class="champ-name-cell" title="${champ.role}">${champ.name}</td>
+                <td>${champ.level || 1}</td>
+                <td>${kda.kills}/${kda.deaths}/${kda.assists}</td>
+                <td>${champ.cs || 0}</td>
+                <td>${(champ.gold || 0).toLocaleString()}</td>
+                <td class="items-cell" title="${itemsText}">${items.length || 0}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 function updateRosterWithLiveStats(champions) {

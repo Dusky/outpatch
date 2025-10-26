@@ -1510,3 +1510,105 @@ body {
     padding: var(--spacing-md);
   }
 }
+
+/* ========================================
+   LIVE CHAMPION STATS PANEL
+   ======================================== */
+.champion-stats-panel {
+    margin: var(--spacing-md) 0;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.champion-stats-header {
+    background: linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.2), rgba(var(--color-accent-rgb), 0.05));
+    padding: var(--spacing-sm);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.champion-stats-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.champion-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+}
+
+.team-champion-stats {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+}
+
+.team-champion-stats .team-name {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.champion-stats-table {
+    width: 100%;
+    font-size: 0.75rem;
+    border-collapse: collapse;
+}
+
+.champion-stats-table thead {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.champion-stats-table th {
+    padding: var(--spacing-xs);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.champion-stats-table td {
+    padding: var(--spacing-xs);
+    color: var(--text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.champion-stats-table tbody tr:hover {
+    background: rgba(var(--color-accent-rgb), 0.1);
+}
+
+.champion-stats-table .champ-name-cell {
+    font-weight: 500;
+    color: var(--accent-primary);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.champion-stats-table .items-cell {
+    text-align: center;
+    color: var(--accent-warning);
+}
+
+/* Responsive design for champion stats */
+@media (max-width: 1024px) {
+    .champion-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
